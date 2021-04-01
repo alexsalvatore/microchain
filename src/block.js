@@ -1,4 +1,5 @@
 import cryptojs from "crypto-js";
+import Chain from "./chain.js";
 const { SHA256 } = cryptojs;
 
 export default class Block {
@@ -31,7 +32,14 @@ export default class Block {
     return 3;
   }
 
-  proofOfWork(callback) {
+  mine(lastBlock) {
+    if (!lastBlock && this.prevHash)
+      return console.error(
+        "You should specify the previous block before mining"
+      );
+
+    // If we mine, we need to get the good heigth
+    this.height = lastBlock ? lastBlock.height + 1 : 0;
     while (!this._testHashDifficulty()) {
       this.nonce++;
       this.hash = this._calculateHash();
