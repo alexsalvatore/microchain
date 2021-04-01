@@ -8,8 +8,13 @@ const transaction1 = walletSato.createTransaction(
       "https://pbs.twimg.com/media/EwxqyQdXMAAlqIb?format=jpg&name=medium",
   })
 );
-const block1 = new Block(Chain.instance.lastBlock.hash, transaction1);
+const block1 = new Block({
+  publisher: walletSato.publicKey,
+  prevHash: Chain.instance.lastBlock.hash,
+  transactions: JSON.stringify([transaction1]),
+});
 block1.sign(walletSato);
+block1.proofOfWork();
 Chain.instance.addBlock(block1);
 
 /*const chain = Chain.instance;

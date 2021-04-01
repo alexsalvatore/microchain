@@ -2,6 +2,12 @@
 
 Microchain™ is a Javascript lib for creating small blockchain on Node JS & Web client.
 
+## Installation
+
+```bash
+npm i @asalvatore/microchain
+```
+
 ## State of the project
 
 In progress! Pls do not use it!

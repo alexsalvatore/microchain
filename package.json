@@ -1,6 +1,6 @@
 {
   "name": "@asalvatore/microchain",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "nodejs utility to create small blockchain",
   "main": "index.js",
   "type": "module",
