@@ -1,0 +1,16 @@
+{
+  "name": "@asalvatore/microchain",
+  "version": "1.0.5",
+  "description": "nodejs utility to create small blockchain",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node src/test.js"
+  },
+  "author": "Alexandre Salvatore",
+  "license": "ISC",
+  "dependencies": {
+    "crypto-js": "^3.3.0",
+    "elliptic": "^6.5.4"
+  }
+}
