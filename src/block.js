@@ -1,4 +1,5 @@
 import cryptojs from "crypto-js";
+import Wallet from "./wallet.js";
 import Chain from "./chain.js";
 const { SHA256 } = cryptojs;
 
@@ -15,7 +16,25 @@ export default class Block {
   }
 
   sign(wallet) {
-    this.signature = wallet.sign(JSON.stringify(this));
+    const tosign = this._toStringToSign();
+    this.signature = wallet.sign(tosign);
+    console.log(
+      "verfiy",
+      Wallet.verifySignature(tosign, this.signature, this.publisher)
+    );
+  }
+
+  /**
+   * Because block signature need to be without the hash & signature & nonce
+   */
+  _toStringToSign() {
+    return JSON.stringify({
+      height: this.height,
+      prevHash: this.prevHash,
+      publisher: this.publisher,
+      ts: this.ts,
+      transactions: this.transactions,
+    });
   }
 
   _calculateHash() {
@@ -32,14 +51,24 @@ export default class Block {
     return 3;
   }
 
+  /**
+   * Only test the block! Transaction need to be tester by the lib implementor
+   */
+  isValid() {
+    const tosign = this._toStringToSign();
+    //test signature
+    if (!Wallet.verifySignature(tosign, this.signature, this.publisher)) {
+      console.error("signature not valid");
+      return false;
+    }
+  }
+
   mine(lastBlock) {
     if (!lastBlock && this.prevHash)
       return console.error(
         "You should specify the previous block before mining"
       );
 
-    // If we mine, we need to get the good heigth
-    this.height = lastBlock ? lastBlock.height + 1 : 0;
     while (!this._testHashDifficulty()) {
       this.nonce++;
       this.hash = this._calculateHash();

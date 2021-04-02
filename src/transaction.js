@@ -7,11 +7,7 @@ export default class Transaction {
     this.ownership = opt["ownership"] ? opt["ownership"] : undefined;
   }
 
-  toString() {
-    return JSON.stringify(this);
-  }
-
   sign(wallet) {
-    this.signature = wallet.sign(this.toString());
+    this.signature = wallet.sign(JSON.stringify(this));
   }
 }

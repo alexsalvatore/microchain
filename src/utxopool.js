@@ -47,7 +47,6 @@ export default class UTXOPool {
       });
     }
     this.ownershipPool[walletId] = ownerships;
-    console.log(this.ownershipPool[walletId]);
   }
 
   getOwnershipForSenderAnId(sender, id) {
@@ -75,13 +74,13 @@ export default class UTXOPool {
   }
 
   isTXValid(tx) {
-    /*if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_OWNERSHIP) {
+    if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_OWNERSHIP) {
       const ownership = this.getOwnershipForSenderAnId(tx.sender, tx.ownership);
       return ownership && tx.amount <= this.ownership.amount && tx.amount > 0;
+    } else if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_CONTENT) {
+      return true;
     }
-
-    return false;*/
-    return true;
+    return false;
   }
 
   static TX_TYPE_NONE = 0;

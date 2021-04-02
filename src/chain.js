@@ -7,7 +7,6 @@ export default class Chain {
   static _instance;
   static get instance() {
     if (!Chain._instance) {
-      console.log("create instance!");
       Chain._instance = new Chain();
     }
     return Chain._instance;
@@ -16,14 +15,8 @@ export default class Chain {
   constructor() {
     this.utxoPool = new UTXOPool();
     const genesisBlock = new Block({
+      height: 0,
       publisher: "Takeshi",
-      transactions: JSON.stringify([
-        new Transaction({
-          sender: "Takeshi",
-          content:
-            "https://pbs.twimg.com/media/Exfacp-WUAUwc1G?format=png&name=900x900",
-        }),
-      ]),
     });
     genesisBlock.mine();
     this.chain = [genesisBlock];
@@ -50,10 +43,22 @@ export default class Chain {
   }
 
   addBlock(block) {
-    //Test validity
+    if (!block.isValid()) {
+      console.log("block not valid");
+      return false;
+    }
+
+    /*
+    const txs = lock.getTransactions();
+    for (let tx of txs) {
+      if (!this.utxoPool.isTXValid(tx)) return false;
+    }*/
+
     this.utxoPool.addBlock(block);
     this.chain.push(block);
     this.chain = this.longestChain;
+    console.log("add block");
+    return true;
   }
 
   logChain() {

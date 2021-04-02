@@ -9,6 +9,7 @@ const transaction1 = walletSato.createTransaction({
   content: "https://pbs.twimg.com/media/EwxqyQdXMAAlqIb?format=jpg&name=medium",
 });
 const block1 = new Block({
+  height: Chain.instance.lastBlock.height + 1,
   publisher: walletSato.publicKey,
   prevHash: Chain.instance.lastBlock.hash,
   transactions: JSON.stringify([transaction1]),
@@ -24,6 +25,7 @@ const transaction2 = walletDolores.createTransaction({
 });
 
 const block2 = new Block({
+  height: Chain.instance.lastBlock.height + 1,
   publisher: walletDolores.publicKey,
   prevHash: Chain.instance.lastBlock.hash,
   transactions: JSON.stringify([transaction2]),
@@ -40,6 +42,7 @@ const transaction3 = walletDolores.createTransaction({
 });
 
 const block3 = new Block({
+  height: Chain.instance.lastBlock.height + 1,
   publisher: walletDolores.publicKey,
   prevHash: Chain.instance.lastBlock.hash,
   transactions: JSON.stringify([transaction3]),
@@ -48,5 +51,4 @@ block3.sign(walletSato);
 block3.mine(Chain.instance.lastBlock);
 Chain.instance.addBlock(block3);
 
-// Chain.instance.logChain();
 Chain.instance.logUTXO();
