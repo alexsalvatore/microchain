@@ -1,8 +1,8 @@
 export default class Transaction {
   constructor(opt) {
     this.amount = opt["amount"] ? opt["amount"] : 0;
-    this.payer = opt["payer"] ? opt["payer"] : undefined;
-    this.payee = opt["payee"] ? opt["payee"] : undefined;
+    this.sender = opt["sender"] ? opt["sender"] : undefined;
+    this.receiver = opt["receiver"] ? opt["receiver"] : undefined;
     this.content = opt["content"] ? opt["content"] : undefined;
     this.ownership = opt["ownership"] ? opt["ownership"] : undefined;
   }

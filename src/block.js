@@ -44,11 +44,7 @@ export default class Block {
       this.nonce++;
       this.hash = this._calculateHash();
     }
-    /* if (callback) {
-      const res = this._testHashDifficulty() ? this.hash : null;
-      callback(res);
-    }*/
-    return this.nonce;
+    return this;
   }
 
   _testHashDifficulty() {

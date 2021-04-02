@@ -1,5 +1,6 @@
 import Transaction from "./transaction.js";
 import Block from "./block.js";
+import UTXOPool from "./utxopool.js";
 import { maxBy, reduce, unfold, reverse, values, prop } from "ramda";
 
 export default class Chain {
@@ -13,11 +14,12 @@ export default class Chain {
   }
 
   constructor() {
+    this.utxoPool = new UTXOPool();
     const genesisBlock = new Block({
       publisher: "Takeshi",
       transactions: JSON.stringify([
         new Transaction({
-          payer: "Takeshi",
+          sender: "Takeshi",
           content:
             "https://pbs.twimg.com/media/Exfacp-WUAUwc1G?format=png&name=900x900",
         }),
@@ -48,11 +50,17 @@ export default class Chain {
   }
 
   addBlock(block) {
+    //Test validity
+    this.utxoPool.addBlock(block);
     this.chain.push(block);
     this.chain = this.longestChain;
   }
 
   logChain() {
     console.log(this.chain);
+  }
+
+  logUTXO() {
+    console.log(this.utxoPool.log());
   }
 }
