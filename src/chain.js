@@ -44,12 +44,11 @@ export default class Chain {
 
   addBlock(block) {
     if (!block.isValid()) {
-      console.log("block not valid");
       return false;
     }
 
     /*
-    const txs = lock.getTransactions();
+    const txs = block.getTransactions();
     for (let tx of txs) {
       if (!this.utxoPool.isTXValid(tx)) return false;
     }*/
@@ -66,6 +65,6 @@ export default class Chain {
   }
 
   logUTXO() {
-    console.log(this.utxoPool.log());
+    this.utxoPool.log();
   }
 }

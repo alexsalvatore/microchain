@@ -15,7 +15,7 @@ const block1 = new Block({
   transactions: JSON.stringify([transaction1]),
 });
 block1.sign(walletSato);
-block1.mine(Chain.instance.lastBlock);
+block1.mine();
 Chain.instance.addBlock(block1);
 
 const transaction2 = walletDolores.createTransaction({
@@ -31,7 +31,7 @@ const block2 = new Block({
   transactions: JSON.stringify([transaction2]),
 });
 block2.sign(walletDolores);
-block2.mine(Chain.instance.lastBlock);
+block2.mine();
 Chain.instance.addBlock(block2);
 
 const transaction3 = walletDolores.createTransaction({
@@ -48,7 +48,7 @@ const block3 = new Block({
   transactions: JSON.stringify([transaction3]),
 });
 block3.sign(walletSato);
-block3.mine(Chain.instance.lastBlock);
+block3.mine();
 Chain.instance.addBlock(block3);
-
+//Chain.instance.logChain();
 Chain.instance.logUTXO();

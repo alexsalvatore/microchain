@@ -1,5 +1,4 @@
 import elliptic from "elliptic";
-import Chain from "./chain.js";
 import Transaction from "./transaction.js";
 const ec = new elliptic.ec("secp256k1");
 

@@ -18,23 +18,21 @@ export default class Block {
   sign(wallet) {
     const tosign = this._toStringToSign();
     this.signature = wallet.sign(tosign);
-    console.log(
-      "verfiy",
-      Wallet.verifySignature(tosign, this.signature, this.publisher)
-    );
   }
 
   /**
    * Because block signature need to be without the hash & signature & nonce
    */
   _toStringToSign() {
-    return JSON.stringify({
-      height: this.height,
-      prevHash: this.prevHash,
-      publisher: this.publisher,
-      ts: this.ts,
-      transactions: this.transactions,
-    });
+    return SHA256(
+      JSON.stringify({
+        height: this.height,
+        prevHash: this.prevHash,
+        publisher: this.publisher,
+        ts: this.ts,
+        transactions: this.transactions,
+      })
+    ).toString();
   }
 
   _calculateHash() {
@@ -61,14 +59,10 @@ export default class Block {
       console.error("signature not valid");
       return false;
     }
+    return true;
   }
 
-  mine(lastBlock) {
-    if (!lastBlock && this.prevHash)
-      return console.error(
-        "You should specify the previous block before mining"
-      );
-
+  mine() {
     while (!this._testHashDifficulty()) {
       this.nonce++;
       this.hash = this._calculateHash();
