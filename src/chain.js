@@ -53,10 +53,6 @@ export default class Chain {
       if (!this.utxoPool.isTXValid(tx)) return false;
     }
 
-    for (let tx of txs) {
-      this.utxoPool.addTX(tx, block.publisher);
-    }
-
     this.utxoPool.addBlock(block);
 
     this.chain.push(block);

@@ -34,7 +34,7 @@ export default class UTXOPool {
   }
 
   addOwnershipTo(walletId, ownershipId, amount) {
-    //console.log("addOwnershipTo", walletId, ownershipId, amount);
+    console.log("addOwnershipTo", walletId, ownershipId, amount);
     if (!this.ownershipPool[walletId]) this.ownershipPool[walletId] = [];
     const ownerships = this.ownershipPool[walletId];
     const index = ownerships.findIndex((o) => o.id === ownershipId);
