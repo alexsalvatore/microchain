@@ -56,7 +56,7 @@ export default class Block {
     const tosign = this._toStringToSign();
     //test signature
     if (!Wallet.verifySignature(tosign, this.signature, this.publisher)) {
-      console.error("signature not valid");
+      console.error("signature not valid for", this.height);
       return false;
     }
     return true;

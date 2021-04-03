@@ -8,6 +8,7 @@ export default class Transaction {
     this.receiver = opt["receiver"] ? opt["receiver"] : undefined;
     this.content = opt["content"] ? opt["content"] : undefined;
     this.ownership = opt["ownership"] ? opt["ownership"] : undefined;
+    this.ts = opt.ts ? opt.ts : Date.now();
     this.signature = opt["signature"] ? opt["signature"] : "";
   }
 

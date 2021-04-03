@@ -44,6 +44,7 @@ export default class Chain {
 
   addBlock(block) {
     if (!block.isValid()) {
+      console.error(`Block ${block.height} is not valid`);
       return false;
     }
 
@@ -52,10 +53,14 @@ export default class Chain {
       if (!this.utxoPool.isTXValid(tx)) return false;
     }
 
+    for (let tx of txs) {
+      this.utxoPool.addTX(tx, block.publisher);
+    }
+
     this.utxoPool.addBlock(block);
+
     this.chain.push(block);
     this.chain = this.longestChain;
-    console.log("add block");
     return true;
   }
 

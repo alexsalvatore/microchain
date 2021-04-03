@@ -51,9 +51,7 @@ export default class UTXOPool {
 
   getOwnershipForSenderAnId(sender, id) {
     if (!this.ownershipPool[sender]) return null;
-    const ownership = this.ownershipPool[sender].find(
-      (l) => l.ownership === id
-    );
+    const ownership = this.ownershipPool[sender].find((l) => l.id === id);
     return ownership;
   }
 
@@ -76,7 +74,7 @@ export default class UTXOPool {
   isTXValid(tx) {
     if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_OWNERSHIP) {
       const ownership = this.getOwnershipForSenderAnId(tx.sender, tx.ownership);
-      return ownership && tx.amount <= this.ownership.amount && tx.amount > 0;
+      return ownership && tx.amount <= ownership.amount && tx.amount > 0;
     } else if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_CONTENT) {
       return true;
     }
