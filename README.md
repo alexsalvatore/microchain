@@ -12,7 +12,7 @@ npm i @asalvatore/microchain
 
 Create and add a block to the chain instance
 
-```
+```javascript
 const walletSato = new Wallet();
 
 const transaction1 = walletSato.createTransaction({
