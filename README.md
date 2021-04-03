@@ -36,7 +36,8 @@ Chain.instance.addBlock(block1);
 
 - create an hash list for transactions to avoid re-spending.
 - re-initiate the UTXOPool with the longuest chain after each block add.
-- think about the logic of content spending
+- think about the logic of content spending.
+- manage block and transaction announce with webRTC?
 
 ## Author
 
