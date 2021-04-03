@@ -80,7 +80,7 @@ export default class UTXOPool {
     } else if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_CONTENT) {
       return true;
     }
-    return false;
+    return true;
   }
 
   static TX_TYPE_NONE = 0;

@@ -47,11 +47,10 @@ export default class Chain {
       return false;
     }
 
-    /*
     const txs = block.getTransactions();
     for (let tx of txs) {
       if (!this.utxoPool.isTXValid(tx)) return false;
-    }*/
+    }
 
     this.utxoPool.addBlock(block);
     this.chain.push(block);
