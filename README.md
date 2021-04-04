@@ -1,6 +1,7 @@
 # Microchain 💴
 
 _Microchain_ is a Javascript lib for creating small blockchain on Node JS & Web client.
+:warning: **This lib is not secure**: it is a project in progress! See contact for more informations.
 
 ## Installation
 
@@ -36,7 +37,7 @@ Chain.instance.addBlock(block1);
 
 - create an hash list for transactions to avoid re-spending.
 - re-initiate the UTXOPool with the longuest chain after each block add.
-- think about the logic of content spending.
+- think about the logic of content spending. I am thinking about about a config object to pass to the chain with blocks and trasnactions being _fungible_ or not
 - manage block and transaction announce with webRTC?
 
 ## Author
