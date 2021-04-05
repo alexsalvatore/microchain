@@ -7,6 +7,7 @@ export default class Transaction {
     this.sender = opt["sender"] ? opt["sender"] : undefined;
     this.receiver = opt["receiver"] ? opt["receiver"] : undefined;
     this.content = opt["content"] ? opt["content"] : undefined;
+    this.contentHash = SHA256(this.content).toString();
     this.ownership = opt["ownership"] ? opt["ownership"] : undefined;
     this.ts = opt.ts ? opt.ts : Date.now();
     this.signature = opt["signature"] ? opt["signature"] : "";
@@ -23,8 +24,14 @@ export default class Transaction {
         receiver: this.receiver,
         content: this.content,
         ownership: this.ownership,
+        ts: this.ts,
       })
     ).toString();
+  }
+
+  get hash() {
+    const hash = SHA256(JSON.stringify(this)).toString();
+    return hash;
   }
 
   sign(wallet) {
