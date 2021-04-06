@@ -5,15 +5,15 @@ import { maxBy, reduce, unfold, reverse, values, prop } from "ramda";
 
 export default class Chain {
   static _instance;
-  static get instance() {
+  static getInstance(conf) {
     if (!Chain._instance) {
-      Chain._instance = new Chain();
+      Chain._instance = new Chain(conf);
     }
     return Chain._instance;
   }
 
-  constructor() {
-    this.utxoPool = new UTXOPool();
+  constructor(conf) {
+    this.utxoPool = new UTXOPool(conf);
     const genesisBlock = new Block({
       height: 0,
       publisher: "Takeshi",

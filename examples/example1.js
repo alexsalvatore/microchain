@@ -1,20 +1,5 @@
-# Microchain 💴
+import { Chain, Wallet, Block } from "../src/index.js";
 
-_Microchain_ is a Javascript lib for creating small blockchain on Node JS & Web client.
-
-:warning: **This lib is not secure**: it is a project in progress! See contact for more informations.
-
-## Installation
-
-```bash
-npm i @asalvatore/microchain
-```
-
-## Usage
-
-Create and add a block to the chain instance
-
-```javascript
 const walletSato = new Wallet();
 
 // Get the instance of the chain. Also pass the config of it, with fees and if TX content are fungible or not.
@@ -44,16 +29,3 @@ chain.addBlock(block1);
 // We log to see if all was added to the chain
 chain.logChain();
 chain.logUTXO();
-```
-
-## To Do
-
-- create an hash list for transactions to avoid re-spending.
-- re-initiate the UTXOPool with the longuest chain after each block add.
-- think about the logic of content spending. I am thinking about about a config object to pass to the chain with blocks and trasnactions being _fungible_ or not
-- manage block and transaction announce with webRTC?
-
-## Author
-
-You can contact me on Twitter:
-[@salvator_io](https://twitter.com/salvator_io)

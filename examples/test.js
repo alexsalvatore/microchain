@@ -1,22 +1,24 @@
-import { Transaction, Chain, Wallet, Block } from "./index.js";
+import { Transaction, Chain, Wallet, Block } from "../src/index.js";
 
 const walletSato = new Wallet();
 const walletDolores = new Wallet();
 const walletKub = new Wallet();
+
+const chain = Chain.getInstance({ CONTENT_FUNGIBLE: false });
 
 const transaction1 = walletSato.createTransaction({
   sender: walletSato.publicKey,
   content: "https://pbs.twimg.com/media/EwxqyQdXMAAlqIb?format=jpg&name=medium",
 });
 const block1 = new Block({
-  height: Chain.instance.lastBlock.height + 1,
+  height: chain.lastBlock.height + 1,
   publisher: walletSato.publicKey,
-  prevHash: Chain.instance.lastBlock.hash,
+  prevHash: chain.lastBlock.hash,
   transactions: JSON.stringify([transaction1]),
 });
 block1.sign(walletSato);
 block1.mine();
-Chain.instance.addBlock(block1);
+chain.addBlock(block1);
 
 const transaction2 = walletDolores.createTransaction({
   sender: walletDolores.publicKey,
@@ -25,14 +27,14 @@ const transaction2 = walletDolores.createTransaction({
 });
 
 const block2 = new Block({
-  height: Chain.instance.lastBlock.height + 1,
+  height: chain.lastBlock.height + 1,
   publisher: walletDolores.publicKey,
-  prevHash: Chain.instance.lastBlock.hash,
+  prevHash: chain.lastBlock.hash,
   transactions: JSON.stringify([transaction2]),
 });
 block2.sign(walletDolores);
 block2.mine();
-Chain.instance.addBlock(block2);
+chain.addBlock(block2);
 
 const transaction3 = walletDolores.createTransaction({
   sender: block1.publisher,
@@ -42,13 +44,13 @@ const transaction3 = walletDolores.createTransaction({
 });
 
 const block3 = new Block({
-  height: Chain.instance.lastBlock.height + 1,
+  height: chain.lastBlock.height + 1,
   publisher: walletSato.publicKey,
-  prevHash: Chain.instance.lastBlock.hash,
+  prevHash: chain.lastBlock.hash,
   transactions: JSON.stringify([transaction3]),
 });
 block3.sign(walletSato);
 block3.mine();
-Chain.instance.addBlock(block3);
-Chain.instance.logChain();
-Chain.instance.logUTXO();
+chain.addBlock(block3);
+chain.logChain();
+chain.logUTXO();

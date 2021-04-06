@@ -1,16 +1,17 @@
 import { of } from "ramda";
+import Config from "./config.js";
 
 export default class UTXOPool {
-  static MONEY_BY_BLOCK = 15;
+  /*static MONEY_BY_BLOCK = 15;
   static MONEY_BY_KO = 2.5;
 
   static TX_FEE_MINE_MONEY = 0.1;
   static TX_FEE_MINE_OWNERSHIP = 0.1;
-  static TX_FEE_MINE_CONTENT = 0.25;
+  static TX_FEE_MINE_CONTENT = 0.25;*/
 
-  isContentFungible = true;
-
-  constructor() {
+  constructor(config) {
+    this.config = new Config(config);
+    console.log("config", this.config);
     this.txPool = {};
     this.contentPool = {};
     this.moneyPool = {};
@@ -29,39 +30,39 @@ export default class UTXOPool {
       this.addOwnershipTo(
         tx.receiver,
         tx.ownership,
-        tx.amount - tx.amount * UTXOPool.TX_FEE_MINE_OWNERSHIP
+        tx.amount - tx.amount * this.config.TX_FEE_MINE_OWNERSHIP
       );
       this.addOwnershipTo(
         miner,
         tx.ownership,
-        tx.amount * UTXOPool.TX_FEE_MINE_OWNERSHIP
+        tx.amount * this.config.TX_FEE_MINE_OWNERSHIP
       );
     } else if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_CONTENT) {
       // Posting Content
-      if (this.isContentFungible) {
+      if (this.config.CONTENT_FUNGIBLE) {
         //Content = $
         //Content = ownership and share
         this.addMoneyToSender(
           tx.sender,
-          -(tx.content.length / 1000) * UTXOPool.MONEY_BY_KO
+          -(tx.content.length / 1000) * this.config.MONEY_BY_KO
         );
         this.addMoneyToSender(
           miner,
           (tx.content.length / 1000) *
-            UTXOPool.MONEY_BY_KO *
-            UTXOPool.TX_FEE_MINE_MONEY
+            this.config.MONEY_BY_KO *
+            this.config.TX_FEE_MINE_MONEY
         );
       } else {
         //Content = ownership and share
         this.addOwnershipTo(
           tx.sender,
           tx.contentHash,
-          1 / UTXOPool.TX_FEE_MINE_OWNERSHIP
+          1 - 1 * this.config.TX_FEE_MINE_OWNERSHIP
         );
         this.addOwnershipTo(
           miner,
           tx.contentHash,
-          UTXOPool.TX_FEE_MINE_OWNERSHIP
+          this.config.TX_FEE_MINE_OWNERSHIP
         );
       }
     }
@@ -98,7 +99,6 @@ export default class UTXOPool {
       this.moneyPool[sender] = 0;
     }
     this.moneyPool[sender] += money;
-    console.log("add $ to", this.moneyPool[sender], money);
   }
 
   addBlock(block) {
@@ -113,7 +113,7 @@ export default class UTXOPool {
     });
 
     // Add money for block
-    this.addMoneyToSender(block.publisher, UTXOPool.MONEY_BY_BLOCK);
+    this.addMoneyToSender(block.publisher, this.config.MONEY_BY_BLOCK);
 
     const txs = block.getTransactions();
     for (let tx of txs) {
@@ -129,9 +129,9 @@ export default class UTXOPool {
       //Test if poster got the money for the post
       const senderMoney = this.getMoneyForSender(tx.sender);
       return (
-        this.isContentFungible ||
-        tx.content.length < 1000 ||
-        (tx.content.length / 1000) * UTXOPool.MONEY_BY_KO - senderMoney >= 0
+        this.config.CONTENT_FUNGIBLE ||
+        tx.content.length < this.config.TX_MAX_KO_SIZE_BEFORE_CHARGE * 1000 ||
+        (tx.content.length / 1000) * this.config.MONEY_BY_KO - senderMoney >= 0
       );
     } else if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_CONTENT) {
     }
