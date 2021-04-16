@@ -2,16 +2,8 @@ import { of } from "ramda";
 import Config from "./config.js";
 
 export default class UTXOPool {
-  /*static MONEY_BY_BLOCK = 15;
-  static MONEY_BY_KO = 2.5;
-
-  static TX_FEE_MINE_MONEY = 0.1;
-  static TX_FEE_MINE_OWNERSHIP = 0.1;
-  static TX_FEE_MINE_CONTENT = 0.25;*/
-
-  constructor(config) {
-    this.config = new Config(config);
-    console.log("config", this.config);
+  constructor(conf) {
+    this.config = new Config(conf);
     this.txPool = {};
     this.contentPool = {};
     this.moneyPool = {};

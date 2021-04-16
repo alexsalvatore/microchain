@@ -1,6 +1,6 @@
 # Microchain 💴
 
-_Microchain_ is a Javascript lib for creating small blockchain on Node JS & Web client.
+_Microchain_ is a Javascript lib for creating small blockchain on Node JS & Web client. His goal isn't being a crypto-currency, but being a way to distribute content in a semi-decentralized and give a kind of equity to content creators.
 
 :warning: **This lib is not secure**: it is a project in progress! See contact for more informations.
 
@@ -48,9 +48,16 @@ chain.logUTXO();
 
 ## To Do
 
+- manage difficulty.
+- create a _founder_ propertie in the genesis block, an array of public keys that can send _instruction(s)_ to the chain.
+- add genesis block in chain's Config class.
+- start documentation.
+- create an _instruction_ type of transaction.
+- create expirable transaction for content, a transaction that can be purged of the chain once a certain time.
+
 - create an hash list for transactions to avoid re-spending.
+- check if timestamp of a transaction or a block is not > to the current timestamp or < to the ts of the previous block (only for blocks)
 - re-initiate the UTXOPool with the longuest chain after each block add.
-- think about the logic of content spending. I am thinking about about a config object to pass to the chain with blocks and trasnactions being _fungible_ or not
 - manage block and transaction announce with webRTC?
 
 ## Author

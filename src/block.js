@@ -46,7 +46,7 @@ export default class Block {
   }
 
   get difficulty() {
-    return 3;
+    return Chain.getInstance().getDifficultyForHeight(this.height);
   }
 
   /**

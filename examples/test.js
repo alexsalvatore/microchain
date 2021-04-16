@@ -4,8 +4,8 @@ const walletSato = new Wallet();
 const walletDolores = new Wallet();
 const walletKub = new Wallet();
 
-const chain = Chain.getInstance({ CONTENT_FUNGIBLE: false });
-
+const chain = Chain.init({ CONTENT_FUNGIBLE: false });
+// console.log(chain);
 const transaction1 = walletSato.createTransaction({
   sender: walletSato.publicKey,
   content: "https://pbs.twimg.com/media/EwxqyQdXMAAlqIb?format=jpg&name=medium",
