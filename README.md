@@ -52,7 +52,11 @@ chain.logUTXO();
 
 ###### V 1.0.10
 
-- Added difficulty management.
+- Added difficulty management. use this script to test an Hash rate of 2 minutes:
+
+```
+npm run testDifficulty
+```
 
 ## To Do
 
