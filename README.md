@@ -15,10 +15,12 @@ npm i @asalvatore/microchain
 Create and add a block to the chain instance
 
 ```javascript
+import { Chain, Wallet, Block } from "../src/index.js";
+
 const walletSato = new Wallet();
 
 // Get the instance of the chain. Also pass the config of it, with fees and if TX content are fungible or not.
-const chain = Chain.getInstance({ CONTENT_FUNGIBLE: false });
+const chain = Chain.init({ CONTENT_FUNGIBLE: false });
 
 // Create and sign a transaction
 const transaction1 = walletSato.createTransaction({
@@ -46,16 +48,23 @@ chain.logChain();
 chain.logUTXO();
 ```
 
+## Change log
+
+###### V 1.0.10
+
+- Added difficulty management.
+
 ## To Do
 
-- manage difficulty.
+- difficulty should be the product of the average distance between 4 or more blocks. It's currently the product of the block currently mined and the height-1 block.
+- give the ability to choose between SHA256 and MD5 hashing.
 - create a _founder_ propertie in the genesis block, an array of public keys that can send _instruction(s)_ to the chain.
 - add genesis block in chain's Config class.
 - start documentation.
 - create an _instruction_ type of transaction.
 - create expirable transaction for content, a transaction that can be purged of the chain once a certain time.
 
-- create an hash list for transactions to avoid re-spending.
+- create an hash list for transactions to avoid double-spending.
 - check if timestamp of a transaction or a block is not > to the current timestamp or < to the ts of the previous block (only for blocks)
 - re-initiate the UTXOPool with the longuest chain after each block add.
 - manage block and transaction announce with webRTC?
