@@ -4,7 +4,11 @@ const walletSato = new Wallet();
 const walletDolores = new Wallet();
 const walletKub = new Wallet();
 
-const chain = Chain.init({ CONTENT_FUNGIBLE: false });
+const chain = Chain.init({
+  CONTENT_FUNGIBLE: false,
+  BLOCK_MIN_DIFFICULTY: 2,
+  BLOCK_MAX_DIFFICULTY: 5,
+});
 // console.log(chain);
 const transaction1 = walletSato.createTransaction({
   sender: walletSato.publicKey,

@@ -90,7 +90,7 @@ export default class Chain {
       (24 * 60 * 60 * 1000) / this.config.BLOCK_HASH_RATE_BY_DAY;
 
     const rateDetla = delta / expectedDelta;
-    console.log(delta, expectedDelta, rateDetla);
+    // console.log(delta, expectedDelta, rateDetla);
 
     const previousBlock = this.getBlockForHeight(blockNew.height - 1);
 
