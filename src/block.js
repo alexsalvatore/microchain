@@ -1,7 +1,5 @@
-import cryptojs from "crypto-js";
 import Wallet from "./wallet.js";
 import Chain from "./chain.js";
-const { SHA256 } = cryptojs;
 
 export default class Block {
   constructor(opt) {
@@ -13,6 +11,7 @@ export default class Block {
     this.nonce = opt.nonce ? opt.nonce : 0;
     this.signature = opt.signature ? opt.signature : "";
     this.hash = this._calculateHash();
+    this.difficulty = Chain.getInstance().getDifficultyForBlock(this);
   }
 
   sign(wallet) {
@@ -24,19 +23,23 @@ export default class Block {
    * Because block signature need to be without the hash & signature & nonce
    */
   _toStringToSign() {
-    return SHA256(
-      JSON.stringify({
-        height: this.height,
-        prevHash: this.prevHash,
-        publisher: this.publisher,
-        ts: this.ts,
-        transactions: this.transactions,
-      })
-    ).toString();
+    return Chain.getInstance()
+      .config.BLOCK_HASH_METHOD(
+        JSON.stringify({
+          height: this.height,
+          prevHash: this.prevHash,
+          publisher: this.publisher,
+          ts: this.ts,
+          transactions: this.transactions,
+        })
+      )
+      .toString();
   }
 
   _calculateHash() {
-    const hash = SHA256(JSON.stringify(this)).toString();
+    const hash = Chain.getInstance()
+      .config.BLOCK_HASH_METHOD(JSON.stringify(this))
+      .toString();
     return hash;
   }
 
@@ -45,9 +48,10 @@ export default class Block {
     return JSON.parse(this.transactions);
   }
 
+  /*
   get difficulty() {
-    return Chain.getInstance().getDifficultyForHeight(this.height);
-  }
+    return Chain.getInstance().getDifficultyForBlock(this);
+  }*/
 
   /**
    * Only test the block! Transaction need to be tester by the lib implementor

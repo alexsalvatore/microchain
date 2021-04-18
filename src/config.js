@@ -1,3 +1,6 @@
+import cryptojs from "crypto-js";
+const { SHA256, MD5 } = cryptojs;
+
 export default class Config {
   constructor(conf) {
     this.CONTENT_FUNGIBLE =
@@ -10,6 +13,15 @@ export default class Config {
 
     this.BLOCK_MIN_DIFFICULTY =
       conf && conf.BLOCK_MIN_DIFFICULTY ? conf.BLOCK_MIN_DIFFICULTY : 3;
+
+    this.BLOCK_MAX_DIFFICULTY =
+      conf && conf.BLOCK_MAX_DIFFICULTY ? conf.BLOCK_MAX_DIFFICULTY : 9;
+
+    this.BLOCK_HASH_RATE_BY_DAY =
+      conf && conf.BLOCK_HASH_RATE_BY_DAY ? conf.BLOCK_HASH_RATE_BY_DAY : 24;
+
+    this.BLOCK_HASH_METHOD =
+      conf && conf.BLOCK_HASH_METHOD === "MD5" ? MD5 : SHA256;
 
     //All fees
     this.MONEY_BY_BLOCK =

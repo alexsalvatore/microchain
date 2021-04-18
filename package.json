@@ -1,12 +1,13 @@
 {
   "name": "@asalvatore/microchain",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Microchain is a #Javascript lib for creating small #blockchain for content and ownership hosting on Node JS & Web client. Project in progress.",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "node examples/test.js",
-    "test2": "node examples/example1.js"
+    "test": "node tests/testSimple.js",
+    "testUTXO": "node tests/testUTXO.js",
+    "testDifficulty": "node tests/testDifficulty.js"
   },
   "author": "Alexandre Salvatore",
   "license": "ISC",

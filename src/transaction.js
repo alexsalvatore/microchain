@@ -1,5 +1,5 @@
 import cryptojs from "crypto-js";
-const { SHA256 } = cryptojs;
+import Chain from "./chain.js";
 
 export default class Transaction {
   constructor(opt) {
@@ -7,7 +7,9 @@ export default class Transaction {
     this.sender = opt["sender"] ? opt["sender"] : undefined;
     this.receiver = opt["receiver"] ? opt["receiver"] : undefined;
     this.content = opt["content"] ? opt["content"] : undefined;
-    this.contentHash = SHA256(this.content).toString();
+    this.contentHash = Chain.getInstance()
+      .config.BLOCK_HASH_METHOD(this.content)
+      .toString();
     this.ownership = opt["ownership"] ? opt["ownership"] : undefined;
     this.ts = opt.ts ? opt.ts : Date.now();
     this.signature = opt["signature"] ? opt["signature"] : "";
@@ -17,20 +19,24 @@ export default class Transaction {
    * Because block signature need to be without the hash & signature & nonce
    */
   _toStringToSign() {
-    return SHA256(
-      JSON.stringify({
-        amount: this.amount,
-        sender: this.sender,
-        receiver: this.receiver,
-        content: this.content,
-        ownership: this.ownership,
-        ts: this.ts,
-      })
-    ).toString();
+    return Chain.getInstance()
+      .config.BLOCK_HASH_METHOD(
+        JSON.stringify({
+          amount: this.amount,
+          sender: this.sender,
+          receiver: this.receiver,
+          content: this.content,
+          ownership: this.ownership,
+          ts: this.ts,
+        })
+      )
+      .toString();
   }
 
   get hash() {
-    const hash = SHA256(JSON.stringify(this)).toString();
+    const hash = Chain.getInstance()
+      .config.BLOCK_HASH_METHOD(JSON.stringify(this))
+      .toString();
     return hash;
   }
 

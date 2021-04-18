@@ -51,13 +51,13 @@ export default class Chain {
   }
 
   get lastBlock() {
-    console.log(this);
+    //console.log(this);
     if (this.chain.length === 0) return null;
     return this.chain[this.chain.length - 1];
   }
 
   get longestChain() {
-    if (!this.chain) return [];
+    if (!this.chain || this.chain.length === 0) return [];
     const blocksDict = values(this.chain);
     this.chain.forEach((block) => (blocksDict[block.hash] = block));
     const getParent = (x) => {
@@ -70,8 +70,46 @@ export default class Chain {
     return reverse(unfold(getParent, this.lastBlock));
   }
 
-  getDifficultyForHeight(height = 0) {
-    return this.config.BLOCK_MIN_DIFFICULTY;
+  getBlockForHeight(height) {
+    const longuestChain = this.longestChain;
+    const blockOld = longuestChain.find((block) => block.height === height);
+
+    return blockOld;
+  }
+
+  getDifficultyForBlock(blockNew) {
+    const longuestChain = this.longestChain;
+    const blockOld = longuestChain.find(
+      (block) => block.height === blockNew.height - 1
+    );
+
+    if (!blockOld) return this.config.BLOCK_MIN_DIFFICULTY;
+
+    const delta = blockNew.ts - blockOld.ts;
+    const expectedDelta =
+      (24 * 60 * 60 * 1000) / this.config.BLOCK_HASH_RATE_BY_DAY;
+
+    const rateDetla = delta / expectedDelta;
+    console.log(delta, expectedDelta, rateDetla);
+
+    const previousBlock = this.getBlockForHeight(blockNew.height - 1);
+
+    // Create a margin for difficulty increase or decrease
+    const errorMargin = 0.25;
+    let finalDiff = previousBlock.difficulty;
+    if (rateDetla < 1 - errorMargin) {
+      finalDiff++;
+    } else if (rateDetla > 1 + errorMargin) {
+      finalDiff--;
+    }
+
+    // console.log("Difficulty final", finalDiff);
+    if (finalDiff < this.config.BLOCK_MIN_DIFFICULTY)
+      finalDiff = this.config.BLOCK_MIN_DIFFICULTY;
+    if (finalDiff > this.config.BLOCK_MAX_DIFFICULTY)
+      finalDiff = this.config.BLOCK_MAX_DIFFICULTY;
+
+    return finalDiff;
   }
 
   addBlock(block) {
