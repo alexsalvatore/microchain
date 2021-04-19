@@ -52,18 +52,22 @@ chain.logUTXO();
 
 ###### V 1.0.10
 
-- Added difficulty management.
+- Property _BLOCK_HASH_METHOD_ added to the _Config_ class, you can pass "SHA256" or "MD5"
+- Added difficulty management. use this script to test an Hash rate of 2 minutes:
+
+```
+npm run testDifficulty
+```
 
 ## To Do
 
+- write and read a chain file.
 - difficulty should be the product of the average distance between 4 or more blocks. It's currently the product of the block currently mined and the height-1 block.
-- give the ability to choose between SHA256 and MD5 hashing.
-- create a _founder_ propertie in the genesis block, an array of public keys that can send _instruction(s)_ to the chain.
-- add genesis block in chain's Config class.
+- several validation check: test if block or transaction are not in the future, test the height of blocks, test if there is a genesis block and if not, the chain can only be red.
+- create a _founders_ propertie in the genesis block, an array of public keys that can send _instruction(s)_ to the chain. I currently do not know if I should merge this property with the _Config_ class.
 - start documentation.
 - create an _instruction_ type of transaction.
 - create expirable transaction for content, a transaction that can be purged of the chain once a certain time.
-
 - create an hash list for transactions to avoid double-spending.
 - check if timestamp of a transaction or a block is not > to the current timestamp or < to the ts of the previous block (only for blocks)
 - re-initiate the UTXOPool with the longuest chain after each block add.
