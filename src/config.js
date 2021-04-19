@@ -14,6 +14,11 @@ export default class Config {
     this.BLOCK_MIN_DIFFICULTY =
       conf && conf.BLOCK_MIN_DIFFICULTY ? conf.BLOCK_MIN_DIFFICULTY : 3;
 
+    this.BLOCK_HASH_RATE_AVERAGE =
+      conf && conf.BLOCK_HASH_RATE_AVERAGE && conf.BLOCK_HASH_RATE_AVERAGE > 0
+        ? conf.BLOCK_HASH_RATE_AVERAGE
+        : 4;
+
     this.BLOCK_MAX_DIFFICULTY =
       conf && conf.BLOCK_MAX_DIFFICULTY ? conf.BLOCK_MAX_DIFFICULTY : 9;
 

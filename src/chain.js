@@ -80,17 +80,19 @@ export default class Chain {
   getDifficultyForBlock(blockNew) {
     const longuestChain = this.longestChain;
     const blockOld = longuestChain.find(
-      (block) => block.height === blockNew.height - 1
+      (block) =>
+        block.height === blockNew.height - this.config.BLOCK_HASH_RATE_AVERAGE
     );
 
     if (!blockOld) return this.config.BLOCK_MIN_DIFFICULTY;
 
-    const delta = blockNew.ts - blockOld.ts;
+    const delta =
+      (blockNew.ts - blockOld.ts) / this.config.BLOCK_HASH_RATE_AVERAGE;
     const expectedDelta =
       (24 * 60 * 60 * 1000) / this.config.BLOCK_HASH_RATE_BY_DAY;
 
     const rateDetla = delta / expectedDelta;
-    // console.log(delta, expectedDelta, rateDetla);
+    console.log(delta, expectedDelta, rateDetla);
 
     const previousBlock = this.getBlockForHeight(blockNew.height - 1);
 
