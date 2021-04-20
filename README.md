@@ -50,10 +50,14 @@ chain.logUTXO();
 
 ## Change log
 
+###### V 1.0.11
+
+- Added an number of average of the last _n_ blocks to calculate the difficulty, but the result isn't very convincing. You can use it with the _BLOCK_HASH_RATE_AVERAGE_ property of the _Config_ class. It's 1 by default.
+
 ###### V 1.0.10
 
 - Property _BLOCK_HASH_METHOD_ added to the _Config_ class, you can pass "SHA256" or "MD5"
-- Added difficulty management. use this script to test an Hash rate of 2 minutes:
+- Added difficulty management. use this script to test an Hash rate of 2 minutes.
 
 ```
 npm run testDifficulty
@@ -62,7 +66,6 @@ npm run testDifficulty
 ## To Do
 
 - write and read a chain file.
-- difficulty should be the product of the average distance between 4 or more blocks. It's currently the product of the block currently mined and the height-1 block.
 - several validation check: test if block or transaction are not in the future, test the height of blocks, test if there is a genesis block and if not, the chain can only be red.
 - create a _founders_ propertie in the genesis block, an array of public keys that can send _instruction(s)_ to the chain. I currently do not know if I should merge this property with the _Config_ class.
 - start documentation.
