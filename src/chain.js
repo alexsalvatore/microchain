@@ -1,13 +1,17 @@
-import Transaction from "./transaction.js";
 import Block from "./block.js";
 import UTXOPool from "./utxopool.js";
-import { maxBy, reduce, unfold, reverse, values, prop } from "ramda";
+import { EventEmitter } from "events";
+import { unfold, reverse, values } from "ramda";
 import Config from "./config.js";
 
-export default class Chain {
+export default class Chain extends EventEmitter {
   static _instance;
 
-  static init(conf) {
+  onBlockAdded = (callback) => {};
+
+  onChainLoaded = (callback) => {};
+
+  static init(conf, blocks = null) {
     if (!Chain._instance) {
       Chain._instance = new Chain(conf);
 
@@ -37,6 +41,7 @@ export default class Chain {
   }
 
   constructor(conf) {
+    super();
     this.chain = [];
     this._conf = new Config(conf);
     this.utxoPool = new UTXOPool();
@@ -126,9 +131,9 @@ export default class Chain {
     }
 
     this.utxoPool.addBlock(block);
-
     this.chain.push(block);
-    this.chain = this.longestChain;
+    // this.chain = this.longestChain; // We need to memorize all valids blocks!
+    this.emit("blockAdded", block);
     return true;
   }
 

@@ -1,4 +1,3 @@
-import cryptojs from "crypto-js";
 import Chain from "./chain.js";
 
 export default class Transaction {

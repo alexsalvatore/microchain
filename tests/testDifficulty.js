@@ -1,4 +1,5 @@
-import { Transaction, Chain, Wallet, Block } from "../src/index.js";
+import { Chain, Wallet, Block } from "../src/index.js";
+import fs from "fs";
 
 const blockEveryMinutes = 2;
 const hashRateTarget = (24 * 60) / blockEveryMinutes;
@@ -9,6 +10,11 @@ const chain = Chain.init({
   CONTENT_FUNGIBLE: false,
   BLOCK_HASH_RATE_BY_DAY: hashRateTarget,
   BLOCK_HASH_METHOD: "MD5",
+});
+
+chain.on("blockAdded", () => {
+  let data = JSON.stringify(chain.chain);
+  fs.writeFileSync("chain.json", data);
 });
 
 let n = 0;
