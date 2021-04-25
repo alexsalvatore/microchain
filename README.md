@@ -48,11 +48,26 @@ chain.logChain();
 chain.logUTXO();
 ```
 
+To listen events on the chain you can use _chainReady_ and _blockAdded_.
+
+```javascript
+chain.on("chainReady", () => {
+  console.log("Chainready fired!");
+});
+
+chain.on("blockAdded", () => {
+  let data = JSON.stringify(chain.chain);
+  fs.writeFileSync("chain.json", data);
+});
+```
+
 ## Change log
 
 ###### V 1.0.11
 
 - Added an number of average of the last _n_ blocks to calculate the difficulty, but the result isn't very convincing. You can use it with the _BLOCK_HASH_RATE_AVERAGE_ property of the _Config_ class. It's 1 by default.
+- Added the "blockAdded" and "chainReady" on the chain instance.
+- The chain constructor can know take an existing list of block as second parameter.
 
 ###### V 1.0.10
 
@@ -65,7 +80,8 @@ npm run testDifficulty
 
 ## To Do
 
-- write and read a chain file.
+- write and read a chain file (it mean adding event emitter).
+- Rename the class Chain to Blockchain, because chain.chain is not pretty.
 - several validation check: test if block or transaction are not in the future, test the height of blocks, test if there is a genesis block and if not, the chain can only be red.
 - create a _founders_ propertie in the genesis block, an array of public keys that can send _instruction(s)_ to the chain. I currently do not know if I should merge this property with the _Config_ class.
 - start documentation.

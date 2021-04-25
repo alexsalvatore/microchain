@@ -5,11 +5,23 @@ const blockEveryMinutes = 2;
 const hashRateTarget = (24 * 60) / blockEveryMinutes;
 console.log("BLOCK_HASH_RATE_BY_DAY", hashRateTarget);
 
+// try to read if file
+const rawdata = fs.readFileSync("chain.json");
+let blocks = null;
+if (rawdata) blocks = JSON.parse(rawdata);
+
 const walletSato = new Wallet();
-const chain = Chain.init({
-  CONTENT_FUNGIBLE: false,
-  BLOCK_HASH_RATE_BY_DAY: hashRateTarget,
-  BLOCK_HASH_METHOD: "MD5",
+const chain = Chain.init(
+  {
+    CONTENT_FUNGIBLE: false,
+    BLOCK_HASH_RATE_BY_DAY: hashRateTarget,
+    BLOCK_HASH_METHOD: "MD5",
+  },
+  blocks
+);
+
+chain.on("chainReady", () => {
+  console.log("Chainready fired!");
 });
 
 chain.on("blockAdded", () => {

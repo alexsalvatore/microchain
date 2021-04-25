@@ -14,14 +14,25 @@ export default class Chain extends EventEmitter {
   static init(conf, blocks = null) {
     if (!Chain._instance) {
       Chain._instance = new Chain(conf);
+      Chain._instance.ready = false;
 
       //Create geneis block
-      const genesisBlock = new Block({
-        height: 0,
-        publisher: "Takeshi",
-      });
-      genesisBlock.mine();
-      Chain.getInstance().chain = [genesisBlock];
+      if (!blocks) {
+        const genesisBlock = new Block({
+          height: 0,
+          publisher: "Takeshi",
+        });
+        genesisBlock.mine();
+        Chain.getInstance().chain = [genesisBlock];
+        this.emit("blockAdded", genesisBlock);
+      } else {
+        for (let block of blocks) {
+          const blockInstance = new Block(block);
+          Chain.getInstance().addBlock(blockInstance);
+        }
+      }
+      Chain.getInstance().ready = true;
+      Chain.getInstance().emit("chainReady", Chain.getInstance().chain);
     } else if (conf) {
       console.warn(
         "Config wont be use, you already have an instance of the chain running."
@@ -84,15 +95,23 @@ export default class Chain extends EventEmitter {
 
   getDifficultyForBlock(blockNew) {
     const longuestChain = this.longestChain;
+
+    // Add the block -1 to get the distance between 2 blocks because the distance
+    // of time between this block and the block currently mined is not a constant
+    // => It's mean than the difficulty can change during the block mining
+    const blockBefore = longuestChain.find(
+      (block) => block.height === blockNew.height - 1
+    );
     const blockOld = longuestChain.find(
       (block) =>
-        block.height === blockNew.height - this.config.BLOCK_HASH_RATE_AVERAGE
+        block.height ===
+        blockNew.height - this.config.BLOCK_HASH_RATE_AVERAGE - 1
     );
 
-    if (!blockOld) return this.config.BLOCK_MIN_DIFFICULTY;
+    if (!blockBefore || !blockOld) return this.config.BLOCK_MIN_DIFFICULTY;
 
     const delta =
-      (blockNew.ts - blockOld.ts) / this.config.BLOCK_HASH_RATE_AVERAGE;
+      (blockBefore.ts - blockOld.ts) / this.config.BLOCK_HASH_RATE_AVERAGE;
     const expectedDelta =
       (24 * 60 * 60 * 1000) / this.config.BLOCK_HASH_RATE_BY_DAY;
 
@@ -133,7 +152,7 @@ export default class Chain extends EventEmitter {
     this.utxoPool.addBlock(block);
     this.chain.push(block);
     // this.chain = this.longestChain; // We need to memorize all valids blocks!
-    this.emit("blockAdded", block);
+    if (Chain.getInstance().ready) this.emit("blockAdded", block);
     return true;
   }
 
