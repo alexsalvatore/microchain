@@ -1,4 +1,4 @@
-import { Chain, Wallet, Block } from "../src/index.js";
+import { Blockchain, Wallet, Block } from "../src/index.js";
 import fs from "fs";
 
 const blockEveryMinutes = 2;
@@ -11,7 +11,7 @@ let blocks = null;
 if (rawdata) blocks = JSON.parse(rawdata);
 
 const walletSato = new Wallet();
-const chain = Chain.init(
+const chain = Blockchain.init(
   {
     CONTENT_FUNGIBLE: false,
     BLOCK_HASH_RATE_BY_DAY: hashRateTarget,
@@ -21,7 +21,7 @@ const chain = Chain.init(
 );
 
 chain.on("chainReady", () => {
-  console.log("Chainready fired!");
+  console.log("Blockchainready fired!");
 });
 
 chain.on("blockAdded", () => {

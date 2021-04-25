@@ -4,17 +4,17 @@ import { EventEmitter } from "events";
 import { unfold, reverse, values } from "ramda";
 import Config from "./config.js";
 
-export default class Chain extends EventEmitter {
+export default class Blockchain extends EventEmitter {
   static _instance;
 
   onBlockAdded = (callback) => {};
 
-  onChainLoaded = (callback) => {};
+  onBlockchainLoaded = (callback) => {};
 
   static init(conf, blocks = null) {
-    if (!Chain._instance) {
-      Chain._instance = new Chain(conf);
-      Chain._instance.ready = false;
+    if (!Blockchain._instance) {
+      Blockchain._instance = new Blockchain(conf);
+      Blockchain._instance.ready = false;
 
       //Create geneis block
       if (!blocks) {
@@ -23,32 +23,35 @@ export default class Chain extends EventEmitter {
           publisher: "Takeshi",
         });
         genesisBlock.mine();
-        Chain.getInstance().chain = [genesisBlock];
+        Blockchain.getInstance().chain = [genesisBlock];
         this.emit("blockAdded", genesisBlock);
       } else {
         for (let block of blocks) {
           const blockInstance = new Block(block);
-          Chain.getInstance().addBlock(blockInstance);
+          Blockchain.getInstance().addBlock(blockInstance);
         }
       }
-      Chain.getInstance().ready = true;
-      Chain.getInstance().emit("chainReady", Chain.getInstance().chain);
+      Blockchain.getInstance().ready = true;
+      Blockchain.getInstance().emit(
+        "chainReady",
+        Blockchain.getInstance().chain
+      );
     } else if (conf) {
       console.warn(
         "Config wont be use, you already have an instance of the chain running."
       );
     }
-    return Chain._instance;
+    return Blockchain._instance;
   }
 
   static getInstance() {
-    if (!Chain._instance) {
+    if (!Blockchain._instance) {
       console.warn(
-        "Hey! there is no Chain instance running... are you sure you have call init?"
+        "Hey! there is no Blockchain instance running... are you sure you have call init?"
       );
       return null;
     }
-    return Chain._instance;
+    return Blockchain._instance;
   }
 
   constructor(conf) {
@@ -72,7 +75,7 @@ export default class Chain extends EventEmitter {
     return this.chain[this.chain.length - 1];
   }
 
-  get longestChain() {
+  get longestBlockchain() {
     if (!this.chain || this.chain.length === 0) return [];
     const blocksDict = values(this.chain);
     this.chain.forEach((block) => (blocksDict[block.hash] = block));
@@ -87,22 +90,24 @@ export default class Chain extends EventEmitter {
   }
 
   getBlockForHeight(height) {
-    const longuestChain = this.longestChain;
-    const blockOld = longuestChain.find((block) => block.height === height);
+    const longuestBlockchain = this.longestBlockchain;
+    const blockOld = longuestBlockchain.find(
+      (block) => block.height === height
+    );
 
     return blockOld;
   }
 
   getDifficultyForBlock(blockNew) {
-    const longuestChain = this.longestChain;
+    const longuestBlockchain = this.longestBlockchain;
 
     // Add the block -1 to get the distance between 2 blocks because the distance
     // of time between this block and the block currently mined is not a constant
     // => It's mean than the difficulty can change during the block mining
-    const blockBefore = longuestChain.find(
+    const blockBefore = longuestBlockchain.find(
       (block) => block.height === blockNew.height - 1
     );
-    const blockOld = longuestChain.find(
+    const blockOld = longuestBlockchain.find(
       (block) =>
         block.height ===
         blockNew.height - this.config.BLOCK_HASH_RATE_AVERAGE - 1
@@ -151,12 +156,12 @@ export default class Chain extends EventEmitter {
 
     this.utxoPool.addBlock(block);
     this.chain.push(block);
-    // this.chain = this.longestChain; // We need to memorize all valids blocks!
-    if (Chain.getInstance().ready) this.emit("blockAdded", block);
+    // this.chain = this.longestBlockchain; // We need to memorize all valids blocks!
+    if (Blockchain.getInstance().ready) this.emit("blockAdded", block);
     return true;
   }
 
-  logChain() {
+  logBlockchain() {
     console.log(this.chain);
   }
 

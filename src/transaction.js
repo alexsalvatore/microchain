@@ -1,4 +1,4 @@
-import Chain from "./chain.js";
+import Blockchain from "./blockchain.js";
 
 export default class Transaction {
   constructor(opt) {
@@ -6,7 +6,7 @@ export default class Transaction {
     this.sender = opt["sender"] ? opt["sender"] : undefined;
     this.receiver = opt["receiver"] ? opt["receiver"] : undefined;
     this.content = opt["content"] ? opt["content"] : undefined;
-    this.contentHash = Chain.getInstance()
+    this.contentHash = Blockchain.getInstance()
       .config.BLOCK_HASH_METHOD(this.content)
       .toString();
     this.ownership = opt["ownership"] ? opt["ownership"] : undefined;
@@ -18,7 +18,7 @@ export default class Transaction {
    * Because block signature need to be without the hash & signature & nonce
    */
   _toStringToSign() {
-    return Chain.getInstance()
+    return Blockchain.getInstance()
       .config.BLOCK_HASH_METHOD(
         JSON.stringify({
           amount: this.amount,
@@ -33,7 +33,7 @@ export default class Transaction {
   }
 
   get hash() {
-    const hash = Chain.getInstance()
+    const hash = Blockchain.getInstance()
       .config.BLOCK_HASH_METHOD(JSON.stringify(this))
       .toString();
     return hash;

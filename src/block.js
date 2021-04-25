@@ -1,5 +1,5 @@
 import Wallet from "./wallet.js";
-import Chain from "./chain.js";
+import Blockchain from "./blockchain.js";
 
 export default class Block {
   constructor(opt) {
@@ -11,7 +11,7 @@ export default class Block {
     this.nonce = opt.nonce ? opt.nonce : 0;
     this.signature = opt.signature ? opt.signature : "";
     this.hash = this._calculateHash();
-    this.difficulty = Chain.getInstance().getDifficultyForBlock(this);
+    this.difficulty = Blockchain.getInstance().getDifficultyForBlock(this);
   }
 
   sign(wallet) {
@@ -23,7 +23,7 @@ export default class Block {
    * Because block signature need to be without the hash & signature & nonce
    */
   _toStringToSign() {
-    return Chain.getInstance()
+    return Blockchain.getInstance()
       .config.BLOCK_HASH_METHOD(
         JSON.stringify({
           height: this.height,
@@ -37,7 +37,7 @@ export default class Block {
   }
 
   _calculateHash() {
-    const hash = Chain.getInstance()
+    const hash = Blockchain.getInstance()
       .config.BLOCK_HASH_METHOD(JSON.stringify(this))
       .toString();
     return hash;
@@ -50,7 +50,7 @@ export default class Block {
 
   /*
   get difficulty() {
-    return Chain.getInstance().getDifficultyForBlock(this);
+    return Blockchain.getInstance().getDifficultyForBlock(this);
   }*/
 
   /**
