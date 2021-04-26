@@ -38,7 +38,17 @@ export default class Block {
 
   _calculateHash() {
     const hash = Blockchain.getInstance()
-      .config.BLOCK_HASH_METHOD(JSON.stringify(this))
+      .config.BLOCK_HASH_METHOD(
+        JSON.stringify({
+          height: this.height,
+          prevHash: this.prevHash,
+          publisher: this.publisher,
+          ts: this.ts,
+          transactions: this.transactions,
+          signature: this.signature,
+          nonce: this.nonce,
+        })
+      )
       .toString();
     return hash;
   }
@@ -48,21 +58,25 @@ export default class Block {
     return JSON.parse(this.transactions);
   }
 
-  /*
-  get difficulty() {
-    return Blockchain.getInstance().getDifficultyForBlock(this);
-  }*/
-
   /**
    * Only test the block! Transaction need to be tester by the lib implementor
    */
   isValid() {
     const tosign = this._toStringToSign();
     //test signature
-    if (!Wallet.verifySignature(tosign, this.signature, this.publisher)) {
+    if (
+      this.height !== 0 &&
+      !Wallet.verifySignature(tosign, this.signature, this.publisher)
+    ) {
       console.error("signature not valid for", this.height);
       return false;
     }
+
+    if (!this._testHashDifficulty()) {
+      console.error("Difficulty not valid for", this.height);
+      return false;
+    }
+
     return true;
   }
 

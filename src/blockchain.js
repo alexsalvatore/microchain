@@ -24,7 +24,7 @@ export default class Blockchain extends EventEmitter {
         });
         genesisBlock.mine();
         Blockchain.getInstance().chain = [genesisBlock];
-        this.emit("blockAdded", genesisBlock);
+        Blockchain.getInstance().emit("blockAdded", genesisBlock);
       } else {
         for (let block of blocks) {
           const blockInstance = new Block(block);
@@ -113,8 +113,12 @@ export default class Blockchain extends EventEmitter {
         blockNew.height - this.config.BLOCK_HASH_RATE_AVERAGE - 1
     );
 
-    if (!blockBefore || !blockOld) return this.config.BLOCK_MIN_DIFFICULTY;
-
+    if (!blockBefore || !blockOld) {
+      console.log(
+        "missin blockBefore height or block old for height:" + blockNew.height
+      );
+      return this.config.BLOCK_MIN_DIFFICULTY;
+    }
     const delta =
       (blockBefore.ts - blockOld.ts) / this.config.BLOCK_HASH_RATE_AVERAGE;
     const expectedDelta =
@@ -143,9 +147,37 @@ export default class Blockchain extends EventEmitter {
     return finalDiff;
   }
 
+  getParent(prevHash) {
+    const parentBlock = this.chain.find((b) => b.hash === prevHash);
+    return parentBlock;
+  }
+
   addBlock(block) {
+    /*console.log("--------------");
+    console.log(
+      `Block ${block.height} #${block.hash} need difficulty ${block.difficulty}`
+    );*/
+
+    console.log(block);
+
     if (!block.isValid()) {
       console.error(`Block ${block.height} is not valid`);
+      return false;
+    }
+
+    // Test if the block is valid in reguard of the last block
+    const parentBlock = this.getParent(block.prevHash);
+
+    if (!parentBlock && block.height !== 0) {
+      console.error(`Block ${block.height} has no parent!`);
+      return false;
+    }
+
+    if (
+      parentBlock &&
+      (parentBlock.height - 1 == block.height || parentBlock.ts >= block.ts)
+    ) {
+      console.error(`Block ${block.height} is not coherent with the chain`);
       return false;
     }
 
