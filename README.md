@@ -69,7 +69,8 @@ chain.on("blockAdded", () => {
 - Added the "blockAdded" and "chainReady" event emitters on the chain instance.
 - The chain constructor can know take an existing list of block as second parameter.
 - Difficulty is now a comparison between block _height-1_ and block _height-BLOCK_HASH_RATE_AVERAGE-1_. It's to keep the diffiiculty constant during mining.
-- Renamed the class Chain to Blockchain, because chain.chain is not pretty.
+- Renamed the class Chain to Blockchain, because _chain.chain_ is not pretty.
+- Checking block validity before adding them to the chain, especialy difficulty, timestamp and height coherence.
 
 ###### V 1.0.10
 
@@ -82,6 +83,7 @@ npm run testDifficulty
 
 ## To Do
 
+- Need to sort block by height when passing a list of block to the chain to instantiating it.
 - create expirable transaction for content, a transaction that can be purged of the chain once a certain time.
 - several validation check: test if block or transaction are not in the future, test the height of blocks, test if there is a genesis block and if not, the chain can only be red.
 - create a _founders_ propertie in the genesis block, an array of public keys that can send _instruction(s)_ to the chain. I currently do not know if I should merge this property with the _Config_ class.

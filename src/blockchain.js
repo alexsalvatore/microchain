@@ -26,7 +26,8 @@ export default class Blockchain extends EventEmitter {
         Blockchain.getInstance().chain = [genesisBlock];
         Blockchain.getInstance().emit("blockAdded", genesisBlock);
       } else {
-        for (let block of blocks) {
+        const blocksSorted = blocks.sort(Blockchain._sortBlocksByHeight);
+        for (let block of blocksSorted) {
           const blockInstance = new Block(block);
           Blockchain.getInstance().addBlock(blockInstance);
         }
@@ -199,5 +200,15 @@ export default class Blockchain extends EventEmitter {
 
   logUTXO() {
     this.utxoPool.log();
+  }
+
+  static _sortBlocksByHeight(b1, b2) {
+    if (b1.height < b2.height) {
+      return -1;
+    }
+    if (b1.height < b2.height) {
+      return 1;
+    }
+    return 0;
   }
 }
