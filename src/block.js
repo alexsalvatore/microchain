@@ -1,5 +1,5 @@
 import Wallet from "./wallet.js";
-import Chain from "./chain.js";
+import Blockchain from "./blockchain.js";
 
 export default class Block {
   constructor(opt) {
@@ -11,7 +11,7 @@ export default class Block {
     this.nonce = opt.nonce ? opt.nonce : 0;
     this.signature = opt.signature ? opt.signature : "";
     this.hash = this._calculateHash();
-    this.difficulty = Chain.getInstance().getDifficultyForBlock(this);
+    this.difficulty = Blockchain.getInstance().getDifficultyForBlock(this);
   }
 
   sign(wallet) {
@@ -23,7 +23,7 @@ export default class Block {
    * Because block signature need to be without the hash & signature & nonce
    */
   _toStringToSign() {
-    return Chain.getInstance()
+    return Blockchain.getInstance()
       .config.BLOCK_HASH_METHOD(
         JSON.stringify({
           height: this.height,
@@ -37,8 +37,18 @@ export default class Block {
   }
 
   _calculateHash() {
-    const hash = Chain.getInstance()
-      .config.BLOCK_HASH_METHOD(JSON.stringify(this))
+    const hash = Blockchain.getInstance()
+      .config.BLOCK_HASH_METHOD(
+        JSON.stringify({
+          height: this.height,
+          prevHash: this.prevHash,
+          publisher: this.publisher,
+          ts: this.ts,
+          transactions: this.transactions,
+          signature: this.signature,
+          nonce: this.nonce,
+        })
+      )
       .toString();
     return hash;
   }
@@ -48,21 +58,25 @@ export default class Block {
     return JSON.parse(this.transactions);
   }
 
-  /*
-  get difficulty() {
-    return Chain.getInstance().getDifficultyForBlock(this);
-  }*/
-
   /**
    * Only test the block! Transaction need to be tester by the lib implementor
    */
   isValid() {
     const tosign = this._toStringToSign();
     //test signature
-    if (!Wallet.verifySignature(tosign, this.signature, this.publisher)) {
+    if (
+      this.height !== 0 &&
+      !Wallet.verifySignature(tosign, this.signature, this.publisher)
+    ) {
       console.error("signature not valid for", this.height);
       return false;
     }
+
+    if (!this._testHashDifficulty()) {
+      console.error("Difficulty not valid for", this.height);
+      return false;
+    }
+
     return true;
   }
 

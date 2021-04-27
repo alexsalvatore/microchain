@@ -1,10 +1,10 @@
-import { Transaction, Chain, Wallet, Block } from "../src/index.js";
+import { Transaction, Blockchain, Wallet, Block } from "../src/index.js";
 
 const walletSato = new Wallet();
 const walletDolores = new Wallet();
 const walletKub = new Wallet();
 
-const chain = Chain.init({
+const chain = Blockchain.init({
   CONTENT_FUNGIBLE: false,
   BLOCK_MIN_DIFFICULTY: 2,
   BLOCK_MAX_DIFFICULTY: 5,
@@ -56,5 +56,5 @@ const block3 = new Block({
 block3.sign(walletSato);
 block3.mine();
 chain.addBlock(block3);
-chain.logChain();
+chain.logBlockchain();
 chain.logUTXO();
