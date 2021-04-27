@@ -15,12 +15,12 @@ npm i @asalvatore/microchain
 Create and add a block to the chain instance
 
 ```javascript
-import { Chain, Wallet, Block } from "../src/index.js";
+import { Blockchain, Wallet, Block } from "../src/index.js";
 
 const walletSato = new Wallet();
 
 // Get the instance of the chain. Also pass the config of it, with fees and if TX content are fungible or not.
-const chain = Chain.init({ CONTENT_FUNGIBLE: false });
+const chain = Blockchain.init({ CONTENT_FUNGIBLE: false });
 
 // Create and sign a transaction
 const transaction1 = walletSato.createTransaction({
@@ -48,12 +48,34 @@ chain.logChain();
 chain.logUTXO();
 ```
 
+To listen events on the chain you can use _chainReady_ and _blockAdded_.
+
+```javascript
+chain.on("chainReady", () => {
+  console.log("Chainready fired!");
+});
+
+chain.on("blockAdded", () => {
+  let data = JSON.stringify(chain.chain);
+  fs.writeFileSync("chain.json", data);
+});
+```
+
 ## Change log
+
+###### V 1.0.11
+
+- Added an number of average of the last _n_ blocks to calculate the difficulty, but the result isn't very convincing. You can use it with the _BLOCK_HASH_RATE_AVERAGE_ property of the _Config_ class. It's 1 by default.
+- Added the "blockAdded" and "chainReady" event emitters on the chain instance.
+- The chain constructor can know take an existing list of block as second parameter.
+- Difficulty is now a comparison between block _height-1_ and block _height-BLOCK_HASH_RATE_AVERAGE-1_. It's to keep the diffiiculty constant during mining.
+- Renamed the class Chain to Blockchain, because _chain.chain_ is not pretty.
+- Checking block validity before adding them to the chain, especialy difficulty, timestamp and height coherence.
 
 ###### V 1.0.10
 
 - Property _BLOCK_HASH_METHOD_ added to the _Config_ class, you can pass "SHA256" or "MD5"
-- Added difficulty management. use this script to test an Hash rate of 2 minutes:
+- Added difficulty management. use this script to test an Hash rate of 2 minutes.
 
 ```
 npm run testDifficulty
@@ -61,13 +83,12 @@ npm run testDifficulty
 
 ## To Do
 
-- write and read a chain file.
-- difficulty should be the product of the average distance between 4 or more blocks. It's currently the product of the block currently mined and the height-1 block.
+- Need to sort block by height when passing a list of block to the chain to instantiating it.
+- create expirable transaction for content, a transaction that can be purged of the chain once a certain time.
 - several validation check: test if block or transaction are not in the future, test the height of blocks, test if there is a genesis block and if not, the chain can only be red.
 - create a _founders_ propertie in the genesis block, an array of public keys that can send _instruction(s)_ to the chain. I currently do not know if I should merge this property with the _Config_ class.
 - start documentation.
 - create an _instruction_ type of transaction.
-- create expirable transaction for content, a transaction that can be purged of the chain once a certain time.
 - create an hash list for transactions to avoid double-spending.
 - check if timestamp of a transaction or a block is not > to the current timestamp or < to the ts of the previous block (only for blocks)
 - re-initiate the UTXOPool with the longuest chain after each block add.
