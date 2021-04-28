@@ -120,8 +120,6 @@ export default class UTXOPool {
 
     const txs = block.getTransactions();
     for (let tx of txs) {
-      console.log("tx contentSizeKo", tx.contentSizeKo);
-      console.log("tx", tx);
       this.addTX(tx, block.publisher);
     }
   }

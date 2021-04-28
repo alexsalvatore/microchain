@@ -1,4 +1,5 @@
 import Blockchain from "./blockchain.js";
+import Wallet from "./wallet.js";
 
 export default class Transaction {
   constructor(opt) {
@@ -71,6 +72,12 @@ export default class Transaction {
       ts: this.ts,
       signature: this.signature,
     });
+  }
+
+  // Test signature + if content is expired of not
+  isValid() {
+    const tosign = this._toStringToSign();
+    return Wallet.verifySignature(tosign, this.signature, this.sender);
   }
 
   log() {

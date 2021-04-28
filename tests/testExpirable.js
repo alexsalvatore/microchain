@@ -1,6 +1,6 @@
 import { Blockchain, Wallet, Block } from "../src/index.js";
 import fs from "fs";
-import { img1 } from "./assets/img.js";
+import { img2 } from "./assets/img2.js";
 
 let blocks = null;
 
@@ -42,13 +42,14 @@ chain.on("blockAdded", () => {
 
 const transaction1 = walletSato.createTransaction({
   sender: walletSato.publicKey,
-  content: img1,
+  content: img2,
 });
 transaction1.sign(walletSato);
 transaction1.log();
 
 chain.enoughtMoneyFrom(transaction1, walletSato.publicKey);
 chain.logUTXO();
+
 /*
 const block = new Block({
   height:

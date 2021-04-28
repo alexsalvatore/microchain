@@ -9,13 +9,16 @@ export default class Block {
     this.publisher = opt.publisher ? opt.publisher : "";
     this.ts = opt.ts ? opt.ts : Date.now();
     this.transactions = opt.transactions ? opt.transactions : "";
-    this.transactionsNoContent = this.transactions
-      ? JSON.stringify(this._transactionsNoContent(this.transactions))
-      : "";
     this.nonce = opt.nonce ? opt.nonce : 0;
     this.signature = opt.signature ? opt.signature : "";
     this.hash = this._calculateHash();
     this.difficulty = Blockchain.getInstance().getDifficultyForBlock(this);
+  }
+
+  get transactionsNoContent() {
+    return this.transactions
+      ? JSON.stringify(this._transactionsNoContent(this.transactions))
+      : "";
   }
 
   sign(wallet) {
@@ -89,6 +92,14 @@ export default class Block {
     if (!this._testHashDifficulty()) {
       console.error("Difficulty not valid for", this.height);
       return false;
+    }
+
+    //Test the signature and expired content of all tx in the block
+    if (this.transactions) {
+      for (const tx of JSON.parse(this.transactions)) {
+        const txObj = new Transaction(tx);
+        if (!txObj.isValid()) return false;
+      }
     }
 
     return true;
