@@ -1,5 +1,6 @@
 import Wallet from "./wallet.js";
 import Blockchain from "./blockchain.js";
+import Transaction from "./transaction.js";
 
 export default class Block {
   constructor(opt) {
@@ -8,6 +9,9 @@ export default class Block {
     this.publisher = opt.publisher ? opt.publisher : "";
     this.ts = opt.ts ? opt.ts : Date.now();
     this.transactions = opt.transactions ? opt.transactions : "";
+    this.transactionsNoContent = this.transactions
+      ? JSON.stringify(this._transactionsNoContent(this.transactions))
+      : "";
     this.nonce = opt.nonce ? opt.nonce : 0;
     this.signature = opt.signature ? opt.signature : "";
     this.hash = this._calculateHash();
@@ -17,6 +21,16 @@ export default class Block {
   sign(wallet) {
     const tosign = this._toStringToSign();
     this.signature = wallet.sign(tosign);
+  }
+
+  _transactionsNoContent(txs) {
+    const txsNoContents = [];
+    const parsedTxs = JSON.parse(this.transactions);
+    for (let tx of parsedTxs) {
+      const transaction = new Transaction(tx);
+      txsNoContents.push(transaction.stringifyNoContent());
+    }
+    return txsNoContents;
   }
 
   /**
@@ -30,7 +44,7 @@ export default class Block {
           prevHash: this.prevHash,
           publisher: this.publisher,
           ts: this.ts,
-          transactions: this.transactions,
+          transactionsNoContent: this.transactionsNoContent,
         })
       )
       .toString();
@@ -44,7 +58,7 @@ export default class Block {
           prevHash: this.prevHash,
           publisher: this.publisher,
           ts: this.ts,
-          transactions: this.transactions,
+          transactionsNoContent: this.transactionsNoContent,
           signature: this.signature,
           nonce: this.nonce,
         })

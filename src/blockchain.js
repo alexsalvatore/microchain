@@ -194,7 +194,7 @@ export default class Blockchain extends EventEmitter {
   }
 
   getTransactionCost(tx) {
-    if (tx.contentSize) return this.config.MONEY_BY_KO * tx.contentSize;
+    if (tx.contentSizeKo) return this.config.MONEY_BY_KO * tx.contentSizeKo;
     return 0;
   }
 

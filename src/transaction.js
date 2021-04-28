@@ -9,7 +9,7 @@ export default class Transaction {
     this.contentHash = Blockchain.getInstance()
       .config.BLOCK_HASH_METHOD(this.content)
       .toString();
-    this.contentSize = Math.round(this.content.toString().length / 1000);
+    this.contentSizeKo = Math.round(this.content.toString().length / 1000);
     this.ownership = opt["ownership"] ? opt["ownership"] : undefined;
     this.ts = opt.ts ? opt.ts : Date.now();
     this.signature = opt["signature"] ? opt["signature"] : "";
@@ -26,7 +26,7 @@ export default class Transaction {
           sender: this.sender,
           receiver: this.receiver,
           contentHash: this.content,
-          contentSize: this.contentSize,
+          contentSizeKo: this.contentSizeKo,
           ownership: this.ownership,
           ts: this.ts,
         })
@@ -42,7 +42,7 @@ export default class Transaction {
           sender: this.sender,
           receiver: this.receiver,
           contentHash: this.contentHash,
-          contentSize: this.contentSize,
+          contentSizeKo: this.contentSizeKo,
           ownership: this.ownership,
           ts: this.ts,
           signature: this.signature,
@@ -56,6 +56,19 @@ export default class Transaction {
     this.signature = wallet.sign(this._toStringToSign());
   }
 
+  stringifyNoContent() {
+    return JSON.stringify({
+      amount: this.amount,
+      sender: this.sender,
+      receiver: this.receiver,
+      contentHash: this.contentHash,
+      contentSizeKo: this.contentSizeKo,
+      ownership: this.ownership,
+      ts: this.ts,
+      signature: this.signature,
+    });
+  }
+
   log() {
     console.log(
       JSON.stringify({
@@ -63,7 +76,7 @@ export default class Transaction {
         sender: this.sender,
         receiver: this.receiver,
         contentHash: this.contentHash,
-        contentSize: this.contentSize,
+        contentSizeKo: this.contentSizeKo,
         ownership: this.ownership,
         ts: this.ts,
         signature: this.signature,
