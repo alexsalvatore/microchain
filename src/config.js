@@ -28,6 +28,11 @@ export default class Config {
     this.BLOCK_HASH_METHOD =
       conf && conf.BLOCK_HASH_METHOD === "MD5" ? MD5 : SHA256;
 
+    this.TX_CONTENT_EXPIRATION_HOURS =
+      conf && conf.TX_CONTENT_EXPIRATION_HOURS
+        ? conf.TX_CONTENT_EXPIRATION_HOURS
+        : 24;
+
     //All fees
     this.MONEY_BY_BLOCK =
       conf && conf.MONEY_BY_BLOCK ? conf.MONEY_BY_BLOCK : 15;

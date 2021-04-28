@@ -126,7 +126,7 @@ export default class Blockchain extends EventEmitter {
       (24 * 60 * 60 * 1000) / this.config.BLOCK_HASH_RATE_BY_DAY;
 
     const rateDetla = delta / expectedDelta;
-    console.log(delta, expectedDelta, rateDetla);
+    // console.log(delta, expectedDelta, rateDetla);
 
     const previousBlock = this.getBlockForHeight(blockNew.height - 1);
 
@@ -207,6 +207,7 @@ export default class Blockchain extends EventEmitter {
 
   logBlockchain() {
     console.log(this.chain);
+    console.log(`Blockchain size is ${this.chain.toString().length / 1000} Ko`);
   }
 
   logUTXO() {

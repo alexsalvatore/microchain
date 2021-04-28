@@ -98,7 +98,42 @@ export default class Block {
     if (this.transactions) {
       for (const tx of JSON.parse(this.transactions)) {
         const txObj = new Transaction(tx);
-        if (!txObj.isValid()) return false;
+
+        if (!txObj.isValid()) {
+          console.error("Transaction not valid for", this.height);
+          return false;
+        }
+
+        //Has transaction expired?
+        const expirationHours = Blockchain.getInstance().config
+          .TX_CONTENT_EXPIRATION_HOURS;
+        const tsNow = Date.now();
+        const expireIn = expirationHours * 60 * 60 * 1000 - (tsNow - this.ts);
+
+        console.log(
+          `Transaction expire in ${Math.round(
+            expireIn / (60 * 60 * 1000)
+          )} Hours`
+        );
+        if (txObj) console.log("txObj", this.txObj);
+        if (
+          txObj &&
+          txObj.contentSizeKo &&
+          expireIn > 0 &&
+          (!txObj.content ||
+            Math.round(txObj.content.toString().length / 1000) !==
+              txObj.contentSizeKo ||
+            txObj.contentHash !==
+              Blockchain.getInstance()
+                .config.BLOCK_HASH_METHOD(txObj.content)
+                .toString())
+        ) {
+          console.error(
+            "Transaction is not expired and incoherent content for it!",
+            this.height
+          );
+          return false;
+        }
       }
     }
 
