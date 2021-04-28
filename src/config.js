@@ -31,7 +31,7 @@ export default class Config {
     //All fees
     this.MONEY_BY_BLOCK =
       conf && conf.MONEY_BY_BLOCK ? conf.MONEY_BY_BLOCK : 15;
-    this.MONEY_BY_KO = conf && conf.MONEY_BY_KO ? conf.MONEY_BY_KO : 2.5;
+    this.MONEY_BY_KO = conf && conf.MONEY_BY_KO ? conf.MONEY_BY_KO : 1;
 
     this.TX_FEE_MINE_MONEY =
       conf && conf.TX_FEE_MINE_MONEY ? conf.TX_FEE_MINE_MONEY : 0.1;

@@ -28,7 +28,7 @@ export default class Block {
     const parsedTxs = JSON.parse(this.transactions);
     for (let tx of parsedTxs) {
       const transaction = new Transaction(tx);
-      txsNoContents.push(transaction.stringifyNoContent());
+      txsNoContents.push(JSON.parse(transaction.stringifyNoContent()));
     }
     return txsNoContents;
   }
@@ -68,8 +68,8 @@ export default class Block {
   }
 
   getTransactions() {
-    if (!this.transactions) return [];
-    return JSON.parse(this.transactions);
+    if (!this.transactionsNoContent) return [];
+    return JSON.parse(this.transactionsNoContent);
   }
 
   /**

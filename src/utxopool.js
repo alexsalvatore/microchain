@@ -34,12 +34,23 @@ export default class UTXOPool {
       if (this.config.CONTENT_FUNGIBLE) {
         //Content = $
         //Content = ownership and share
+        console.log("tx.contentSizeKo", tx.contentSizeKo);
         this.addMoneyToSender(
           tx.sender,
           -tx.contentSizeKo * this.config.MONEY_BY_KO
         );
+        console.log(
+          "addMoneyToSender",
+          tx.contentSizeKo * this.config.MONEY_BY_KO
+        );
         this.addMoneyToSender(
           miner,
+          tx.contentSizeKo *
+            this.config.MONEY_BY_KO *
+            this.config.TX_FEE_MINE_MONEY
+        );
+        console.log(
+          "addMoneyToReceiver",
           tx.contentSizeKo *
             this.config.MONEY_BY_KO *
             this.config.TX_FEE_MINE_MONEY
@@ -109,6 +120,8 @@ export default class UTXOPool {
 
     const txs = block.getTransactions();
     for (let tx of txs) {
+      console.log("tx contentSizeKo", tx.contentSizeKo);
+      console.log("tx", tx);
       this.addTX(tx, block.publisher);
     }
   }

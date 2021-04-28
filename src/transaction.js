@@ -6,10 +6,14 @@ export default class Transaction {
     this.sender = opt["sender"] ? opt["sender"] : undefined;
     this.receiver = opt["receiver"] ? opt["receiver"] : undefined;
     this.content = opt["content"] ? opt["content"] : undefined;
-    this.contentHash = Blockchain.getInstance()
-      .config.BLOCK_HASH_METHOD(this.content)
-      .toString();
-    this.contentSizeKo = Math.round(this.content.toString().length / 1000);
+    this.contentHash = opt["contentHash"]
+      ? opt["contentHash"]
+      : Blockchain.getInstance()
+          .config.BLOCK_HASH_METHOD(this.content)
+          .toString();
+    this.contentSizeKo = opt["contentSizeKo"]
+      ? opt["contentSizeKo"]
+      : Math.round(this.content.toString().length / 1000);
     this.ownership = opt["ownership"] ? opt["ownership"] : undefined;
     this.ts = opt.ts ? opt.ts : Date.now();
     this.signature = opt["signature"] ? opt["signature"] : "";

@@ -25,7 +25,7 @@ const chain = Blockchain.init(
     BLOCK_HASH_METHOD: "MD5",
     BLOCK_MAX_DIFFICULTY: 5,
     MONEY_BY_BLOCK: 15,
-    MONEY_BY_KO: 1,
+    MONEY_BY_KO: 1.2,
   },
   blocks
 );
@@ -40,7 +40,6 @@ chain.on("blockAdded", () => {
   fs.writeFileSync("chainExpirable.json", data);
 });
 
-/*
 const transaction1 = walletSato.createTransaction({
   sender: walletSato.publicKey,
   content: img1,
@@ -49,14 +48,15 @@ transaction1.sign(walletSato);
 transaction1.log();
 
 chain.enoughtMoneyFrom(transaction1, walletSato.publicKey);
-
+chain.logUTXO();
+/*
 const block = new Block({
   height:
     chain.lastBlock && (chain.lastBlock.height || chain.lastBlock.height === 0)
       ? chain.lastBlock.height + 1
       : 0,
   publisher: walletSato.publicKey,
-  transactions: [transaction1],
+  transactions: JSON.stringify([transaction1]),
   prevHash: chain.lastBlock && chain.lastBlock.hash ? chain.lastBlock.hash : "",
 });
 
@@ -65,8 +65,8 @@ console.log(block);
 block.mine();
 chain.addBlock(block);*/
 
+/*
 //Mining loop
-
 let n = 0;
 while (n < 10) {
   //console.log(chain.lastBlock);
@@ -86,4 +86,4 @@ while (n < 10) {
   block.mine();
   chain.addBlock(block);
   n++;
-}
+}*/
