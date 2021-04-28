@@ -9,6 +9,7 @@ export default class Transaction {
     this.contentHash = Blockchain.getInstance()
       .config.BLOCK_HASH_METHOD(this.content)
       .toString();
+    this.contentSize = Math.round(this.content.toString().length / 1000);
     this.ownership = opt["ownership"] ? opt["ownership"] : undefined;
     this.ts = opt.ts ? opt.ts : Date.now();
     this.signature = opt["signature"] ? opt["signature"] : "";
@@ -24,7 +25,8 @@ export default class Transaction {
           amount: this.amount,
           sender: this.sender,
           receiver: this.receiver,
-          content: this.content,
+          contentHash: this.content,
+          contentSize: this.contentSize,
           ownership: this.ownership,
           ts: this.ts,
         })
@@ -34,12 +36,38 @@ export default class Transaction {
 
   get hash() {
     const hash = Blockchain.getInstance()
-      .config.BLOCK_HASH_METHOD(JSON.stringify(this))
+      .config.BLOCK_HASH_METHOD(
+        JSON.stringify({
+          amount: this.amount,
+          sender: this.sender,
+          receiver: this.receiver,
+          contentHash: this.contentHash,
+          contentSize: this.contentSize,
+          ownership: this.ownership,
+          ts: this.ts,
+          signature: this.signature,
+        })
+      )
       .toString();
     return hash;
   }
 
   sign(wallet) {
     this.signature = wallet.sign(this._toStringToSign());
+  }
+
+  log() {
+    console.log(
+      JSON.stringify({
+        amount: this.amount,
+        sender: this.sender,
+        receiver: this.receiver,
+        contentHash: this.contentHash,
+        contentSize: this.contentSize,
+        ownership: this.ownership,
+        ts: this.ts,
+        signature: this.signature,
+      })
+    );
   }
 }

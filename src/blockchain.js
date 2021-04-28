@@ -157,9 +157,8 @@ export default class Blockchain extends EventEmitter {
     /*console.log("--------------");
     console.log(
       `Block ${block.height} #${block.hash} need difficulty ${block.difficulty}`
-    );*/
-
-    console.log(block);
+    );
+    console.log(block);*/
 
     if (!block.isValid()) {
       console.error(`Block ${block.height} is not valid`);
@@ -192,6 +191,18 @@ export default class Blockchain extends EventEmitter {
     // this.chain = this.longestBlockchain; // We need to memorize all valids blocks!
     if (Blockchain.getInstance().ready) this.emit("blockAdded", block);
     return true;
+  }
+
+  getTransactionCost(tx) {
+    if (tx.contentSize) return this.config.MONEY_BY_KO * tx.contentSize;
+    return 0;
+  }
+
+  enoughtMoneyFrom(tx, publicKey) {
+    const cost = this.getTransactionCost(tx);
+    const money = this.utxoPool.getMoneyForSender(publicKey);
+    console.log(`cost: ${cost} V. money you have: ${money}`);
+    return cost <= money;
   }
 
   logBlockchain() {
