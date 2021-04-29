@@ -68,8 +68,10 @@ chain.on("blockAdded", () => {
 
 Expirable content is a content hosted in a transaction. Blocks need to host it till the expiration date. In the following exeample you add _TX_CONTENT_EXPIRATION_HOURS_ , which is the expiration limit for content to the config (24h by default), and add your data to the transaction _content_ propretie. Example in _tests/testExpirable.js_.
 
-- _MONEY_BY_BLOCK_ is the amount of money you get by a mined block.
-- _MONEY_BY_KO_ is the amount of money you need by Ko to post content in transactions (note than there's also properties to manage the miningfees).
+- **MONEY_BY_BLOCK** is the amount of money you get by a mined block.
+- **MONEY_BY_KO** is the amount of money you need by Ko to post content in transactions (note than there's also properties to manage the miningfees).
+- **TX_CONTENT_MAX_SIZE_KO** the max size of a transaction content in Ko, default is 250 Ko.
+- **BLOCK_MAX_SIZE_KO** the max size of a block in Ko, default is 300 Ko.
 
 ```javascript
 import { Blockchain, Wallet, Block } from "../src/index.js";

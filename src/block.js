@@ -94,17 +94,7 @@ export default class Block {
       return false;
     }
 
-    if (
-      JSON.stringify(this).length / 1000 >
-      Blockchain.getInstance().config.BLOCK_MAX_SIZE_KO
-    ) {
-      console.error(
-        `The block ${this.height} is too big, it should be less than ${
-          Blockchain.getInstance().config.BLOCK_MAX_SIZE_KO
-        } Ko`
-      );
-      return false;
-    }
+    if (this.isTooBig()) return false;
 
     //Test the signature and expired content of all tx in the block
     if (this.transactions) {
@@ -171,6 +161,22 @@ export default class Block {
       .TX_CONTENT_EXPIRATION_HOURS;
     const tsNow = Date.now();
     return expirationHours * 60 * 60 * 1000 - (tsNow - this.ts);
+  }
+
+  isTooBig() {
+    if (
+      JSON.stringify(this).length / 1000 >
+      Blockchain.getInstance().config.BLOCK_MAX_SIZE_KO
+    ) {
+      console.error(
+        `The block ${this.height} is too big, it should be less than ${
+          Blockchain.getInstance().config.BLOCK_MAX_SIZE_KO
+        } Ko`
+      );
+      return true;
+    }
+
+    return false;
   }
 
   mine() {

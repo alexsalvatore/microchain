@@ -1,6 +1,7 @@
 import { Blockchain, Wallet, Block } from "../src/index.js";
 import fs from "fs";
-import { img2 } from "./assets/img2.js";
+import { img3 } from "./assets/img3.js";
+import { imgBig } from "./assets/imgBig.js";
 
 let blocks = null;
 
@@ -23,16 +24,18 @@ const chain = Blockchain.init(
   {
     CONTENT_FUNGIBLE: false,
     BLOCK_HASH_METHOD: "MD5",
-    BLOCK_MAX_DIFFICULTY: 5,
+    BLOCK_MIN_DIFFICULTY: 3,
+    BLOCK_MAX_DIFFICULTY: 3,
     TX_CONTENT_EXPIRATION_HOURS: 12,
     MONEY_BY_BLOCK: 15,
     MONEY_BY_KO: 1.2,
+    TX_CONTENT_MAX_SIZE_KO: 200,
   },
   blocks
 );
 
 chain.on("chainReady", () => {
-  console.log("Blockchainready fired!");
+  console.log("Blockchain ready!");
 });
 
 chain.on("blockAdded", () => {
@@ -43,7 +46,7 @@ chain.on("blockAdded", () => {
 
 const transaction1 = walletSato.createTransaction({
   sender: walletSato.publicKey,
-  content: img2,
+  content: img3,
 });
 transaction1.sign(walletSato);
 transaction1.log();
@@ -51,7 +54,6 @@ transaction1.log();
 chain.enoughtMoneyFrom(transaction1, walletSato.publicKey);
 chain.logUTXO();
 
-/*
 const block = new Block({
   height:
     chain.lastBlock && (chain.lastBlock.height || chain.lastBlock.height === 0)
@@ -65,7 +67,7 @@ const block = new Block({
 block.sign(walletSato);
 console.log(block);
 block.mine();
-chain.addBlock(block);*/
+chain.addBlock(block);
 
 /*
 //Mining loop

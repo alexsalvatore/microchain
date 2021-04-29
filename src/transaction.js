@@ -76,6 +76,13 @@ export default class Transaction {
 
   // Test signature & size
   isValid() {
+    if (this.isTooBig()) return false;
+
+    const tosign = this._toStringToSign();
+    return Wallet.verifySignature(tosign, this.signature, this.sender);
+  }
+
+  isTooBig() {
     if (
       this.contentSizeKo &&
       this.contentSizeKo >
@@ -86,11 +93,10 @@ export default class Transaction {
           Blockchain.getInstance().config.TX_CONTENT_MAX_SIZE_KO
         } Ko`
       );
-      return false;
+      return true;
     }
 
-    const tosign = this._toStringToSign();
-    return Wallet.verifySignature(tosign, this.signature, this.sender);
+    return false;
   }
 
   log() {
