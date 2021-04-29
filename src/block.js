@@ -94,6 +94,18 @@ export default class Block {
       return false;
     }
 
+    if (
+      JSON.stringify(this).length / 1000 >
+      Blockchain.getInstance().config.BLOCK_MAX_SIZE_KO
+    ) {
+      console.error(
+        `The block ${this.height} is too big, it should be less than ${
+          Blockchain.getInstance().config.BLOCK_MAX_SIZE_KO
+        } Ko`
+      );
+      return false;
+    }
+
     //Test the signature and expired content of all tx in the block
     if (this.transactions) {
       for (const tx of JSON.parse(this.transactions)) {

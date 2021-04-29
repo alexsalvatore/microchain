@@ -33,6 +33,12 @@ export default class Config {
         ? conf.TX_CONTENT_EXPIRATION_HOURS
         : 24;
 
+    this.TX_CONTENT_MAX_SIZE_KO =
+      conf && conf.TX_CONTENT_MAX_SIZE_KO ? conf.TX_CONTENT_MAX_SIZE_KO : 250;
+
+    this.BLOCK_MAX_SIZE_KO =
+      conf && conf.BLOCK_MAX_SIZE_KO ? conf.BLOCK_MAX_SIZE_KO : 300;
+
     //All fees
     this.MONEY_BY_BLOCK =
       conf && conf.MONEY_BY_BLOCK ? conf.MONEY_BY_BLOCK : 15;

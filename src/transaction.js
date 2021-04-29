@@ -74,8 +74,21 @@ export default class Transaction {
     });
   }
 
-  // Test signature + if content is expired of not
+  // Test signature & size
   isValid() {
+    if (
+      this.contentSizeKo &&
+      this.contentSizeKo >
+        Blockchain.getInstance().config.TX_CONTENT_MAX_SIZE_KO
+    ) {
+      console.error(
+        `The transaction ${this.height} is too big, it should be less than ${
+          Blockchain.getInstance().config.TX_CONTENT_MAX_SIZE_KO
+        } Ko`
+      );
+      return false;
+    }
+
     const tosign = this._toStringToSign();
     return Wallet.verifySignature(tosign, this.signature, this.sender);
   }
