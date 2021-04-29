@@ -24,6 +24,7 @@ const chain = Blockchain.init(
     CONTENT_FUNGIBLE: false,
     BLOCK_HASH_METHOD: "MD5",
     BLOCK_MAX_DIFFICULTY: 5,
+    TX_CONTENT_EXPIRATION_HOURS: 12,
     MONEY_BY_BLOCK: 15,
     MONEY_BY_KO: 1.2,
   },

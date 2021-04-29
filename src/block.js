@@ -105,21 +105,11 @@ export default class Block {
         }
 
         //Has transaction expired?
-        const expirationHours = Blockchain.getInstance().config
-          .TX_CONTENT_EXPIRATION_HOURS;
-        const tsNow = Date.now();
-        const expireIn = expirationHours * 60 * 60 * 1000 - (tsNow - this.ts);
 
-        console.log(
-          `Transaction expire in ${Math.round(
-            expireIn / (60 * 60 * 1000)
-          )} Hours`
-        );
-        if (txObj) console.log("txObj", this.txObj);
         if (
           txObj &&
           txObj.contentSizeKo &&
-          expireIn > 0 &&
+          !this.hasExpired &&
           (!txObj.content ||
             Math.round(txObj.content.toString().length / 1000) !==
               txObj.contentSizeKo ||
@@ -136,8 +126,39 @@ export default class Block {
         }
       }
     }
-
     return true;
+  }
+
+  purgeTX() {
+    if (!this.hasExpired) {
+      return false;
+    } else {
+      const newTransactions = [];
+      if (this.transactions) {
+        for (const tx of JSON.parse(this.transactions)) {
+          const txObj = new Transaction(tx);
+          if (txObj.content)
+            console.log(`Found content to purge:${txObj.contentSizeKo} Ko`);
+          // txObj.content = undefined;
+          newTransactions.push(txObj);
+        }
+        this.transactions = JSON.stringify(newTransactions);
+      }
+    }
+  }
+
+  get hasExpired() {
+    /*console.log(
+      `Height ${this.height} expired in ${expireIn / (60 * 60 * 1000)} h`
+    );*/
+    return this.expireIn < 0;
+  }
+
+  get expireIn() {
+    const expirationHours = Blockchain.getInstance().config
+      .TX_CONTENT_EXPIRATION_HOURS;
+    const tsNow = Date.now();
+    return expirationHours * 60 * 60 * 1000 - (tsNow - this.ts);
   }
 
   mine() {

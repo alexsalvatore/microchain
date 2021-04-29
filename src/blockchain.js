@@ -1,7 +1,7 @@
 import Block from "./block.js";
 import UTXOPool from "./utxopool.js";
 import { EventEmitter } from "events";
-import { unfold, reverse, values } from "ramda";
+import { unfold, reverse, values, forEach } from "ramda";
 import Config from "./config.js";
 
 export default class Blockchain extends EventEmitter {
@@ -186,11 +186,20 @@ export default class Blockchain extends EventEmitter {
       if (!this.utxoPool.isTXValid(tx)) return false;
     }
 
+    // The block is valid we add it to the chain!
     this.utxoPool.addBlock(block);
     this.chain.push(block);
-    // this.chain = this.longestBlockchain; // We need to memorize all valids blocks!
+    // We purge the block when and the chain
+    this.purgeChain();
     if (Blockchain.getInstance().ready) this.emit("blockAdded", block);
+
     return true;
+  }
+
+  purgeChain() {
+    this.chain.forEach((block) => {
+      block.purgeTX();
+    });
   }
 
   getTransactionCost(tx) {

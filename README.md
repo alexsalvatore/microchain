@@ -85,14 +85,12 @@ npm run testDifficulty
 
 ## To Do
 
-- add a init method to _Blockchain_ class, because the actual event _chainReady_ cannot be reached.
 - create expirable transaction for content, a transaction that can be purged of the chain once a certain time.
-- several validation check: test if block or transaction are not in the future, test the height of blocks, test if there is a genesis block and if not, the chain can only be red.
-- create a _founders_ propertie in the genesis block, an array of public keys that can send _instruction(s)_ to the chain. I currently do not know if I should merge this property with the _Config_ class.
-- start documentation.
-- create an _instruction_ type of transaction.
 - create an hash list for transactions to avoid double-spending.
-- check if timestamp of a transaction or a block is not > to the current timestamp or < to the ts of the previous block (only for blocks)
+- create a max size for block and transaction!
+- create a _founders_ and _bank_ properties in the genesis block, an array of public keys that can send _instruction(s)_ to the chain. I currently do not know if I should merge this property with the _Config_ class.
+- add a init method to _Blockchain_ class, because the actual event _chainReady_ cannot be reached.
+- start documentation.
 - re-initiate the UTXOPool with the longuest chain after each block add.
 - manage block and transaction announce with webRTC?
 
