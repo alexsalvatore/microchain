@@ -139,9 +139,10 @@ export default class Block {
       if (this.transactions) {
         for (const tx of JSON.parse(this.transactions)) {
           const txObj = new Transaction(tx);
-          if (txObj.content)
+          if (txObj.content) {
             console.log(`Found content to purge:${txObj.contentSizeKo} Ko`);
-          // txObj.content = undefined;
+            // txObj.content = undefined;
+          }
           newTransactions.push(txObj);
         }
         this.transactions = JSON.stringify(newTransactions);

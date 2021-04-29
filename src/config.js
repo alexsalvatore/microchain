@@ -39,6 +39,8 @@ export default class Config {
     this.BLOCK_MAX_SIZE_KO =
       conf && conf.BLOCK_MAX_SIZE_KO ? conf.BLOCK_MAX_SIZE_KO : 300;
 
+    this.FOUNDERS = conf && conf.FOUNDERS ? conf.FOUNDERS : [];
+
     //All fees
     this.MONEY_BY_BLOCK =
       conf && conf.MONEY_BY_BLOCK ? conf.MONEY_BY_BLOCK : 15;

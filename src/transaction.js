@@ -14,7 +14,7 @@ export default class Transaction {
           .toString();
     this.contentSizeKo = opt["contentSizeKo"]
       ? opt["contentSizeKo"]
-      : Math.round(this.content.toString().length / 1000);
+      : Math.round(JSON.stringify(this.content).length / 1000);
     this.ownership = opt["ownership"] ? opt["ownership"] : undefined;
     this.ts = opt.ts ? opt.ts : Date.now();
     this.signature = opt["signature"] ? opt["signature"] : "";

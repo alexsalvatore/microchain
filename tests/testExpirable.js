@@ -30,6 +30,7 @@ const chain = Blockchain.init(
     MONEY_BY_BLOCK: 15,
     MONEY_BY_KO: 1.2,
     TX_CONTENT_MAX_SIZE_KO: 200,
+    FOUNDERS: [walletSato.publicKey],
   },
   blocks
 );
@@ -53,7 +54,9 @@ transaction1.log();
 
 chain.enoughtMoneyFrom(transaction1, walletSato.publicKey);
 chain.logUTXO();
+chain.logBlockchainSize();
 
+/*
 const block = new Block({
   height:
     chain.lastBlock && (chain.lastBlock.height || chain.lastBlock.height === 0)
@@ -67,7 +70,7 @@ const block = new Block({
 block.sign(walletSato);
 console.log(block);
 block.mine();
-chain.addBlock(block);
+chain.addBlock(block);*/
 
 /*
 //Mining loop

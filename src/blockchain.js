@@ -216,7 +216,12 @@ export default class Blockchain extends EventEmitter {
 
   logBlockchain() {
     console.log(this.chain);
-    console.log(`Blockchain size is ${this.chain.toString().length / 1000} Ko`);
+  }
+
+  logBlockchainSize() {
+    console.log(
+      `Blockchain size is ${JSON.stringify(this.chain).length / 1000} Ko`
+    );
   }
 
   logUTXO() {
