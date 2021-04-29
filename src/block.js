@@ -113,8 +113,7 @@ export default class Block {
           txObj.contentSizeKo &&
           !this.hasExpired &&
           (!txObj.content ||
-            Math.round(txObj.content.toString().length / 1000) !==
-              txObj.contentSizeKo ||
+            txObj.calculateContentSize() !== txObj.contentSizeKo ||
             txObj.contentHash !==
               Blockchain.getInstance()
                 .config.BLOCK_HASH_METHOD(txObj.content)
@@ -141,7 +140,7 @@ export default class Block {
           const txObj = new Transaction(tx);
           if (txObj.content) {
             console.log(`Found content to purge:${txObj.contentSizeKo} Ko`);
-            // txObj.content = undefined;
+            txObj.content = undefined;
           }
           newTransactions.push(txObj);
         }

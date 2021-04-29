@@ -14,10 +14,14 @@ export default class Transaction {
           .toString();
     this.contentSizeKo = opt["contentSizeKo"]
       ? opt["contentSizeKo"]
-      : Math.round(JSON.stringify(this.content).length / 1000);
+      : this.calculateContentSize();
     this.ownership = opt["ownership"] ? opt["ownership"] : undefined;
     this.ts = opt.ts ? opt.ts : Date.now();
     this.signature = opt["signature"] ? opt["signature"] : "";
+  }
+
+  calculateContentSize() {
+    return Math.round(JSON.stringify(this.content).length / 1000);
   }
 
   /**
