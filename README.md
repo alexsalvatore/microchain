@@ -23,7 +23,12 @@ import { Blockchain, Wallet, Block } from "../src/index.js";
 const walletSato = new Wallet();
 
 // Get the instance of the chain. Also pass the config of it, with fees and if TX content are fungible or not.
-const chain = Blockchain.init({ CONTENT_FUNGIBLE: false });
+const chain = Blockchain.init({
+  CONTENT_FUNGIBLE: false,
+  GENESIS_BLOCK: {
+    publisher: walletSato.publicKey,
+  },
+});
 
 // Create and sign a transaction
 const transaction1 = walletSato.createTransaction({
@@ -95,6 +100,9 @@ const chain = Blockchain.init(
     TX_CONTENT_EXPIRATION_HOURS: 12,
     MONEY_BY_BLOCK: 15,
     MONEY_BY_KO: 1.2,
+    GENESIS_BLOCK: {
+      publisher: walletSato.publicKey,
+    },
   },
   blocks
 );
@@ -130,6 +138,7 @@ chain.addBlock(block);
 
 - Added expirable content in transaction.
 - added a channel property in transaction propertie, for crypted conversation when content is crypted
+- added the _GENESIS_BLOCK_ to config. It's the properties you want in the geneseis block
 
 ###### V 1.0.11
 

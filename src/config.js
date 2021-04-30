@@ -41,6 +41,8 @@ export default class Config {
 
     this.FOUNDERS = conf && conf.FOUNDERS ? conf.FOUNDERS : [];
 
+    this.GENESIS_BLOCK = conf && conf.GENESIS_BLOCK ? conf.GENESIS_BLOCK : {};
+
     //All fees
     this.MONEY_BY_BLOCK =
       conf && conf.MONEY_BY_BLOCK ? conf.MONEY_BY_BLOCK : 15;

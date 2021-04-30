@@ -19,8 +19,8 @@ export default class Blockchain extends EventEmitter {
       //Create geneis block
       if (!blocks) {
         const genesisBlock = new Block({
+          ...conf.GENESIS_BLOCK,
           height: 0,
-          publisher: "Takeshi",
         });
         genesisBlock.mine();
         Blockchain.getInstance().chain = [genesisBlock];
@@ -117,10 +117,8 @@ export default class Blockchain extends EventEmitter {
         blockNew.height - this.config.BLOCK_HASH_RATE_AVERAGE - 1
     );
 
+    // When you cannot compare difficulty because not enought blocks
     if (!blockBefore || !blockOld) {
-      console.log(
-        "missin blockBefore height or block old for height:" + blockNew.height
-      );
       return this.config.BLOCK_MIN_DIFFICULTY;
     }
     const delta =
