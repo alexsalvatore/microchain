@@ -133,6 +133,7 @@ chain.addBlock(block);
 ###### V 1.1.0
 
 - Added expirable content in transaction.
+- added a channel property in transaction propertie, for crypted conversation when content is crypted
 
 ###### V 1.0.11
 

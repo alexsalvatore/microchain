@@ -65,9 +65,16 @@ export default class Blockchain extends EventEmitter {
 
   get config() {
     if (!this._conf) {
-      return new Config();
+      this._conf = new Config();
     }
     return this._conf;
+  }
+
+  get configHash() {
+    if (!this._conf) {
+      this._conf = new Config();
+    }
+    return this._conf.BLOCK_HASH_METHOD(JSON.stringify(this._conf)).toString();
   }
 
   get lastBlock() {

@@ -5,6 +5,9 @@ import Transaction from "./transaction.js";
 export default class Block {
   constructor(opt) {
     this.height = opt.height ? opt.height : 0;
+    this.configHash = opt.configHash
+      ? opt.configHash
+      : Blockchain.getInstance().configHash;
     this.prevHash = opt.prevHash ? opt.prevHash : "";
     this.publisher = opt.publisher ? opt.publisher : "";
     this.ts = opt.ts ? opt.ts : Date.now();
@@ -44,6 +47,7 @@ export default class Block {
       .config.BLOCK_HASH_METHOD(
         JSON.stringify({
           height: this.height,
+          configHash: this.configHash,
           prevHash: this.prevHash,
           publisher: this.publisher,
           ts: this.ts,
@@ -58,6 +62,7 @@ export default class Block {
       .config.BLOCK_HASH_METHOD(
         JSON.stringify({
           height: this.height,
+          configHash: this.configHash,
           prevHash: this.prevHash,
           publisher: this.publisher,
           ts: this.ts,
@@ -79,8 +84,13 @@ export default class Block {
    * Only test the block! Transaction need to be tester by the lib implementor
    */
   isValid() {
+    // test config hash
+    if (this.configHash !== Blockchain.getInstance().configHash) {
+      console.error("Config hash is not valid for", this.height);
+    }
+
+    // test signature
     const tosign = this._toStringToSign();
-    //test signature
     if (
       this.height !== 0 &&
       !Wallet.verifySignature(tosign, this.signature, this.publisher)

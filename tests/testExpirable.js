@@ -1,6 +1,6 @@
 import { Blockchain, Wallet, Block } from "../src/index.js";
 import fs from "fs";
-import { img2 } from "./assets/img2.js";
+import { img1 } from "./assets/img1.js";
 import { imgBig } from "./assets/imgBig.js";
 
 let blocks = null;
@@ -15,6 +15,7 @@ const walletSato = new Wallet(
   "04820be6a65e928d52e92b8bfe7827de7a09d3afa1356ef81f6f8528b44ba84393d32b44e4590fa9ca6b9576a6d7f2f0467af33d8f68f83e1359a8e4981f4ed5f6",
   "b6d7cf41b14a972dc3b294ea9ec0c763886e7cb9699214192f2479791ec845e8"
 );
+
 /*console.log("****************************");
 console.log("Public key: " + walletSato.publicKey);
 console.log("Private key: " + walletSato.privateKey);
@@ -47,14 +48,12 @@ chain.on("blockAdded", () => {
 
 const transaction1 = walletSato.createTransaction({
   sender: walletSato.publicKey,
-  content: img2,
+  content: img1,
 });
 transaction1.sign(walletSato);
 transaction1.log();
 
 chain.enoughtMoneyFrom(transaction1, walletSato.publicKey);
-chain.logUTXO();
-chain.logBlockchainSize();
 
 const block = new Block({
   height:
@@ -70,8 +69,12 @@ block.sign(walletSato);
 block.mine();
 chain.addBlock(block);
 
+chain.logUTXO();
+chain.logBlockchainSize();
+
 /*
-//Mining loop
+// Mining loop
+// Uncomment that to create few block to post an images
 let n = 0;
 while (n < 10) {
   //console.log(chain.lastBlock);

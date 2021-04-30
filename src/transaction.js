@@ -6,6 +6,7 @@ export default class Transaction {
     this.amount = opt["amount"] ? opt["amount"] : 0;
     this.sender = opt["sender"] ? opt["sender"] : undefined;
     this.receiver = opt["receiver"] ? opt["receiver"] : undefined;
+    this.channel = opt["channel"] ? opt["channel"] : undefined;
     this.content = opt["content"] ? opt["content"] : undefined;
     this.contentHash = opt["contentHash"]
       ? opt["contentHash"]
