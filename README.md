@@ -137,7 +137,8 @@ chain.addBlock(block);
 ###### V 1.1.0
 
 - Added expirable content in transaction.
-- added a channel property in transaction propertie, for crypted conversation when content is crypted
+- added a channel property in transaction propertie, for crypted conversation when content is crypted.
+- added the config's Hash to all block mined.
 - added the _GENESIS_BLOCK_ to config. It's the properties you want in the geneseis block
 
 ###### V 1.0.11
@@ -160,11 +161,8 @@ npm run testDifficulty
 
 ## To Do
 
-- create expirable transaction for content, a transaction that can be purged of the chain once a certain time.
 - create an hash list for transactions to avoid double-spending.
-- create a max size for block and transaction!
-- create a _founders_ and _bank_ properties in the genesis block, an array of public keys that can send _instruction(s)_ to the chain. I currently do not know if I should merge this property with the _Config_ class.
-- start documentation.
+- Send _instruction(s)_ form the _founders_ of the chain to administrate it.
 - re-initiate the UTXOPool with the longuest chain after each block add.
 - manage block and transaction announce with webRTC?
 
