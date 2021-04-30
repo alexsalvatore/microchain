@@ -28,10 +28,25 @@ export default class Config {
     this.BLOCK_HASH_METHOD =
       conf && conf.BLOCK_HASH_METHOD === "MD5" ? MD5 : SHA256;
 
+    this.TX_CONTENT_EXPIRATION_HOURS =
+      conf && conf.TX_CONTENT_EXPIRATION_HOURS
+        ? conf.TX_CONTENT_EXPIRATION_HOURS
+        : 24;
+
+    this.TX_CONTENT_MAX_SIZE_KO =
+      conf && conf.TX_CONTENT_MAX_SIZE_KO ? conf.TX_CONTENT_MAX_SIZE_KO : 250;
+
+    this.BLOCK_MAX_SIZE_KO =
+      conf && conf.BLOCK_MAX_SIZE_KO ? conf.BLOCK_MAX_SIZE_KO : 300;
+
+    this.FOUNDERS = conf && conf.FOUNDERS ? conf.FOUNDERS : [];
+
+    this.GENESIS_BLOCK = conf && conf.GENESIS_BLOCK ? conf.GENESIS_BLOCK : {};
+
     //All fees
     this.MONEY_BY_BLOCK =
       conf && conf.MONEY_BY_BLOCK ? conf.MONEY_BY_BLOCK : 15;
-    this.MONEY_BY_KO = conf && conf.MONEY_BY_KO ? conf.MONEY_BY_KO : 2.5;
+    this.MONEY_BY_KO = conf && conf.MONEY_BY_KO ? conf.MONEY_BY_KO : 1;
 
     this.TX_FEE_MINE_MONEY =
       conf && conf.TX_FEE_MINE_MONEY ? conf.TX_FEE_MINE_MONEY : 0.1;

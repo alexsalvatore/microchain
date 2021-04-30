@@ -1,9 +1,13 @@
 import Wallet from "./wallet.js";
 import Blockchain from "./blockchain.js";
+import Transaction from "./transaction.js";
 
 export default class Block {
   constructor(opt) {
     this.height = opt.height ? opt.height : 0;
+    this.configHash = opt.configHash
+      ? opt.configHash
+      : Blockchain.getInstance().configHash;
     this.prevHash = opt.prevHash ? opt.prevHash : "";
     this.publisher = opt.publisher ? opt.publisher : "";
     this.ts = opt.ts ? opt.ts : Date.now();
@@ -14,9 +18,25 @@ export default class Block {
     this.difficulty = Blockchain.getInstance().getDifficultyForBlock(this);
   }
 
+  get transactionsNoContent() {
+    return this.transactions
+      ? JSON.stringify(this._transactionsNoContent(this.transactions))
+      : "";
+  }
+
   sign(wallet) {
     const tosign = this._toStringToSign();
     this.signature = wallet.sign(tosign);
+  }
+
+  _transactionsNoContent(txs) {
+    const txsNoContents = [];
+    const parsedTxs = JSON.parse(this.transactions);
+    for (let tx of parsedTxs) {
+      const transaction = new Transaction(tx);
+      txsNoContents.push(JSON.parse(transaction.stringifyNoContent()));
+    }
+    return txsNoContents;
   }
 
   /**
@@ -27,10 +47,11 @@ export default class Block {
       .config.BLOCK_HASH_METHOD(
         JSON.stringify({
           height: this.height,
+          configHash: this.configHash,
           prevHash: this.prevHash,
           publisher: this.publisher,
           ts: this.ts,
-          transactions: this.transactions,
+          transactionsNoContent: this.transactionsNoContent,
         })
       )
       .toString();
@@ -41,10 +62,11 @@ export default class Block {
       .config.BLOCK_HASH_METHOD(
         JSON.stringify({
           height: this.height,
+          configHash: this.configHash,
           prevHash: this.prevHash,
           publisher: this.publisher,
           ts: this.ts,
-          transactions: this.transactions,
+          transactionsNoContent: this.transactionsNoContent,
           signature: this.signature,
           nonce: this.nonce,
         })
@@ -54,16 +76,21 @@ export default class Block {
   }
 
   getTransactions() {
-    if (!this.transactions) return [];
-    return JSON.parse(this.transactions);
+    if (!this.transactionsNoContent) return [];
+    return JSON.parse(this.transactionsNoContent);
   }
 
   /**
    * Only test the block! Transaction need to be tester by the lib implementor
    */
   isValid() {
+    // test config hash
+    if (this.configHash !== Blockchain.getInstance().configHash) {
+      console.error("Config hash is not valid for", this.height);
+    }
+
+    // test signature
     const tosign = this._toStringToSign();
-    //test signature
     if (
       this.height !== 0 &&
       !Wallet.verifySignature(tosign, this.signature, this.publisher)
@@ -77,7 +104,89 @@ export default class Block {
       return false;
     }
 
+    if (this.isTooBig()) return false;
+
+    //Test the signature and expired content of all tx in the block
+    if (this.transactions) {
+      for (const tx of JSON.parse(this.transactions)) {
+        const txObj = new Transaction(tx);
+
+        if (!txObj.isValid()) {
+          console.error("Transaction not valid for", this.height);
+          return false;
+        }
+
+        //Has transaction expired?
+
+        if (
+          txObj &&
+          txObj.contentSizeKo &&
+          !this.hasExpired &&
+          (!txObj.content ||
+            txObj.calculateContentSize() !== txObj.contentSizeKo ||
+            txObj.contentHash !==
+              Blockchain.getInstance()
+                .config.BLOCK_HASH_METHOD(txObj.content)
+                .toString())
+        ) {
+          console.error(
+            "Transaction is not expired and incoherent content for it!",
+            this.height
+          );
+          return false;
+        }
+      }
+    }
     return true;
+  }
+
+  purgeTX() {
+    if (!this.hasExpired) {
+      return false;
+    } else {
+      const newTransactions = [];
+      if (this.transactions) {
+        for (const tx of JSON.parse(this.transactions)) {
+          const txObj = new Transaction(tx);
+          if (txObj.content) {
+            console.log(`Found content to purge:${txObj.contentSizeKo} Ko`);
+            txObj.content = undefined;
+          }
+          newTransactions.push(txObj);
+        }
+        this.transactions = JSON.stringify(newTransactions);
+      }
+    }
+  }
+
+  get hasExpired() {
+    /*console.log(
+      `Height ${this.height} expired in ${expireIn / (60 * 60 * 1000)} h`
+    );*/
+    return this.expireIn < 0;
+  }
+
+  get expireIn() {
+    const expirationHours = Blockchain.getInstance().config
+      .TX_CONTENT_EXPIRATION_HOURS;
+    const tsNow = Date.now();
+    return expirationHours * 60 * 60 * 1000 - (tsNow - this.ts);
+  }
+
+  isTooBig() {
+    if (
+      JSON.stringify(this).length / 1000 >
+      Blockchain.getInstance().config.BLOCK_MAX_SIZE_KO
+    ) {
+      console.error(
+        `The block ${this.height} is too big, it should be less than ${
+          Blockchain.getInstance().config.BLOCK_MAX_SIZE_KO
+        } Ko`
+      );
+      return true;
+    }
+
+    return false;
   }
 
   mine() {

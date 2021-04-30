@@ -1,7 +1,7 @@
 import Block from "./block.js";
 import UTXOPool from "./utxopool.js";
 import { EventEmitter } from "events";
-import { unfold, reverse, values } from "ramda";
+import { unfold, reverse, values, forEach } from "ramda";
 import Config from "./config.js";
 
 export default class Blockchain extends EventEmitter {
@@ -19,8 +19,8 @@ export default class Blockchain extends EventEmitter {
       //Create geneis block
       if (!blocks) {
         const genesisBlock = new Block({
+          ...conf.GENESIS_BLOCK,
           height: 0,
-          publisher: "Takeshi",
         });
         genesisBlock.mine();
         Blockchain.getInstance().chain = [genesisBlock];
@@ -33,10 +33,6 @@ export default class Blockchain extends EventEmitter {
         }
       }
       Blockchain.getInstance().ready = true;
-      Blockchain.getInstance().emit(
-        "chainReady",
-        Blockchain.getInstance().chain
-      );
     } else if (conf) {
       console.warn(
         "Config wont be use, you already have an instance of the chain running."
@@ -65,9 +61,16 @@ export default class Blockchain extends EventEmitter {
 
   get config() {
     if (!this._conf) {
-      return new Config();
+      this._conf = new Config();
     }
     return this._conf;
+  }
+
+  get configHash() {
+    if (!this._conf) {
+      this._conf = new Config();
+    }
+    return this._conf.BLOCK_HASH_METHOD(JSON.stringify(this._conf)).toString();
   }
 
   get lastBlock() {
@@ -114,10 +117,8 @@ export default class Blockchain extends EventEmitter {
         blockNew.height - this.config.BLOCK_HASH_RATE_AVERAGE - 1
     );
 
+    // When you cannot compare difficulty because not enought blocks
     if (!blockBefore || !blockOld) {
-      console.log(
-        "missin blockBefore height or block old for height:" + blockNew.height
-      );
       return this.config.BLOCK_MIN_DIFFICULTY;
     }
     const delta =
@@ -126,7 +127,7 @@ export default class Blockchain extends EventEmitter {
       (24 * 60 * 60 * 1000) / this.config.BLOCK_HASH_RATE_BY_DAY;
 
     const rateDetla = delta / expectedDelta;
-    console.log(delta, expectedDelta, rateDetla);
+    // console.log(delta, expectedDelta, rateDetla);
 
     const previousBlock = this.getBlockForHeight(blockNew.height - 1);
 
@@ -157,9 +158,8 @@ export default class Blockchain extends EventEmitter {
     /*console.log("--------------");
     console.log(
       `Block ${block.height} #${block.hash} need difficulty ${block.difficulty}`
-    );*/
-
-    console.log(block);
+    );
+    console.log(block);*/
 
     if (!block.isValid()) {
       console.error(`Block ${block.height} is not valid`);
@@ -187,15 +187,42 @@ export default class Blockchain extends EventEmitter {
       if (!this.utxoPool.isTXValid(tx)) return false;
     }
 
+    // The block is valid we add it to the chain!
     this.utxoPool.addBlock(block);
     this.chain.push(block);
-    // this.chain = this.longestBlockchain; // We need to memorize all valids blocks!
+    // We purge the block when and the chain
+    this.purgeChain();
     if (Blockchain.getInstance().ready) this.emit("blockAdded", block);
+
     return true;
+  }
+
+  purgeChain() {
+    this.chain.forEach((block) => {
+      block.purgeTX();
+    });
+  }
+
+  getTransactionCost(tx) {
+    if (tx.contentSizeKo) return this.config.MONEY_BY_KO * tx.contentSizeKo;
+    return 0;
+  }
+
+  enoughtMoneyFrom(tx, publicKey) {
+    const cost = this.getTransactionCost(tx);
+    const money = this.utxoPool.getMoneyForSender(publicKey);
+    console.log(`cost: ${cost} V. money you have: ${money}`);
+    return cost <= money;
   }
 
   logBlockchain() {
     console.log(this.chain);
+  }
+
+  logBlockchainSize() {
+    console.log(
+      `Blockchain size is ${JSON.stringify(this.chain).length / 1000} Ko`
+    );
   }
 
   logUTXO() {

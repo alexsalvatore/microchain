@@ -1,8 +1,11 @@
 # Microchain 💴
 
-_Microchain_ is a Javascript lib for creating small blockchain on Node JS & Web client. His goal isn't being a crypto-currency, but being a way to distribute content in a semi-decentralized and give a kind of equity to content creators.
+_Microchain_ is a blockchain Lib specially designed to run in browser & Node JS environnement, used to propel forum, allowing file posting in transactions and making theses files expirable to manage the size of the blockchain. The next coming feature will be the administration of the blockchain (content moderation, money making, forcing difficulty, etc.) with a list of public keys known as Founders, hosted in the genesis block.
 
-:warning: **This lib is not secure**: it is a project in progress! See contact for more informations.
+There is no dependence to any other blockchain infrastructure. You create your very own blockchain with few lines of javascript.
+
+Of course, the project is work in progress, and there are still things to improve: :warning: **to be clear**
+you should not use Microchain as crypto-currency and if you sold some of your blockchain’s tokens, your users need to consider this bought as a donation and probably not as a long term stock market investment. _Microchain_ is not about money but content and communication.
 
 ## Installation
 
@@ -10,7 +13,7 @@ _Microchain_ is a Javascript lib for creating small blockchain on Node JS & Web 
 npm i @asalvatore/microchain
 ```
 
-## Usage
+## Basics
 
 Create and add a block to the chain instance
 
@@ -20,7 +23,12 @@ import { Blockchain, Wallet, Block } from "../src/index.js";
 const walletSato = new Wallet();
 
 // Get the instance of the chain. Also pass the config of it, with fees and if TX content are fungible or not.
-const chain = Blockchain.init({ CONTENT_FUNGIBLE: false });
+const chain = Blockchain.init({
+  CONTENT_FUNGIBLE: false,
+  GENESIS_BLOCK: {
+    publisher: walletSato.publicKey,
+  },
+});
 
 // Create and sign a transaction
 const transaction1 = walletSato.createTransaction({
@@ -48,25 +56,94 @@ chain.logChain();
 chain.logUTXO();
 ```
 
-To listen events on the chain you can use _chainReady_ and _blockAdded_.
+To listen events on the chain you can use _blockAdded_.
 
 ```javascript
-chain.on("chainReady", () => {
-  console.log("Chainready fired!");
-});
-
 chain.on("blockAdded", () => {
   let data = JSON.stringify(chain.chain);
   fs.writeFileSync("chain.json", data);
 });
 ```
 
+## Create expirable content
+
+Expirable content is a content hosted in a transaction. Blocks need to host it till the expiration date. In the following exeample you add _TX_CONTENT_EXPIRATION_HOURS_ , which is the expiration limit for content to the config (24h by default), and add your data to the transaction _content_ propretie. Example in _tests/testExpirable.js_.
+
+- **MONEY_BY_BLOCK** is the amount of money you get by a mined block.
+- **MONEY_BY_KO** is the amount of money you need by Ko to post content in transactions (note than there's also properties to manage the miningfees).
+- **TX_CONTENT_MAX_SIZE_KO** the max size of a transaction content in Ko, default is 250 Ko.
+- **BLOCK_MAX_SIZE_KO** the max size of a block in Ko, default is 300 Ko.
+
+```javascript
+import { Blockchain, Wallet, Block } from "../src/index.js";
+import fs from "fs";
+import { img2 } from "./assets/img2.js";
+
+let blocks = null;
+
+// try to read if file
+if (fs.existsSync("chainExpirable.json")) {
+  const rawdata = fs.readFileSync("chainExpirable.json");
+  if (rawdata) blocks = JSON.parse(rawdata);
+}
+
+const walletSato = new Wallet(
+  "04820be6a65e928d52e92b8bfe7827de7a09d3afa1356ef81f6f8528b44ba84393d32b44e4590fa9ca6b9576a6d7f2f0467af33d8f68f83e1359a8e4981f4ed5f6",
+  "b6d7cf41b14a972dc3b294ea9ec0c763886e7cb9699214192f2479791ec845e8"
+);
+
+const chain = Blockchain.init(
+  {
+    CONTENT_FUNGIBLE: false,
+    BLOCK_HASH_METHOD: "MD5",
+    BLOCK_MAX_DIFFICULTY: 5,
+    TX_CONTENT_EXPIRATION_HOURS: 12,
+    MONEY_BY_BLOCK: 15,
+    MONEY_BY_KO: 1.2,
+    GENESIS_BLOCK: {
+      publisher: walletSato.publicKey,
+    },
+  },
+  blocks
+);
+
+const transaction1 = walletSato.createTransaction({
+  sender: walletSato.publicKey,
+  content: img2,
+});
+transaction1.sign(walletSato);
+
+chain.enoughtMoneyFrom(transaction1, walletSato.publicKey);
+chain.logUTXO();
+
+const block = new Block({
+  height:
+    chain.lastBlock && (chain.lastBlock.height || chain.lastBlock.height === 0)
+      ? chain.lastBlock.height + 1
+      : 0,
+  publisher: walletSato.publicKey,
+  transactions: JSON.stringify([transaction1]),
+  prevHash: chain.lastBlock && chain.lastBlock.hash ? chain.lastBlock.hash : "",
+});
+
+block.sign(walletSato);
+console.log(block);
+block.mine();
+chain.addBlock(block);
+```
+
 ## Change log
+
+###### V 1.1.0
+
+- Added expirable content in transaction.
+- added a channel property in transaction propertie, for crypted conversation when content is crypted
+- added the _GENESIS_BLOCK_ to config. It's the properties you want in the geneseis block
 
 ###### V 1.0.11
 
 - Added an number of average of the last _n_ blocks to calculate the difficulty, but the result isn't very convincing. You can use it with the _BLOCK_HASH_RATE_AVERAGE_ property of the _Config_ class. It's 1 by default.
-- Added the "blockAdded" and "chainReady" event emitters on the chain instance.
+- Added the "blockAdded" event emitters on the chain instance.
 - The chain constructor can know take an existing list of block as second parameter.
 - Difficulty is now a comparison between block _height-1_ and block _height-BLOCK_HASH_RATE_AVERAGE-1_. It's to keep the diffiiculty constant during mining.
 - Renamed the class Chain to Blockchain, because _chain.chain_ is not pretty.
@@ -84,12 +161,10 @@ npm run testDifficulty
 ## To Do
 
 - create expirable transaction for content, a transaction that can be purged of the chain once a certain time.
-- several validation check: test if block or transaction are not in the future, test the height of blocks, test if there is a genesis block and if not, the chain can only be red.
-- create a _founders_ propertie in the genesis block, an array of public keys that can send _instruction(s)_ to the chain. I currently do not know if I should merge this property with the _Config_ class.
-- start documentation.
-- create an _instruction_ type of transaction.
 - create an hash list for transactions to avoid double-spending.
-- check if timestamp of a transaction or a block is not > to the current timestamp or < to the ts of the previous block (only for blocks)
+- create a max size for block and transaction!
+- create a _founders_ and _bank_ properties in the genesis block, an array of public keys that can send _instruction(s)_ to the chain. I currently do not know if I should merge this property with the _Config_ class.
+- start documentation.
 - re-initiate the UTXOPool with the longuest chain after each block add.
 - manage block and transaction announce with webRTC?
 
