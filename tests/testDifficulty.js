@@ -23,10 +23,6 @@ const chain = Blockchain.init(
   blocks
 );
 
-chain.on("chainReady", () => {
-  console.log("Blockchainready fired!");
-});
-
 chain.on("blockAdded", () => {
   let data = JSON.stringify(chain.chain);
   fs.writeFileSync("chain.json", data);

@@ -36,10 +36,6 @@ const chain = Blockchain.init(
   blocks
 );
 
-chain.on("chainReady", () => {
-  console.log("Blockchain ready!");
-});
-
 chain.on("blockAdded", () => {
   console.log("block added!");
   let data = JSON.stringify(chain.chain);

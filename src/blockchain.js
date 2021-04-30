@@ -33,10 +33,6 @@ export default class Blockchain extends EventEmitter {
         }
       }
       Blockchain.getInstance().ready = true;
-      Blockchain.getInstance().emit(
-        "chainReady",
-        Blockchain.getInstance().chain
-      );
     } else if (conf) {
       console.warn(
         "Config wont be use, you already have an instance of the chain running."

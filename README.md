@@ -51,13 +51,9 @@ chain.logChain();
 chain.logUTXO();
 ```
 
-To listen events on the chain you can use _chainReady_ and _blockAdded_.
+To listen events on the chain you can use _blockAdded_.
 
 ```javascript
-chain.on("chainReady", () => {
-  console.log("Chainready fired!");
-});
-
 chain.on("blockAdded", () => {
   let data = JSON.stringify(chain.chain);
   fs.writeFileSync("chain.json", data);
@@ -138,7 +134,7 @@ chain.addBlock(block);
 ###### V 1.0.11
 
 - Added an number of average of the last _n_ blocks to calculate the difficulty, but the result isn't very convincing. You can use it with the _BLOCK_HASH_RATE_AVERAGE_ property of the _Config_ class. It's 1 by default.
-- Added the "blockAdded" and "chainReady" event emitters on the chain instance.
+- Added the "blockAdded" event emitters on the chain instance.
 - The chain constructor can know take an existing list of block as second parameter.
 - Difficulty is now a comparison between block _height-1_ and block _height-BLOCK_HASH_RATE_AVERAGE-1_. It's to keep the diffiiculty constant during mining.
 - Renamed the class Chain to Blockchain, because _chain.chain_ is not pretty.
@@ -159,7 +155,6 @@ npm run testDifficulty
 - create an hash list for transactions to avoid double-spending.
 - create a max size for block and transaction!
 - create a _founders_ and _bank_ properties in the genesis block, an array of public keys that can send _instruction(s)_ to the chain. I currently do not know if I should merge this property with the _Config_ class.
-- add a init method to _Blockchain_ class, because the actual event _chainReady_ cannot be reached.
 - start documentation.
 - re-initiate the UTXOPool with the longuest chain after each block add.
 - manage block and transaction announce with webRTC?
