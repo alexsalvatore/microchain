@@ -4,10 +4,10 @@ import Wallet from "./wallet.js";
 export default class Transaction {
   constructor(opt) {
     this.amount = opt["amount"] ? opt["amount"] : 0;
-    this.sender = opt["sender"] ? opt["sender"] : undefined;
-    this.receiver = opt["receiver"] ? opt["receiver"] : undefined;
-    this.channel = opt["channel"] ? opt["channel"] : undefined;
-    this.content = opt["content"] ? opt["content"] : undefined;
+    this.sender = opt["sender"] ? opt["sender"] : null;
+    this.receiver = opt["receiver"] ? opt["receiver"] : null;
+    this.channel = opt["channel"] ? opt["channel"] : null;
+    this.content = opt["content"] ? opt["content"] : null;
     this.contentHash = opt["contentHash"]
       ? opt["contentHash"]
       : Blockchain.getInstance()
@@ -15,8 +15,10 @@ export default class Transaction {
           .toString();
     this.contentSizeKo = opt["contentSizeKo"]
       ? opt["contentSizeKo"]
-      : this.calculateContentSize();
-    this.ownership = opt["ownership"] ? opt["ownership"] : undefined;
+      : opt["content"]
+      ? this.calculateContentSize()
+      : null;
+    this.ownership = opt["ownership"] ? opt["ownership"] : null;
     this.ts = opt.ts ? opt.ts : Date.now();
     this.signature = opt["signature"] ? opt["signature"] : "";
   }

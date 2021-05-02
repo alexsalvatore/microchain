@@ -3,6 +3,7 @@ import UTXOPool from "./utxopool.js";
 import { EventEmitter } from "events";
 import { unfold, reverse, values, forEach } from "ramda";
 import Config from "./config.js";
+import { Transaction } from "./index.js";
 
 export default class Blockchain extends EventEmitter {
   static _instance;
@@ -184,7 +185,10 @@ export default class Blockchain extends EventEmitter {
 
     const txs = block.getTransactions();
     for (let tx of txs) {
-      if (!this.utxoPool.isTXValid(tx)) return false;
+      if (!this.utxoPool.isTXValid(new Transaction(tx))) {
+        console.error(`Block ${block.height} has an invalid transaction`);
+        return false;
+      }
     }
 
     // The block is valid we add it to the chain!

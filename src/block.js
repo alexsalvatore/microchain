@@ -117,7 +117,6 @@ export default class Block {
         }
 
         //Has transaction expired?
-
         if (
           txObj &&
           txObj.contentSizeKo &&

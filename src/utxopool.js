@@ -1,21 +1,26 @@
 import { of } from "ramda";
 import Config from "./config.js";
+import Transaction from "./transaction.js";
 
 export default class UTXOPool {
   constructor(conf) {
     this.config = new Config(conf);
-    this.txPool = {};
+    this.txPool = [];
     this.contentPool = {};
     this.moneyPool = {};
     this.ownershipPool = {};
   }
 
   addTX(tx, miner) {
+    tx = new Transaction(tx);
     const isValid = this.isTXValid(tx);
     if (!isValid) {
       console.error("TX not valid", tx);
       return false;
     }
+
+    //We add the hash to the TX pool to be sure it won't be use again
+    this.txPool.push(tx.hash);
 
     if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_OWNERSHIP) {
       this.addOwnershipTo(tx.sender, tx.ownership, -tx.amount);
@@ -125,6 +130,12 @@ export default class UTXOPool {
   }
 
   isTXValid(tx) {
+    if (this.txPool.length > 0) console.log(this.txPool);
+    if (this.isHashExisting(tx.hash)) {
+      console.error(`Hash ${tx.hash} already exist, transaction isn't valid`);
+      return false;
+    }
+
     if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_OWNERSHIP) {
       const ownership = this.getOwnershipForSenderAnId(tx.sender, tx.ownership);
       return ownership && tx.amount <= ownership.amount && tx.amount > 0;
@@ -139,6 +150,10 @@ export default class UTXOPool {
     } else if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_CONTENT) {
     }
     return true;
+  }
+
+  isHashExisting(hash) {
+    return this.txPool.find((h) => h === hash) !== undefined;
   }
 
   static TX_TYPE_NONE = 0;
