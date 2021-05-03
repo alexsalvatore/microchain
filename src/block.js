@@ -107,10 +107,23 @@ export default class Block {
     if (this.isTooBig()) return false;
 
     //Test the signature and expired content of all tx in the block
+    const txSignatures = [];
+
     if (this.transactions) {
       for (const tx of JSON.parse(this.transactions)) {
         const txObj = new Transaction(tx);
+        const existingSingature = txSignatures.find(
+          (signature) => signature === txObj.signature
+        );
+        if (existingSingature) {
+          console.error(
+            "💳 Same Transaction exist several times!",
+            this.height
+          );
+          return false;
+        }
 
+        txSignatures.push(txObj.signature);
         if (!txObj.isValid()) {
           console.error("Transaction not valid for", this.height);
           return false;
@@ -147,7 +160,7 @@ export default class Block {
       if (this.transactions) {
         for (const tx of JSON.parse(this.transactions)) {
           const txObj = new Transaction(tx);
-          if (txObj.content) {
+          if (txObj.content && txObj.contentSizeKo) {
             console.log(`Found content to purge:${txObj.contentSizeKo} Ko`);
             txObj.content = undefined;
           }

@@ -24,7 +24,7 @@ export default class Transaction {
   }
 
   calculateContentSize() {
-    return Math.round(JSON.stringify(this.content).length / 1000);
+    return JSON.stringify(this.content).length / 1000;
   }
 
   /**

@@ -15,7 +15,7 @@ export default class UTXOPool {
     tx = new Transaction(tx);
     const isValid = this.isTXValid(tx);
     if (!isValid) {
-      console.error("TX not valid", tx);
+      // console.error("TX not valid", tx);
       return false;
     }
 
@@ -130,7 +130,7 @@ export default class UTXOPool {
   }
 
   isTXValid(tx) {
-    if (this.txPool.length > 0) console.log(this.txPool);
+    // if (this.txPool.length > 0) console.log(this.txPool);
     if (this.isHashExisting(tx.hash)) {
       console.error(`Hash ${tx.hash} already exist, transaction isn't valid`);
       return false;

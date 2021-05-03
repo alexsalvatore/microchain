@@ -8,7 +8,8 @@
     "test": "node tests/testSimple.js",
     "testUTXO": "node tests/testUTXO.js",
     "testDifficulty": "node tests/testDifficulty.js",
-    "testExp": "node tests/testExpirable.js"
+    "testExp": "node tests/testExpirable.js",
+    "testDiagnostic": "node tests/testDiagnostic.js"
   },
   "author": "Alexandre Salvatore",
   "license": "ISC",

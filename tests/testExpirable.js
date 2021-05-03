@@ -69,8 +69,9 @@ block.sign(walletSato);
 block.mine();
 chain.addBlock(block);
 
-chain.logUTXO();
-chain.logBlockchainSize();
+console.log(chain.lastBlock);
+// chain.logUTXO();
+// chain.logBlockchainSize();
 
 // Mining loop
 // Uncomment that to create few block to post an images
