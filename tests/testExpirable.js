@@ -1,6 +1,8 @@
 import { Blockchain, Wallet, Block } from "../src/index.js";
 import fs from "fs";
 import { img1 } from "./assets/img1.js";
+import { img2 } from "./assets/img2.js";
+import { img3 } from "./assets/img3.js";
 import { imgBig } from "./assets/imgBig.js";
 
 let blocks = null;
@@ -47,8 +49,8 @@ chain.on("blockAdded", () => {
 
 const transaction1 = walletSato.createTransaction({
   sender: walletSato.publicKey,
-  //content: img1,
-  content: "https://pbs.twimg.com/media/Ez8jBp3XEAEwgTV?format=jpg&name=small",
+  content: img3,
+  //content: "https://pbs.twimg.com/media/Ez8jBp3XEAEwgTV?format=jpg&name=small",
 });
 transaction1.sign(walletSato);
 transaction1.log();
@@ -61,7 +63,7 @@ const block = new Block({
       ? chain.lastBlock.height + 1
       : 0,
   publisher: walletSato.publicKey,
-  transactions: JSON.stringify([transaction1, transaction1]),
+  transactions: JSON.stringify([transaction1]),
   prevHash: chain.lastBlock && chain.lastBlock.hash ? chain.lastBlock.hash : "",
 });
 
@@ -69,9 +71,9 @@ block.sign(walletSato);
 block.mine();
 chain.addBlock(block);
 
-console.log(chain.lastBlock);
-// chain.logUTXO();
-// chain.logBlockchainSize();
+// console.log(chain.lastBlock);
+chain.logUTXO();
+chain.logBlockchainSize();
 
 // Mining loop
 // Uncomment that to create few block to post an images

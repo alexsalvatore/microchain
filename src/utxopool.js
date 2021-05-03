@@ -15,7 +15,7 @@ export default class UTXOPool {
     tx = new Transaction(tx);
     const isValid = this.isTXValid(tx);
     if (!isValid) {
-      // console.error("TX not valid", tx);
+      console.error("TX not valid", tx);
       return false;
     }
 
@@ -143,11 +143,12 @@ export default class UTXOPool {
       //Test if poster got the money for the post
       const senderMoney = this.getMoneyForSender(tx.sender);
       return (
-        this.config.CONTENT_FUNGIBLE ||
-        tx.contentSizeKo < this.config.TX_MAX_KO_SIZE_BEFORE_CHARGE ||
-        tx.ccontentSizeKo * this.config.MONEY_BY_KO - senderMoney >= 0
+        // !this.config.CONTENT_FUNGIBLE ||
+        senderMoney - tx.contentSizeKo * this.config.MONEY_BY_KO >= 0
       );
-    } else if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_CONTENT) {
+    } else if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_MONEY) {
+      const senderMoney = this.getMoneyForSender(tx.sender);
+      return senderMoney - tx.amount >= 0;
     }
     return true;
   }

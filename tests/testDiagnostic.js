@@ -15,7 +15,7 @@ const walletSato = new Wallet(
 
 const chain = Blockchain.init(
   {
-    CONTENT_FUNGIBLE: false,
+    CONTENT_FUNGIBLE: true,
     BLOCK_HASH_METHOD: "MD5",
     BLOCK_MIN_DIFFICULTY: 3,
     BLOCK_MAX_DIFFICULTY: 3,
