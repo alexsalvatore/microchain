@@ -184,7 +184,6 @@ npm run testDifficulty
 
 ## To Do
 
-- create an hash list for transactions to avoid double-spending.
 - Send _instruction(s)_ form the _founders_ of the chain to administrate it.
 - re-initiate the UTXOPool with the longuest chain after each block add.
 - manage block and transaction announce with webRTC?
