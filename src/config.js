@@ -36,6 +36,9 @@ export default class Config {
     this.TX_CONTENT_MAX_SIZE_KO =
       conf && conf.TX_CONTENT_MAX_SIZE_KO ? conf.TX_CONTENT_MAX_SIZE_KO : 250;
 
+    this.TX_MAX_SIZE_KO =
+      conf && conf.TX_MAX_SIZE_KO ? conf.TX_MAX_SIZE_KO : 0.75;
+
     this.BLOCK_MAX_SIZE_KO =
       conf && conf.BLOCK_MAX_SIZE_KO ? conf.BLOCK_MAX_SIZE_KO : 300;
 

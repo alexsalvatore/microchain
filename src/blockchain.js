@@ -187,11 +187,9 @@ export default class Blockchain extends EventEmitter {
     }
 
     const txs = block.getTransactions();
-    let allTxValid = true;
     for (let tx of txs) {
       if (!this.utxoPool.isTXValid(new Transaction(tx))) {
         console.error(`💳 Block ${block.height} has an invalid transaction`);
-        allTxValid = false;
         return false;
       }
     }

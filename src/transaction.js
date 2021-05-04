@@ -27,6 +27,10 @@ export default class Transaction {
     return JSON.stringify(this.content).length / 1000;
   }
 
+  calculateTXSize() {
+    return JSON.stringify(this).length / 1000;
+  }
+
   /**
    * Because block signature need to be without the hash & signature & nonce
    */
@@ -91,12 +95,28 @@ export default class Transaction {
 
   isTooBig() {
     if (
+      this.calculateTXSize() - this.calculateContentSize() >
+      Blockchain.getInstance().config.TX_MAX_SIZE_KO
+    ) {
+      console.error(
+        `🏋️ The transaction size ${
+          this.signature
+        } without content is too big, it should be less than ${
+          Blockchain.getInstance().config.TX_MAX_SIZE_KO
+        } Ko`
+      );
+      return true;
+    }
+
+    if (
       this.contentSizeKo &&
       this.contentSizeKo >
         Blockchain.getInstance().config.TX_CONTENT_MAX_SIZE_KO
     ) {
       console.error(
-        `The transaction ${this.height} is too big, it should be less than ${
+        `🏋️ The transaction's content ${
+          this.signature
+        } is too big, it should be less than ${
           Blockchain.getInstance().config.TX_CONTENT_MAX_SIZE_KO
         } Ko`
       );
