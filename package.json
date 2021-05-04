@@ -1,6 +1,6 @@
 {
   "name": "@asalvatore/microchain",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Microchain is a #Javascript lib for creating small #blockchain for content and ownership hosting on Node JS & Web client. Project in progress.",
   "main": "index.js",
   "type": "module",
