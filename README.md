@@ -1,4 +1,4 @@
-# Microchain 💴
+# Microchain 💴 (alpha)
 
 _Microchain_ is a blockchain Lib specially designed to run in browser & Node JS environnement, used to propel forum, allowing file posting in transactions and making theses files expirable to manage the size of the blockchain. The next coming feature will be the administration of the blockchain (content moderation, money making, forcing difficulty, etc.) with a list of public keys known as Founders, hosted in the genesis block.
 
@@ -6,6 +6,8 @@ There is no dependence to any other blockchain infrastructure. You create your v
 
 Of course, the project is work in progress, and there are still things to improve: :warning: **to be clear**
 you should not use Microchain as crypto-currency and if you sold some of your blockchain’s tokens, your users need to consider this bought as a donation and probably not as a long term stock market investment. _Microchain_ is not about money but content and communication.
+
+**It's still work in progress, please don't use it for production**
 
 ## Installation
 
