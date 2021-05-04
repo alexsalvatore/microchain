@@ -15,6 +15,7 @@ export default class Blockchain extends EventEmitter {
   static init(conf, blocks = null) {
     if (!Blockchain._instance) {
       Blockchain._instance = new Blockchain(conf);
+      Blockchain.getInstance().chain = [];
       Blockchain._instance.ready = false;
 
       //Create geneis block
@@ -23,9 +24,9 @@ export default class Blockchain extends EventEmitter {
           ...conf.GENESIS_BLOCK,
           height: 0,
         });
+
         genesisBlock.mine();
-        Blockchain.getInstance().chain = [genesisBlock];
-        Blockchain.getInstance().emit("blockAdded", genesisBlock);
+        Blockchain.getInstance().addBlock(genesisBlock);
       } else {
         const blocksSorted = blocks.sort(Blockchain._sortBlocksByHeight);
         for (let block of blocksSorted) {

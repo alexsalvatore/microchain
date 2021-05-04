@@ -25,7 +25,6 @@ console.log("****************************");*/
 
 const chain = Blockchain.init(
   {
-    CONTENT_FUNGIBLE: false,
     BLOCK_HASH_METHOD: "MD5",
     BLOCK_MIN_DIFFICULTY: 3,
     BLOCK_MAX_DIFFICULTY: 3,

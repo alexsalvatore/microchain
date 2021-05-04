@@ -36,32 +36,31 @@ export default class UTXOPool {
       );
     } else if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_CONTENT) {
       // Posting Content
-      if (this.config.CONTENT_FUNGIBLE) {
-        //Content = $
-        //Content = ownership and share
-        console.log("tx.contentSizeKo", tx.contentSizeKo);
-        this.addMoneyToSender(
-          tx.sender,
-          -tx.contentSizeKo * this.config.MONEY_BY_KO
-        );
-        console.log(
-          "addMoneyToSender",
-          tx.contentSizeKo * this.config.MONEY_BY_KO
-        );
-        this.addMoneyToSender(
-          miner,
-          tx.contentSizeKo *
-            this.config.MONEY_BY_KO *
-            this.config.TX_FEE_MINE_MONEY
-        );
-        console.log(
-          "addMoneyToReceiver",
-          tx.contentSizeKo *
-            this.config.MONEY_BY_KO *
-            this.config.TX_FEE_MINE_MONEY
-        );
-      } else {
-        //Content = ownership and share
+      // if (this.config.CONTENT_FUNGIBLE) {
+      // Content = $
+      // Content = ownership and share
+      console.log("tx.contentSizeKo", tx.contentSizeKo);
+      this.addMoneyToSender(
+        tx.sender,
+        -tx.contentSizeKo * this.config.MONEY_BY_KO
+      );
+      console.log(
+        "addMoneyToSender",
+        tx.contentSizeKo * this.config.MONEY_BY_KO
+      );
+      this.addMoneyToSender(
+        miner,
+        tx.contentSizeKo *
+          this.config.MONEY_BY_KO *
+          this.config.TX_FEE_MINE_MONEY
+      );
+      console.log(
+        "addMoneyToReceiver",
+        tx.contentSizeKo *
+          this.config.MONEY_BY_KO *
+          this.config.TX_FEE_MINE_MONEY
+      );
+      /*} else {
         this.addOwnershipTo(
           tx.sender,
           tx.contentHash,
@@ -72,7 +71,7 @@ export default class UTXOPool {
           tx.contentHash,
           this.config.TX_FEE_MINE_OWNERSHIP
         );
-      }
+      }*/
     }
   }
 
@@ -142,10 +141,7 @@ export default class UTXOPool {
     } else if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_CONTENT) {
       //Test if poster got the money for the post
       const senderMoney = this.getMoneyForSender(tx.sender);
-      return (
-        // !this.config.CONTENT_FUNGIBLE ||
-        senderMoney - tx.contentSizeKo * this.config.MONEY_BY_KO >= 0
-      );
+      return senderMoney - tx.contentSizeKo * this.config.MONEY_BY_KO >= 0;
     } else if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_MONEY) {
       const senderMoney = this.getMoneyForSender(tx.sender);
       return senderMoney - tx.amount >= 0;
