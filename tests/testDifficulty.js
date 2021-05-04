@@ -16,7 +16,6 @@ if (fs.existsSync("chain.json")) {
 const walletSato = new Wallet();
 const chain = Blockchain.init(
   {
-    CONTENT_FUNGIBLE: false,
     BLOCK_HASH_RATE_BY_DAY: hashRateTarget,
     BLOCK_HASH_METHOD: "MD5",
   },

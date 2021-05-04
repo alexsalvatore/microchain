@@ -3,10 +3,10 @@ const { SHA256, MD5 } = cryptojs;
 
 export default class Config {
   constructor(conf) {
-    this.CONTENT_FUNGIBLE =
+    /*this.CONTENT_FUNGIBLE =
       conf && conf.CONTENT_FUNGIBLE !== undefined
         ? conf.CONTENT_FUNGIBLE
-        : true;
+        : true;*/
 
     this.BLOCK_MAX_SIZE =
       conf && conf.BLOCK_MAX_SIZE ? conf.BLOCK_MAX_SIZE : 2000;

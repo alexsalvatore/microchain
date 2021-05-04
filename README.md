@@ -1,14 +1,10 @@
-# Microchain 💴 (alpha)
-
-:warning: **Mircochain should not be use for production purpose** it is still a project under development.
-
-[Github link](https://github.com/salvatoreparis/microchain)
+# Microchain 💴
 
 _Microchain_ is a blockchain Lib specially designed to run in browser & Node JS environnement, used to propel forum, allowing file posting in transactions and making theses files expirable to manage the size of the blockchain. The next coming feature will be the administration of the blockchain (content moderation, money making, forcing difficulty, etc.) with a list of public keys known as Founders, hosted in the genesis block.
 
 There is no dependence to any other blockchain infrastructure. You create your very own blockchain with few lines of javascript.
 
-Of course, the project is work in progress, and there are still things to improve: To be clear,
+Of course, the project is work in progress, and there are still things to improve: :warning: **to be clear**
 you should not use Microchain as crypto-currency and if you sold some of your blockchain’s tokens, your users need to consider this bought as a donation and probably not as a long term stock market investment. _Microchain_ is not about money but content and communication.
 
 ## Installation
@@ -24,11 +20,15 @@ Create and add a block to the chain instance
 ```javascript
 import { Blockchain, Wallet, Block } from "../src/index.js";
 
+// initialize a wallet
+// with no option, it generate it self a public and private key
 const walletSato = new Wallet();
 
 // Get the instance of the chain. Also pass the config of it, with fees and if TX content are fungible or not.
 const chain = Blockchain.init({
-  CONTENT_FUNGIBLE: false,
+  // Pass the genesis block param has options
+  // It's the config of your blockchain!
+  // If you change it, the ancients mined block wont be accepted
   GENESIS_BLOCK: {
     publisher: walletSato.publicKey,
   },
@@ -39,6 +39,7 @@ const transaction1 = walletSato.createTransaction({
   sender: walletSato.publicKey,
   content: "https://pbs.twimg.com/media/EwxqyQdXMAAlqIb?format=jpg&name=medium",
 });
+
 const block1 = new Block({
   height: chain.lastBlock.height + 1,
   publisher: walletSato.publicKey,
@@ -46,7 +47,7 @@ const block1 = new Block({
   transactions: JSON.stringify([transaction1]),
 });
 
-//Sign the block with the miner wallet
+// Sign the block with the miner wallet
 block1.sign(walletSato);
 
 // Launch the mining process
@@ -91,20 +92,28 @@ if (fs.existsSync("chainExpirable.json")) {
   if (rawdata) blocks = JSON.parse(rawdata);
 }
 
+// Init the wallet using existing public & private keys
 const walletSato = new Wallet(
   "04820be6a65e928d52e92b8bfe7827de7a09d3afa1356ef81f6f8528b44ba84393d32b44e4590fa9ca6b9576a6d7f2f0467af33d8f68f83e1359a8e4981f4ed5f6",
   "b6d7cf41b14a972dc3b294ea9ec0c763886e7cb9699214192f2479791ec845e8"
 );
 
 const chain = Blockchain.init(
+  // It's the config of your blockchain!
+  // If you change it, the ancients mined block wont be accepted
   {
-    CONTENT_FUNGIBLE: false,
+    // The hash method use to hash block and transactions
     BLOCK_HASH_METHOD: "MD5",
+    // The maximum difficulty to hash a block (number of 0 at the start of the block)
     BLOCK_MAX_DIFFICULTY: 5,
+    // When the content of block expire to liberate size in the chain?
     TX_CONTENT_EXPIRATION_HOURS: 12,
+    // Money you earn by block
     MONEY_BY_BLOCK: 15,
+    // Money you need to use by KO of content KO
     MONEY_BY_KO: 1.2,
     GENESIS_BLOCK: {
+      // Public key of the publisher of the genesis
       publisher: walletSato.publicKey,
     },
   },
@@ -117,6 +126,7 @@ const transaction1 = walletSato.createTransaction({
 });
 transaction1.sign(walletSato);
 
+//Return if there is enought money for this transaction for this transaction
 chain.enoughtMoneyFrom(transaction1, walletSato.publicKey);
 chain.logUTXO();
 
@@ -130,13 +140,20 @@ const block = new Block({
   prevHash: chain.lastBlock && chain.lastBlock.hash ? chain.lastBlock.hash : "",
 });
 
+// Don't forget to sign the block with your wallet!
 block.sign(walletSato);
-console.log(block);
+// Launch the mining, it couls take a while!
 block.mine();
+// also don't forget to add the block to the chain!
 chain.addBlock(block);
 ```
 
 ## Change log
+
+###### V 1.1.2 (fix)
+
+- Take off the non-fungible content in config. Not bahaving properly.
+- use the _addBlock_ method for the genesis block
 
 ###### V 1.1.0
 

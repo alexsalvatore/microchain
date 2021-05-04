@@ -5,10 +5,13 @@ const walletDolores = new Wallet();
 const walletKub = new Wallet();
 
 const chain = Blockchain.init({
-  CONTENT_FUNGIBLE: false,
   BLOCK_MIN_DIFFICULTY: 2,
-  BLOCK_MAX_DIFFICULTY: 5,
+  BLOCK_MAX_DIFFICULTY: 3,
+  GENESIS_BLOCK: {
+    publisher: walletSato.publicKey,
+  },
 });
+
 // console.log(chain);
 const transaction1 = walletSato.createTransaction({
   sender: walletSato.publicKey,
@@ -24,8 +27,8 @@ block1.sign(walletSato);
 block1.mine();
 chain.addBlock(block1);
 
-const transaction2 = walletDolores.createTransaction({
-  sender: walletDolores.publicKey,
+const transaction2 = walletSato.createTransaction({
+  sender: walletSato.publicKey,
   content:
     "https://resize-parismatch.lanmedia.fr/img/var/news/storage/images/paris-match/culture/cinema/elle-etait-la-lolita-de-stanley-kubrick-l-actrice-sue-lyon-est-morte-1666818/27181746-1-fre-FR/Elle-etait-la-Lolita-de-Stanley-Kubrick-l-actrice-Sue-Lyon-est-morte.jpg",
 });

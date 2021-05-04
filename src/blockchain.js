@@ -3,6 +3,7 @@ import UTXOPool from "./utxopool.js";
 import { EventEmitter } from "events";
 import { unfold, reverse, values, forEach } from "ramda";
 import Config from "./config.js";
+import { Transaction } from "./index.js";
 
 export default class Blockchain extends EventEmitter {
   static _instance;
@@ -14,6 +15,7 @@ export default class Blockchain extends EventEmitter {
   static init(conf, blocks = null) {
     if (!Blockchain._instance) {
       Blockchain._instance = new Blockchain(conf);
+      Blockchain.getInstance().chain = [];
       Blockchain._instance.ready = false;
 
       //Create geneis block
@@ -22,9 +24,9 @@ export default class Blockchain extends EventEmitter {
           ...conf.GENESIS_BLOCK,
           height: 0,
         });
+
         genesisBlock.mine();
-        Blockchain.getInstance().chain = [genesisBlock];
-        Blockchain.getInstance().emit("blockAdded", genesisBlock);
+        Blockchain.getInstance().addBlock(genesisBlock);
       } else {
         const blocksSorted = blocks.sort(Blockchain._sortBlocksByHeight);
         for (let block of blocksSorted) {
@@ -178,18 +180,26 @@ export default class Blockchain extends EventEmitter {
       parentBlock &&
       (parentBlock.height - 1 == block.height || parentBlock.ts >= block.ts)
     ) {
-      console.error(`Block ${block.height} is not coherent with the chain`);
+      console.error(
+        `addBlock(block) Block ${block.height} is not coherent with the chain`
+      );
       return false;
     }
 
     const txs = block.getTransactions();
+    let allTxValid = true;
     for (let tx of txs) {
-      if (!this.utxoPool.isTXValid(tx)) return false;
+      if (!this.utxoPool.isTXValid(new Transaction(tx))) {
+        console.error(`💳 Block ${block.height} has an invalid transaction`);
+        allTxValid = false;
+        return false;
+      }
     }
 
     // The block is valid we add it to the chain!
     this.utxoPool.addBlock(block);
     this.chain.push(block);
+    console.log(`🥞 Block ${block.height} has been added`);
     // We purge the block when and the chain
     this.purgeChain();
     if (Blockchain.getInstance().ready) this.emit("blockAdded", block);
@@ -201,6 +211,29 @@ export default class Blockchain extends EventEmitter {
     this.chain.forEach((block) => {
       block.purgeTX();
     });
+  }
+
+  getDiagnostic() {
+    for (const block of this.longestBlockchain) {
+      if (!block.isValid()) {
+        console.error(`💣 Block ${block.height} invalid`);
+      }
+
+      const txs = block.getTransactions();
+      let allTxValid = true;
+      for (let tx of txs) {
+        if (!this.utxoPool.isTXValid(new Transaction(tx))) {
+          console.error(
+            `🧨 Block ${block.height} has an invalid transaction(s)`
+          );
+          allTxValid = false;
+          return false;
+        }
+      }
+      console.log(
+        `🍭 Block ${block.height} valid on ${this.longestBlockchain.length} blocks`
+      );
+    }
   }
 
   getTransactionCost(tx) {

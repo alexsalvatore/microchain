@@ -3,7 +3,7 @@ import { Blockchain, Wallet, Block } from "../src/index.js";
 const walletSato = new Wallet();
 
 // Get the instance of the chain. Also pass the config of it, with fees and if TX content are fungible or not.
-const chain = Blockchain.init({ CONTENT_FUNGIBLE: false });
+const chain = Blockchain.init();
 
 // Create and sign a transaction
 const transaction1 = walletSato.createTransaction({

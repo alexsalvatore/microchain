@@ -1,6 +1,8 @@
 import { Blockchain, Wallet, Block } from "../src/index.js";
 import fs from "fs";
 import { img1 } from "./assets/img1.js";
+import { img2 } from "./assets/img2.js";
+import { img3 } from "./assets/img3.js";
 import { imgBig } from "./assets/imgBig.js";
 
 let blocks = null;
@@ -23,7 +25,6 @@ console.log("****************************");*/
 
 const chain = Blockchain.init(
   {
-    CONTENT_FUNGIBLE: false,
     BLOCK_HASH_METHOD: "MD5",
     BLOCK_MIN_DIFFICULTY: 3,
     BLOCK_MAX_DIFFICULTY: 3,
@@ -47,7 +48,8 @@ chain.on("blockAdded", () => {
 
 const transaction1 = walletSato.createTransaction({
   sender: walletSato.publicKey,
-  content: img1,
+  content: img3,
+  //content: "https://pbs.twimg.com/media/Ez8jBp3XEAEwgTV?format=jpg&name=small",
 });
 transaction1.sign(walletSato);
 transaction1.log();
@@ -68,6 +70,7 @@ block.sign(walletSato);
 block.mine();
 chain.addBlock(block);
 
+// console.log(chain.lastBlock);
 chain.logUTXO();
 chain.logBlockchainSize();
 

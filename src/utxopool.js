@@ -1,21 +1,26 @@
 import { of } from "ramda";
 import Config from "./config.js";
+import Transaction from "./transaction.js";
 
 export default class UTXOPool {
   constructor(conf) {
     this.config = new Config(conf);
-    this.txPool = {};
+    this.txPool = [];
     this.contentPool = {};
     this.moneyPool = {};
     this.ownershipPool = {};
   }
 
   addTX(tx, miner) {
+    tx = new Transaction(tx);
     const isValid = this.isTXValid(tx);
     if (!isValid) {
       console.error("TX not valid", tx);
       return false;
     }
+
+    //We add the hash to the TX pool to be sure it won't be use again
+    this.txPool.push(tx.hash);
 
     if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_OWNERSHIP) {
       this.addOwnershipTo(tx.sender, tx.ownership, -tx.amount);
@@ -31,32 +36,31 @@ export default class UTXOPool {
       );
     } else if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_CONTENT) {
       // Posting Content
-      if (this.config.CONTENT_FUNGIBLE) {
-        //Content = $
-        //Content = ownership and share
-        console.log("tx.contentSizeKo", tx.contentSizeKo);
-        this.addMoneyToSender(
-          tx.sender,
-          -tx.contentSizeKo * this.config.MONEY_BY_KO
-        );
-        console.log(
-          "addMoneyToSender",
-          tx.contentSizeKo * this.config.MONEY_BY_KO
-        );
-        this.addMoneyToSender(
-          miner,
-          tx.contentSizeKo *
-            this.config.MONEY_BY_KO *
-            this.config.TX_FEE_MINE_MONEY
-        );
-        console.log(
-          "addMoneyToReceiver",
-          tx.contentSizeKo *
-            this.config.MONEY_BY_KO *
-            this.config.TX_FEE_MINE_MONEY
-        );
-      } else {
-        //Content = ownership and share
+      // if (this.config.CONTENT_FUNGIBLE) {
+      // Content = $
+      // Content = ownership and share
+      console.log("tx.contentSizeKo", tx.contentSizeKo);
+      this.addMoneyToSender(
+        tx.sender,
+        -tx.contentSizeKo * this.config.MONEY_BY_KO
+      );
+      console.log(
+        "addMoneyToSender",
+        tx.contentSizeKo * this.config.MONEY_BY_KO
+      );
+      this.addMoneyToSender(
+        miner,
+        tx.contentSizeKo *
+          this.config.MONEY_BY_KO *
+          this.config.TX_FEE_MINE_MONEY
+      );
+      console.log(
+        "addMoneyToReceiver",
+        tx.contentSizeKo *
+          this.config.MONEY_BY_KO *
+          this.config.TX_FEE_MINE_MONEY
+      );
+      /*} else {
         this.addOwnershipTo(
           tx.sender,
           tx.contentHash,
@@ -67,7 +71,7 @@ export default class UTXOPool {
           tx.contentHash,
           this.config.TX_FEE_MINE_OWNERSHIP
         );
-      }
+      }*/
     }
   }
 
@@ -125,20 +129,28 @@ export default class UTXOPool {
   }
 
   isTXValid(tx) {
+    // if (this.txPool.length > 0) console.log(this.txPool);
+    if (this.isHashExisting(tx.hash)) {
+      console.error(`Hash ${tx.hash} already exist, transaction isn't valid`);
+      return false;
+    }
+
     if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_OWNERSHIP) {
       const ownership = this.getOwnershipForSenderAnId(tx.sender, tx.ownership);
       return ownership && tx.amount <= ownership.amount && tx.amount > 0;
     } else if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_CONTENT) {
       //Test if poster got the money for the post
       const senderMoney = this.getMoneyForSender(tx.sender);
-      return (
-        this.config.CONTENT_FUNGIBLE ||
-        tx.contentSizeKo < this.config.TX_MAX_KO_SIZE_BEFORE_CHARGE ||
-        tx.ccontentSizeKo * this.config.MONEY_BY_KO - senderMoney >= 0
-      );
-    } else if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_CONTENT) {
+      return senderMoney - tx.contentSizeKo * this.config.MONEY_BY_KO >= 0;
+    } else if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_MONEY) {
+      const senderMoney = this.getMoneyForSender(tx.sender);
+      return senderMoney - tx.amount >= 0;
     }
     return true;
+  }
+
+  isHashExisting(hash) {
+    return this.txPool.find((h) => h === hash) !== undefined;
   }
 
   static TX_TYPE_NONE = 0;
