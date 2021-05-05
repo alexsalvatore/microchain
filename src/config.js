@@ -1,15 +1,37 @@
 import cryptojs from "crypto-js";
 const { SHA256, MD5 } = cryptojs;
 
+/**
+ * Class to init blockchain's Config
+ * This object will be added has hash in each blocks
+ * all mined block will be invalid if you change the config of the chain
+ *
+ * @param {any} conf - the list of configuation param you want to add.
+ *
+ * - {int} BLOCK_MAX_SIZE : max size of the block, default is 2000;
+ * - {int} BLOCK_MIN_DIFFICULTY : minimum difficulty for hashing, default is 3;
+ * - {int} BLOCK_HASH_RATE_AVERAGE : number of blocks to use to determine the average of hash rate and calculate difficulty, default is 1;
+ * - {int} BLOCK_MAX_DIFFICULTY : max difficulty, default is 9;
+ * - {int} BLOCK_HASH_RATE_BY_DAY : numb of block we want to make by day ,default is 24;
+ * - {string} BLOCK_HASH_METHOD : the hash method to use the chain, 'SHA265' or 'MD5', default is 'SHA256';
+ * - {int} TX_CONTENT_EXPIRATION_HOURS : how many hours is store the content in a transaction before being cleaned? default is 24;
+ * - {int} TX_CONTENT_MAX_SIZE_KO : max size in KO for a content, default is 250;
+ * - {int} TX_MAX_SIZE_KO : max size in Ko of a transaction if we take off the content, default is 0.75;
+ * - {int} BLOCK_MAX_SIZE_KO : max size in Ko for teh block, default is 300;
+ * - { string []} FOUNDERS : list of the public of blockchain founders, used for future administration of the chain.
+ * - {} GENESIS_BLOCK : the params of the genesis block of the chain, heigth 0
+ * - {int} MONEY_BY_BLOCK : the money created by block, default is 15.
+ * - {int} MONEY_BY_KO : the money by Ko to post a content, default is 1.
+ * - {int} TX_FEE_MINE_MONEY : tax fee for mining a transaction of money, as ratio, default is 0.1.
+ * - {int} TX_FEE_MINE_OWNERSHIP : tax fee for mining a transaction of ownership, as ratio, default is 0.1.
+ * - {int} TX_FEE_MINE_CONTENT: tax fee for mining a transaction of content, as ratio, default is 0.25.
+ */
 export default class Config {
   constructor(conf) {
     /*this.CONTENT_FUNGIBLE =
       conf && conf.CONTENT_FUNGIBLE !== undefined
         ? conf.CONTENT_FUNGIBLE
         : true;*/
-
-    this.BLOCK_MAX_SIZE =
-      conf && conf.BLOCK_MAX_SIZE ? conf.BLOCK_MAX_SIZE : 2000;
 
     this.BLOCK_MIN_DIFFICULTY =
       conf && conf.BLOCK_MIN_DIFFICULTY ? conf.BLOCK_MIN_DIFFICULTY : 3;
@@ -59,10 +81,5 @@ export default class Config {
 
     this.TX_FEE_MINE_CONTENT =
       conf && conf.TX_FEE_MINE_CONTENT ? conf.TX_FEE_MINE_CONTENT : 0.25;
-
-    this.TX_MAX_KO_SIZE_BEFORE_CHARGE =
-      conf && conf.TX_MAX_KO_SIZE_BEFORE_CHARGE
-        ? conf.TX_MAX_KO_SIZE_BEFORE_CHARGE
-        : 1;
   }
 }
