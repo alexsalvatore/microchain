@@ -9,7 +9,8 @@
     "testUTXO": "node tests/testUTXO.js",
     "testDifficulty": "node tests/testDifficulty.js",
     "testExp": "node tests/testExpirable.js",
-    "testDiagnostic": "node tests/testDiagnostic.js"
+    "testDiagnostic": "node tests/testDiagnostic.js",
+    "doc": "jsdoc -c jsdoc.json"
   },
   "author": "Alexandre Salvatore",
   "license": "ISC",
@@ -18,5 +19,8 @@
     "elliptic": "^6.5.4",
     "events": "^3.3.0",
     "ramda": "^0.27.1"
+  },
+  "devDependencies": {
+    "jsdoc": "^3.6.6"
   }
 }
