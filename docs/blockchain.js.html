@@ -1,4 +1,32 @@
-import Block from "./block.js";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: blockchain.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: blockchain.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import Block from "./block.js";
 import UTXOPool from "./utxopool.js";
 import { EventEmitter } from "events";
 import { unfold, reverse, values, forEach } from "ramda";
@@ -6,7 +34,7 @@ import Config from "./config.js";
 import { Transaction } from "./index.js";
 
 /**
- * Class Blockchain, singleton managing the whole Blockchain
+ * Class Blockchain, singleton managing the whole Blockcahin
  */
 class Blockchain extends EventEmitter {
   static _instance;
@@ -18,7 +46,7 @@ class Blockchain extends EventEmitter {
   /**
    *
    * @param {Config} conf the config of the chain. be careful, all the mined blocks will be invalid if you change the config of the chain.
-   * @param {array<Block>} blocks the list of already mined block of the chain
+   * @param {array&lt;Block>} blocks the list of already mined block of the chain
    * @returns {Blockchain} return a Blockchain instance
    */
   static init(conf, blocks = null) {
@@ -103,9 +131,6 @@ class Blockchain extends EventEmitter {
     return this.chain[this.chain.length - 1];
   }
 
-  /**
-   * @property {array<Block>} longestBlockchain return the highest chain of blocks
-   */
   get longestBlockchain() {
     if (!this.chain || this.chain.length === 0) return [];
     const blocksDict = values(this.chain);
@@ -120,11 +145,6 @@ class Blockchain extends EventEmitter {
     return reverse(unfold(getParent, this.lastBlock));
   }
 
-  /**
-   * Return a block for a given height
-   * @param {number} height a given height
-   * @returns {Block | undefined}
-   */
   getBlockForHeight(height) {
     const longuestBlockchain = this.longestBlockchain;
     const blockOld = longuestBlockchain.find(
@@ -134,11 +154,6 @@ class Blockchain extends EventEmitter {
     return blockOld;
   }
 
-  /**
-   * Calculate what should be the difficulty for a given block
-   * @param {Block} blockNew
-   * @returns {number} the difficulty that should be the block
-   */
   getDifficultyForBlock(blockNew) {
     const longuestBlockchain = this.longestBlockchain;
 
@@ -171,14 +186,14 @@ class Blockchain extends EventEmitter {
     // Create a margin for difficulty increase or decrease
     const errorMargin = 0.25;
     let finalDiff = previousBlock.difficulty;
-    if (rateDetla < 1 - errorMargin) {
+    if (rateDetla &lt; 1 - errorMargin) {
       finalDiff++;
     } else if (rateDetla > 1 + errorMargin) {
       finalDiff--;
     }
 
     // console.log("Difficulty final", finalDiff);
-    if (finalDiff < this.config.BLOCK_MIN_DIFFICULTY)
+    if (finalDiff &lt; this.config.BLOCK_MIN_DIFFICULTY)
       finalDiff = this.config.BLOCK_MIN_DIFFICULTY;
     if (finalDiff > this.config.BLOCK_MAX_DIFFICULTY)
       finalDiff = this.config.BLOCK_MAX_DIFFICULTY;
@@ -186,21 +201,11 @@ class Blockchain extends EventEmitter {
     return finalDiff;
   }
 
-  /**
-   * return a block for a given hash
-   * @param {string} prevHash the hash to search
-   * @returns {Block | undefined}
-   */
   getParent(prevHash) {
     const parentBlock = this.chain.find((b) => b.hash === prevHash);
     return parentBlock;
   }
 
-  /**
-   * Try to add a block to the chain if the block is valid
-   * @param {Block} block the block to add
-   * @returns {boolean} return true or false, if it's a valid block or not
-   */
   addBlock(block) {
     /*console.log("--------------");
     console.log(
@@ -216,13 +221,13 @@ class Blockchain extends EventEmitter {
     // Test if the block is valid in reguard of the last block
     const parentBlock = this.getParent(block.prevHash);
 
-    if (!parentBlock && block.height !== 0) {
+    if (!parentBlock &amp;&amp; block.height !== 0) {
       console.error(`Block ${block.height} has no parent!`);
       return false;
     }
 
     if (
-      parentBlock &&
+      parentBlock &amp;&amp;
       (parentBlock.height - 1 == block.height || parentBlock.ts >= block.ts)
     ) {
       console.error(
@@ -250,9 +255,6 @@ class Blockchain extends EventEmitter {
     return true;
   }
 
-  /**
-   * @property {function} purgeChain clear all the expired content of the chain
-   */
   purgeChain() {
     this.chain.forEach((block) => {
       block.purgeTX();
@@ -291,7 +293,7 @@ class Blockchain extends EventEmitter {
     const cost = this.getTransactionCost(tx);
     const money = this.utxoPool.getMoneyForSender(publicKey);
     console.log(`cost: ${cost} V. money you have: ${money}`);
-    return cost <= money;
+    return cost &lt;= money;
   }
 
   logBlockchain() {
@@ -309,10 +311,10 @@ class Blockchain extends EventEmitter {
   }
 
   static _sortBlocksByHeight(b1, b2) {
-    if (b1.height < b2.height) {
+    if (b1.height &lt; b2.height) {
       return -1;
     }
-    if (b1.height < b2.height) {
+    if (b1.height &lt; b2.height) {
       return 1;
     }
     return 0;
@@ -320,3 +322,26 @@ class Blockchain extends EventEmitter {
 }
 
 export default Blockchain;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Blockchain.html">Blockchain</a></li><li><a href="Config.html">Config</a></li><li><a href="Transaction.html">Transaction</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_toStringToSign">_toStringToSign</a></li><li><a href="global.html#isValid">isValid</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Wed May 05 2021 17:43:09 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

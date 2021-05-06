@@ -2,7 +2,7 @@ import cryptojs from "crypto-js";
 const { SHA256, MD5 } = cryptojs;
 
 /**
- * Class to init blockchain's Config, all mined block will be invalid if you change the config of the chain
+ * Class to init blockchain's Config. the config of the chain. be careful, all the mined blocks will be invalid if you change the config of the chain
  */
 class Config {
   /**
