@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Config - Microchain 💴</title>
+    
+    <meta name="description" content="Microchain is a blockchain Lib specially designed to run in browser & Node JS environnement, used to propel forum" />
+    
+        <meta name="keywords" content="blockchain, node, html5, crypto" />
+        <meta name="keyword" content="blockchain, node, html5, crypto" />
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Block.html">Block</a><ul class='methods'><li data-type='method'><a href="Block.html#getTransactions">getTransactions</a></li><li data-type='method'><a href="Block.html#isTooBig">isTooBig</a></li><li data-type='method'><a href="Block.html#isValid">isValid</a></li><li data-type='method'><a href="Block.html#mine">mine</a></li><li data-type='method'><a href="Block.html#purgeTX">purgeTX</a></li><li data-type='method'><a href="Block.html#sign">sign</a></li></ul></li><li><a href="Blockchain.html">Blockchain</a><ul class='methods'><li data-type='method'><a href="Blockchain.html#.getInstance">getInstance</a></li><li data-type='method'><a href="Blockchain.html#.init">init</a></li><li data-type='method'><a href="Blockchain.html#addBlock">addBlock</a></li><li data-type='method'><a href="Blockchain.html#enoughtMoneyFrom">enoughtMoneyFrom</a></li><li data-type='method'><a href="Blockchain.html#getBlockForHeight">getBlockForHeight</a></li><li data-type='method'><a href="Blockchain.html#getDifficultyForBlock">getDifficultyForBlock</a></li><li data-type='method'><a href="Blockchain.html#getParent">getParent</a></li><li data-type='method'><a href="Blockchain.html#getTransactionCost">getTransactionCost</a></li><li data-type='method'><a href="Blockchain.html#purgeChain">purgeChain</a></li></ul></li><li><a href="Config.html">Config</a></li><li><a href="Transaction.html">Transaction</a><ul class='methods'><li data-type='method'><a href="Transaction.html#calculateContentSize">calculateContentSize</a></li><li data-type='method'><a href="Transaction.html#calculateTXSize">calculateTXSize</a></li><li data-type='method'><a href="Transaction.html#isTooBig">isTooBig</a></li><li data-type='method'><a href="Transaction.html#isValid">isValid</a></li><li data-type='method'><a href="Transaction.html#log">log</a></li><li data-type='method'><a href="Transaction.html#sign">sign</a></li><li data-type='method'><a href="Transaction.html#stringifyNoContent">stringifyNoContent</a></li></ul></li><li><a href="Wallet.html">Wallet</a><ul class='methods'><li data-type='method'><a href="Wallet.html#.verifySignature">verifySignature</a></li><li data-type='method'><a href="Wallet.html#createTransaction">createTransaction</a></li><li data-type='method'><a href="Wallet.html#generatePair">generatePair</a></li><li data-type='method'><a href="Wallet.html#sign">sign</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Config</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        Config
+        </h2>
+        
+            <div class="class-description usertext"><p>Class to init blockchain's Config. the config of the chain. be careful, all the mined blocks will be invalid if you change the config of the chain</p></div>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+    
+    <h2>Constructor</h2>
+    
+
+    <h4 class="name" id="Config"><span class="type-signature"></span>new Config<span class="signature">(conf)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="config.js.html">config.js</a>, <a href="config.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>BLOCK_MAX_SIZE</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>max size of the block, default is 2000;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>BLOCK_MIN_DIFFICULTY</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>minimum difficulty for hashing, default is 3;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>BLOCK_HASH_RATE_AVERAGE</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>number of blocks to use to determine the average of hash rate and calculate difficulty, default is 1;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>BLOCK_MAX_DIFFICULTY</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>max difficulty, default is 9;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>BLOCK_HASH_RATE_BY_DAY</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>numb of block we want to make by day ,default is 24;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>BLOCK_HASH_METHOD</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">'SHA265'</span>
+|
+
+<span class="param-type">'MD5'</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the hash method to use the chain, 'SHA265' or 'MD5', default is 'SHA256';</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>TX_CONTENT_EXPIRATION_HOURS</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>how many hours is store the content in a transaction before being cleaned? default is 24;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>TX_CONTENT_MAX_SIZE_KO</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>max size in KO for a content, default is 250;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>TX_MAX_SIZE_KO</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>max size in Ko of a transaction if we take off the content, default is 0.75;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>BLOCK_MAX_SIZE_KO</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>max size in Ko for teh block, default is 300;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>FOUNDERS</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array.&lt;string></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>list of the public of blockchain founders, used for future administration of the chain.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>GENESIS_BLOCK</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the params of the genesis block of the chain, heigth 0</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>MONEY_BY_BLOCK</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the money created by block, default is 15.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>MONEY_BY_KO</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the money by Ko to post a content, default is 1.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>TX_FEE_MINE_MONEY</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>tax fee for mining a transaction of money, as ratio, default is 0.1.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>TX_FEE_MINE_OWNERSHIP</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>tax fee for mining a transaction of ownership, as ratio, default is 0.1.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>TX_FEE_MINE_CONTENT</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>tax fee for mining a transaction of content, as ratio, default is 0.25.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<div class="description usertext">
+    <p>Contructor method of the Config object</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>conf</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the list of configuation param you want to add.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Thu May 06 2021 12:11:44 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

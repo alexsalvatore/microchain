@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Home - Microchain 💴</title>
+    
+    <meta name="description" content="Microchain is a blockchain Lib specially designed to run in browser & Node JS environnement, used to propel forum" />
+    
+        <meta name="keywords" content="blockchain, node, html5, crypto" />
+        <meta name="keyword" content="blockchain, node, html5, crypto" />
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Block.html">Block</a><ul class='methods'><li data-type='method'><a href="Block.html#getTransactions">getTransactions</a></li><li data-type='method'><a href="Block.html#isTooBig">isTooBig</a></li><li data-type='method'><a href="Block.html#isValid">isValid</a></li><li data-type='method'><a href="Block.html#mine">mine</a></li><li data-type='method'><a href="Block.html#purgeTX">purgeTX</a></li><li data-type='method'><a href="Block.html#sign">sign</a></li></ul></li><li><a href="Blockchain.html">Blockchain</a><ul class='methods'><li data-type='method'><a href="Blockchain.html#.getInstance">getInstance</a></li><li data-type='method'><a href="Blockchain.html#.init">init</a></li><li data-type='method'><a href="Blockchain.html#addBlock">addBlock</a></li><li data-type='method'><a href="Blockchain.html#enoughtMoneyFrom">enoughtMoneyFrom</a></li><li data-type='method'><a href="Blockchain.html#getBlockForHeight">getBlockForHeight</a></li><li data-type='method'><a href="Blockchain.html#getDifficultyForBlock">getDifficultyForBlock</a></li><li data-type='method'><a href="Blockchain.html#getParent">getParent</a></li><li data-type='method'><a href="Blockchain.html#getTransactionCost">getTransactionCost</a></li><li data-type='method'><a href="Blockchain.html#purgeChain">purgeChain</a></li></ul></li><li><a href="Config.html">Config</a></li><li><a href="Transaction.html">Transaction</a><ul class='methods'><li data-type='method'><a href="Transaction.html#calculateContentSize">calculateContentSize</a></li><li data-type='method'><a href="Transaction.html#calculateTXSize">calculateTXSize</a></li><li data-type='method'><a href="Transaction.html#isTooBig">isTooBig</a></li><li data-type='method'><a href="Transaction.html#isValid">isValid</a></li><li data-type='method'><a href="Transaction.html#log">log</a></li><li data-type='method'><a href="Transaction.html#sign">sign</a></li><li data-type='method'><a href="Transaction.html#stringifyNoContent">stringifyNoContent</a></li></ul></li><li><a href="Wallet.html">Wallet</a><ul class='methods'><li data-type='method'><a href="Wallet.html#.verifySignature">verifySignature</a></li><li data-type='method'><a href="Wallet.html#createTransaction">createTransaction</a></li><li data-type='method'><a href="Wallet.html#generatePair">generatePair</a></li><li data-type='method'><a href="Wallet.html#sign">sign</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+
+    
+
+
+
+    
+
+
+    <section class="package">
+        <h3> </h3>		
+    </section>
+
+
+
+
+
+
+
+
+
+    
+
+
+
+    <section class="readme usertext">
+        <article><h1>Microchain 💴 (alpha)</h1>
+<p><em>Microchain</em> is a blockchain Lib specially designed to run in browser &amp; Node JS environnement, used to propel forum, allowing file posting in transactions and making theses files expirable to manage the size of the blockchain. The next coming feature will be the administration of the blockchain (content moderation, money making, forcing difficulty, etc.) with a list of public keys known as Founders, hosted in the genesis block.</p>
+<p>There is no dependence to any other blockchain infrastructure. You create your very own blockchain with few lines of javascript.</p>
+<p>:warning: <strong>It's still work in progress, please don't use it for production</strong></p>
+<h2>Links</h2>
+<ul>
+<li>Github: <a href="https://microchain.salvatore.paris">https://github.com/salvatoreparis/microchain</a></li>
+<li>Documentation: <a href="http://microchain.salvatore.paris">http://microchain.salvatore.paris</a></li>
+</ul>
+<h2>Installation</h2>
+<pre class="prettyprint source lang-bash"><code>npm i @asalvatore/microchain
+</code></pre>
+<h2>Basics</h2>
+<p>Create and add a block to the chain instance</p>
+<pre class="prettyprint source lang-javascript"><code>import { Blockchain, Wallet, Block } from &quot;../src/index.js&quot;;
+
+// initialize a wallet
+// with no option, it generate it self a public and private key
+const walletSato = new Wallet();
+
+// Get the instance of the chain. Also pass the config of it, with fees and if TX content are fungible or not.
+const chain = Blockchain.init({
+  // Pass the genesis block param has options
+  // It's the config of your blockchain!
+  // If you change it, the ancients mined block wont be accepted
+  GENESIS_BLOCK: {
+    publisher: walletSato.publicKey,
+  },
+});
+
+// Create and sign a transaction
+const transaction1 = walletSato.createTransaction({
+  sender: walletSato.publicKey,
+  content: &quot;https://pbs.twimg.com/media/EwxqyQdXMAAlqIb?format=jpg&name=medium&quot;,
+});
+
+const block1 = new Block({
+  height: chain.lastBlock.height + 1,
+  publisher: walletSato.publicKey,
+  prevHash: chain.lastBlock.hash,
+  transactions: JSON.stringify([transaction1]),
+});
+
+// Sign the block with the miner wallet
+block1.sign(walletSato);
+
+// Launch the mining process
+block1.mine();
+
+// After mining we add the block to the chain
+chain.addBlock(block1);
+
+// We log to see if all was added to the chain
+chain.logChain();
+chain.logUTXO();
+</code></pre>
+<p>To listen events on the chain you can use <em>blockAdded</em>.</p>
+<pre class="prettyprint source lang-javascript"><code>chain.on(&quot;blockAdded&quot;, () => {
+  let data = JSON.stringify(chain.chain);
+  fs.writeFileSync(&quot;chain.json&quot;, data);
+});
+</code></pre>
+<h2>Create expirable content</h2>
+<p>Expirable content is a content hosted in a transaction. Blocks need to host it till the expiration date. In the following exeample you add <em>TX_CONTENT_EXPIRATION_HOURS</em> , which is the expiration limit for content to the config (24h by default), and add your data to the transaction <em>content</em> propretie. Example in <em>tests/testExpirable.js</em>.</p>
+<ul>
+<li><strong>MONEY_BY_BLOCK</strong> is the amount of money you get by a mined block.</li>
+<li><strong>MONEY_BY_KO</strong> is the amount of money you need by Ko to post content in transactions (note than there's also properties to manage the miningfees).</li>
+<li><strong>TX_CONTENT_MAX_SIZE_KO</strong> the max size of a transaction content in Ko, default is 250 Ko.</li>
+<li><strong>BLOCK_MAX_SIZE_KO</strong> the max size of a block in Ko, default is 300 Ko.</li>
+</ul>
+<pre class="prettyprint source lang-javascript"><code>import { Blockchain, Wallet, Block } from &quot;../src/index.js&quot;;
+import fs from &quot;fs&quot;;
+import { img2 } from &quot;./assets/img2.js&quot;;
+
+let blocks = null;
+
+// try to read if file
+if (fs.existsSync(&quot;chainExpirable.json&quot;)) {
+  const rawdata = fs.readFileSync(&quot;chainExpirable.json&quot;);
+  if (rawdata) blocks = JSON.parse(rawdata);
+}
+
+// Init the wallet using existing public & private keys
+const walletSato = new Wallet(
+  &quot;04820be6a65e928d52e92b8bfe7827de7a09d3afa1356ef81f6f8528b44ba84393d32b44e4590fa9ca6b9576a6d7f2f0467af33d8f68f83e1359a8e4981f4ed5f6&quot;,
+  &quot;b6d7cf41b14a972dc3b294ea9ec0c763886e7cb9699214192f2479791ec845e8&quot;
+);
+
+const chain = Blockchain.init(
+  // It's the config of your blockchain!
+  // If you change it, the ancients mined block wont be accepted
+  {
+    // The hash method use to hash block and transactions
+    BLOCK_HASH_METHOD: &quot;MD5&quot;,
+    // The maximum difficulty to hash a block (number of 0 at the start of the block)
+    BLOCK_MAX_DIFFICULTY: 5,
+    // When the content of block expire to liberate size in the chain?
+    TX_CONTENT_EXPIRATION_HOURS: 12,
+    // Money you earn by block
+    MONEY_BY_BLOCK: 15,
+    // Money you need to use by KO of content KO
+    MONEY_BY_KO: 1.2,
+    GENESIS_BLOCK: {
+      // Public key of the publisher of the genesis
+      publisher: walletSato.publicKey,
+    },
+  },
+  blocks
+);
+
+const transaction1 = walletSato.createTransaction({
+  sender: walletSato.publicKey,
+  content: img2,
+});
+transaction1.sign(walletSato);
+
+//Return if there is enought money for this transaction for this transaction
+chain.enoughtMoneyFrom(transaction1, walletSato.publicKey);
+chain.logUTXO();
+
+const block = new Block({
+  height:
+    chain.lastBlock && (chain.lastBlock.height || chain.lastBlock.height === 0)
+      ? chain.lastBlock.height + 1
+      : 0,
+  publisher: walletSato.publicKey,
+  transactions: JSON.stringify([transaction1]),
+  prevHash: chain.lastBlock && chain.lastBlock.hash ? chain.lastBlock.hash : &quot;&quot;,
+});
+
+// Don't forget to sign the block with your wallet!
+block.sign(walletSato);
+// Launch the mining, it couls take a while!
+block.mine();
+// also don't forget to add the block to the chain!
+chain.addBlock(block);
+</code></pre>
+<h2>Change log</h2>
+<h6>V 1.1.2 (fix)</h6>
+<ul>
+<li>Take off the non-fungible content in config. Not bahaving properly.</li>
+<li>use the <em>addBlock</em> method for the genesis block</li>
+</ul>
+<h6>V 1.1.0</h6>
+<ul>
+<li>Added expirable content in transaction.</li>
+<li>added a channel property in transaction propertie, for crypted conversation when content is crypted.</li>
+<li>added the config's Hash to all block mined.</li>
+<li>added the <em>GENESIS_BLOCK</em> to config. It's the properties you want in the geneseis block</li>
+</ul>
+<h6>V 1.0.11</h6>
+<ul>
+<li>Added an number of average of the last <em>n</em> blocks to calculate the difficulty, but the result isn't very convincing. You can use it with the <em>BLOCK_HASH_RATE_AVERAGE</em> property of the <em>Config</em> class. It's 1 by default.</li>
+<li>Added the &quot;blockAdded&quot; event emitters on the chain instance.</li>
+<li>The chain constructor can know take an existing list of block as second parameter.</li>
+<li>Difficulty is now a comparison between block <em>height-1</em> and block <em>height-BLOCK_HASH_RATE_AVERAGE-1</em>. It's to keep the diffiiculty constant during mining.</li>
+<li>Renamed the class Chain to Blockchain, because <em>chain.chain</em> is not pretty.</li>
+<li>Checking block validity before adding them to the chain, especialy difficulty, timestamp and height coherence.</li>
+</ul>
+<h6>V 1.0.10</h6>
+<ul>
+<li>Property <em>BLOCK_HASH_METHOD</em> added to the <em>Config</em> class, you can pass &quot;SHA256&quot; or &quot;MD5&quot;</li>
+<li>Added difficulty management. use this script to test an Hash rate of 2 minutes.</li>
+</ul>
+<pre class="prettyprint source"><code>npm run testDifficulty
+</code></pre>
+<h2>To Do</h2>
+<ul>
+<li>Send <em>instruction(s)</em> form the <em>founders</em> of the chain to administrate it.</li>
+<li>re-initiate the UTXOPool with the longuest chain after each block add.</li>
+<li>manage block and transaction announce with webRTC?</li>
+</ul>
+<h2>Author</h2>
+<p>I am Alexandre Salvatore &amp; you can contact me on Twitter
+<a href="https://twitter.com/salvator_io">https://twitter.com/salvator_io</a></p>
+<p>Or by mail at <a href="alexander.salvatore@gmail.com">alexander.salvatore@gmail.com</a></p></article>
+    </section>
+
+
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Thu May 06 2021 12:11:44 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
