@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Global - Microchain 💴</title>
+    <title>Block - Microchain 💴</title>
     
     <meta name="description" content="Microchain is a blockchain Lib specially designed to run in browser & Node JS environnement, used to propel forum" />
     
@@ -33,12 +33,12 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Blockchain.html">Blockchain</a><ul class='methods'><li data-type='method'><a href="Blockchain.html#.getInstance">getInstance</a></li><li data-type='method'><a href="Blockchain.html#.init">init</a></li><li data-type='method'><a href="Blockchain.html#addBlock">addBlock</a></li><li data-type='method'><a href="Blockchain.html#getBlockForHeight">getBlockForHeight</a></li><li data-type='method'><a href="Blockchain.html#getDifficultyForBlock">getDifficultyForBlock</a></li><li data-type='method'><a href="Blockchain.html#getParent">getParent</a></li><li data-type='method'><a href="Blockchain.html#purgeChain">purgeChain</a></li></ul></li><li><a href="Config.html">Config</a></li><li><a href="module.exports.html">exports</a></li><li><a href="Transaction.html">Transaction</a><ul class='methods'><li data-type='method'><a href="Transaction.html#calculateContentSize">calculateContentSize</a></li><li data-type='method'><a href="Transaction.html#calculateTXSize">calculateTXSize</a></li><li data-type='method'><a href="Transaction.html#isTooBig">isTooBig</a></li><li data-type='method'><a href="Transaction.html#isValid">isValid</a></li><li data-type='method'><a href="Transaction.html#log">log</a></li><li data-type='method'><a href="Transaction.html#sign">sign</a></li><li data-type='method'><a href="Transaction.html#stringifyNoContent">stringifyNoContent</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#_toStringToSign">_toStringToSign</a></li><li><a href="global.html#expireIn">expireIn</a></li><li><a href="global.html#getTransactions">getTransactions</a></li><li><a href="global.html#hasExpired">hasExpired</a></li><li><a href="global.html#isTooBig">isTooBig</a></li><li><a href="global.html#isValid">isValid</a></li><li><a href="global.html#mine">mine</a></li><li><a href="global.html#purgeTX">purgeTX</a></li><li><a href="global.html#sign">sign</a></li><li><a href="global.html#transactionsNoContent">transactionsNoContent</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Block.html">Block</a><ul class='methods'><li data-type='method'><a href="Block.html#getTransactions">getTransactions</a></li><li data-type='method'><a href="Block.html#isTooBig">isTooBig</a></li><li data-type='method'><a href="Block.html#isValid">isValid</a></li><li data-type='method'><a href="Block.html#mine">mine</a></li><li data-type='method'><a href="Block.html#purgeTX">purgeTX</a></li><li data-type='method'><a href="Block.html#sign">sign</a></li></ul></li><li><a href="Blockchain.html">Blockchain</a><ul class='methods'><li data-type='method'><a href="Blockchain.html#.getInstance">getInstance</a></li><li data-type='method'><a href="Blockchain.html#.init">init</a></li><li data-type='method'><a href="Blockchain.html#addBlock">addBlock</a></li><li data-type='method'><a href="Blockchain.html#enoughtMoneyFrom">enoughtMoneyFrom</a></li><li data-type='method'><a href="Blockchain.html#getBlockForHeight">getBlockForHeight</a></li><li data-type='method'><a href="Blockchain.html#getDifficultyForBlock">getDifficultyForBlock</a></li><li data-type='method'><a href="Blockchain.html#getParent">getParent</a></li><li data-type='method'><a href="Blockchain.html#getTransactionCost">getTransactionCost</a></li><li data-type='method'><a href="Blockchain.html#purgeChain">purgeChain</a></li></ul></li><li><a href="Config.html">Config</a></li><li><a href="Transaction.html">Transaction</a><ul class='methods'><li data-type='method'><a href="Transaction.html#calculateContentSize">calculateContentSize</a></li><li data-type='method'><a href="Transaction.html#calculateTXSize">calculateTXSize</a></li><li data-type='method'><a href="Transaction.html#isTooBig">isTooBig</a></li><li data-type='method'><a href="Transaction.html#isValid">isValid</a></li><li data-type='method'><a href="Transaction.html#log">log</a></li><li data-type='method'><a href="Transaction.html#sign">sign</a></li><li data-type='method'><a href="Transaction.html#stringifyNoContent">stringifyNoContent</a></li></ul></li><li><a href="Wallet.html">Wallet</a><ul class='methods'><li data-type='method'><a href="Wallet.html#.verifySignature">verifySignature</a></li><li data-type='method'><a href="Wallet.html#createTransaction">createTransaction</a></li><li data-type='method'><a href="Wallet.html#generatePair">generatePair</a></li><li data-type='method'><a href="Wallet.html#sign">sign</a></li></ul></li></ul>
 </nav>
 
 <div id="main">
     
-    <h1 class="page-title">Global</h1>
+    <h1 class="page-title">Block</h1>
     
 
     
@@ -51,8 +51,10 @@
 <header>
     
         <h2>
-        
+        Block
         </h2>
+        
+            <div class="class-description usertext"><p>Class Block, create a block object</p></div>
         
     
 </header>
@@ -63,8 +65,24 @@
         
             
 
+    
+    <h2>Constructor</h2>
+    
+
+    <h4 class="name" id="Block"><span class="type-signature"></span>new Block<span class="signature">(opt)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
 <dl class="details">
 
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="block.js.html">block.js</a>, <a href="block.js.html#line26">line 26</a>
+    </li></ul></dd>
     
 
     
@@ -100,10 +118,388 @@
 
 
 
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
 
             
 
             
+
+            <td class="description last"><p>height of the block, default is 0</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>configHash</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>hash of the blockchain config, the default is get from the current blockchain insatnce</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>prevHash</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>previousblock hash</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>publisher</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>public key of the publisher</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ts</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>timestamp, default is Date.now()</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>transactions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>transaction array in the block, !it's a stringified array!</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>nonce</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>nonce to get the difficulty right</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>signature</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>signature of the block with the private key</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hash</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>hash of the block</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>difficulty</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>difficulty in regard of the chain &amp; block height, get it from Blockchain.getInstance().getDifficultyForBlock(this)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const walletSato = new Wallet();
+
+const block1 = new Block({
+ height: chain.lastBlock.height + 1,
+ publisher: walletSato.publicKey,
+ prevHash: chain.lastBlock.hash,
+ transactions: JSON.stringify([transaction1]),
+});
+
+// Sign the block with the miner wallet
+block1.sign(walletSato);
+
+// Launch the mining process
+block1.mine();
+
+// After mining we add the block to the chain
+chain.addBlock(block1);</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>opt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         
         </div>
     
@@ -136,7 +532,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="block.js.html">block.js</a>, <a href="block.js.html#line212">line 212</a>
+        <a href="block.js.html">block.js</a>, <a href="block.js.html#line236">line 236</a>
     </li></ul></dd>
     
 
@@ -247,7 +643,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="block.js.html">block.js</a>, <a href="block.js.html#line202">line 202</a>
+        <a href="block.js.html">block.js</a>, <a href="block.js.html#line226">line 226</a>
     </li></ul></dd>
     
 
@@ -359,7 +755,7 @@ in it has expired?</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="block.js.html">block.js</a>, <a href="block.js.html#line31">line 31</a>
+        <a href="block.js.html">block.js</a>, <a href="block.js.html#line58">line 58</a>
     </li></ul></dd>
     
 
@@ -468,93 +864,6 @@ in it has expired?</p></td>
 
     
 
-    <h4 class="name" id="_toStringToSign"><span class="type-signature"></span>_toStringToSign<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="block.js.html">block.js</a>, <a href="block.js.html#line59">line 59</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>Because block signature need to be without the hash &amp; signature &amp; nonce</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
     <h4 class="name" id="getTransactions"><span class="type-signature"></span>getTransactions<span class="signature">()</span><span class="type-signature"> &rarr; {array.&lt;<a href="Transaction.html">Transaction</a>>}</span></h4>
 
     
@@ -567,7 +876,7 @@ in it has expired?</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="block.js.html">block.js</a>, <a href="block.js.html#line96">line 96</a>
+        <a href="block.js.html">block.js</a>, <a href="block.js.html#line120">line 120</a>
     </li></ul></dd>
     
 
@@ -720,7 +1029,7 @@ in it has expired?</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="block.js.html">block.js</a>, <a href="block.js.html#line223">line 223</a>
+        <a href="block.js.html">block.js</a>, <a href="block.js.html#line247">line 247</a>
     </li></ul></dd>
     
 
@@ -873,7 +1182,7 @@ in it has expired?</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="block.js.html">block.js</a>, <a href="block.js.html#line106">line 106</a>
+        <a href="block.js.html">block.js</a>, <a href="block.js.html#line130">line 130</a>
     </li></ul></dd>
     
 
@@ -1015,7 +1324,7 @@ which need to check UTXO if user have enought money for operations</p></td>
 
     
 
-    <h4 class="name" id="mine"><span class="type-signature"></span>mine<span class="signature">()</span><span class="type-signature"> &rarr; {Block}</span></h4>
+    <h4 class="name" id="mine"><span class="type-signature"></span>mine<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Block.html">Block</a>}</span></h4>
 
     
 
@@ -1027,7 +1336,7 @@ which need to check UTXO if user have enought money for operations</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="block.js.html">block.js</a>, <a href="block.js.html#line243">line 243</a>
+        <a href="block.js.html">block.js</a>, <a href="block.js.html#line267">line 267</a>
     </li></ul></dd>
     
 
@@ -1153,7 +1462,7 @@ which need to check UTXO if user have enought money for operations</p></td>
     </dt>
     <dd>
         
-<span class="param-type">Block</span>
+<span class="param-type"><a href="Block.html">Block</a></span>
 
 
     </dd>
@@ -1180,7 +1489,7 @@ which need to check UTXO if user have enought money for operations</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="block.js.html">block.js</a>, <a href="block.js.html#line179">line 179</a>
+        <a href="block.js.html">block.js</a>, <a href="block.js.html#line203">line 203</a>
     </li></ul></dd>
     
 
@@ -1333,7 +1642,7 @@ which need to check UTXO if user have enought money for operations</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="block.js.html">block.js</a>, <a href="block.js.html#line41">line 41</a>
+        <a href="block.js.html">block.js</a>, <a href="block.js.html#line68">line 68</a>
     </li></ul></dd>
     
 
@@ -1465,7 +1774,7 @@ which need to check UTXO if user have enought money for operations</p></td>
             <td class="type">
             
                 
-<span class="param-type">Wallet</span>
+<span class="param-type"><a href="Wallet.html">Wallet</a></span>
 
 
             
@@ -1520,7 +1829,7 @@ which need to check UTXO if user have enought money for operations</p></td>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Thu May 06 2021 09:20:17 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Thu May 06 2021 11:36:22 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

@@ -10,12 +10,13 @@
     "testDifficulty": "node tests/testDifficulty.js",
     "testExp": "node tests/testExpirable.js",
     "testDiagnostic": "node tests/testDiagnostic.js",
-    "doc": "jsdoc -c jsdoc.json"
+    "doc": "jsdoc -c jsdoc.json --readme README.md"
   },
   "author": "Alexandre Salvatore",
   "license": "ISC",
   "dependencies": {
     "crypto-js": "^3.3.0",
+    "docdash": "^1.2.0",
     "elliptic": "^6.5.4",
     "events": "^3.3.0",
     "ramda": "^0.27.1"

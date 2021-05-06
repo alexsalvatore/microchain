@@ -1,23 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>JSDoc: Source: block.js</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <title>block.js - Microchain 💴</title>
+    
+    <meta name="description" content="Microchain is a blockchain Lib specially designed to run in browser & Node JS environnement, used to propel forum" />
+    
+        <meta name="keywords" content="blockchain, node, html5, crypto" />
+        <meta name="keyword" content="blockchain, node, html5, crypto" />
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-    <h1 class="page-title">Source: block.js</h1>
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Block.html">Block</a><ul class='methods'><li data-type='method'><a href="Block.html#getTransactions">getTransactions</a></li><li data-type='method'><a href="Block.html#isTooBig">isTooBig</a></li><li data-type='method'><a href="Block.html#isValid">isValid</a></li><li data-type='method'><a href="Block.html#mine">mine</a></li><li data-type='method'><a href="Block.html#purgeTX">purgeTX</a></li><li data-type='method'><a href="Block.html#sign">sign</a></li></ul></li><li><a href="Blockchain.html">Blockchain</a><ul class='methods'><li data-type='method'><a href="Blockchain.html#.getInstance">getInstance</a></li><li data-type='method'><a href="Blockchain.html#.init">init</a></li><li data-type='method'><a href="Blockchain.html#addBlock">addBlock</a></li><li data-type='method'><a href="Blockchain.html#enoughtMoneyFrom">enoughtMoneyFrom</a></li><li data-type='method'><a href="Blockchain.html#getBlockForHeight">getBlockForHeight</a></li><li data-type='method'><a href="Blockchain.html#getDifficultyForBlock">getDifficultyForBlock</a></li><li data-type='method'><a href="Blockchain.html#getParent">getParent</a></li><li data-type='method'><a href="Blockchain.html#getTransactionCost">getTransactionCost</a></li><li data-type='method'><a href="Blockchain.html#purgeChain">purgeChain</a></li></ul></li><li><a href="Config.html">Config</a></li><li><a href="Transaction.html">Transaction</a><ul class='methods'><li data-type='method'><a href="Transaction.html#calculateContentSize">calculateContentSize</a></li><li data-type='method'><a href="Transaction.html#calculateTXSize">calculateTXSize</a></li><li data-type='method'><a href="Transaction.html#isTooBig">isTooBig</a></li><li data-type='method'><a href="Transaction.html#isValid">isValid</a></li><li data-type='method'><a href="Transaction.html#log">log</a></li><li data-type='method'><a href="Transaction.html#sign">sign</a></li><li data-type='method'><a href="Transaction.html#stringifyNoContent">stringifyNoContent</a></li></ul></li><li><a href="Wallet.html">Wallet</a><ul class='methods'><li data-type='method'><a href="Wallet.html#.verifySignature">verifySignature</a></li><li data-type='method'><a href="Wallet.html#createTransaction">createTransaction</a></li><li data-type='method'><a href="Wallet.html#generatePair">generatePair</a></li><li data-type='method'><a href="Wallet.html#sign">sign</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">block.js</h1>
+    
 
     
 
@@ -30,7 +52,41 @@
 import Blockchain from "./blockchain.js";
 import Transaction from "./transaction.js";
 
-export default class Block {
+/**
+ * Class Block, create a block object
+ * @example
+ * const walletSato = new Wallet();
+ *
+ * const block1 = new Block({
+ *  height: chain.lastBlock.height + 1,
+ *  publisher: walletSato.publicKey,
+ *  prevHash: chain.lastBlock.hash,
+ *  transactions: JSON.stringify([transaction1]),
+ * });
+ *
+ * // Sign the block with the miner wallet
+ * block1.sign(walletSato);
+ *
+ * // Launch the mining process
+ * block1.mine();
+ *
+ * // After mining we add the block to the chain
+ * chain.addBlock(block1);
+ */
+class Block {
+  /**
+   * @property {number | undefined} height height of the block, default is 0
+   * @property {string | undefined} configHash hash of the blockchain config, the default is get from the current blockchain insatnce
+   * @property {string | undefined} prevHash previousblock hash
+   * @property {string | undefined} publisher public key of the publisher
+   * @property {number | undefined} ts timestamp, default is Date.now()
+   * @property {string | undefined} transactions transaction array in the block, !it's a stringified array!
+   * @property {number | undefined} nonce nonce to get the difficulty right
+   * @property {string | undefined} signature signature of the block with the private key
+   * @property {string} hash hash of the block
+   * @property {number} difficulty difficulty in regard of the chain &amp; block height, get it from Blockchain.getInstance().getDifficultyForBlock(this)
+   * @param {*} opt
+   */
   constructor(opt) {
     this.height = opt.height ? opt.height : 0;
     this.configHash = opt.configHash
@@ -46,12 +102,19 @@ export default class Block {
     this.difficulty = Blockchain.getInstance().getDifficultyForBlock(this);
   }
 
+  /**
+   * @property {array&lt;Transaction>} transactionsNoContent transactions in the block without the expirable content
+   */
   get transactionsNoContent() {
     return this.transactions
       ? JSON.stringify(this._transactionsNoContent(this.transactions))
       : "";
   }
 
+  /**
+   * @property {function} sign sign the block with a Wallet object
+   * @param {Wallet} wallet
+   */
   sign(wallet) {
     const tosign = this._toStringToSign();
     this.signature = wallet.sign(tosign);
@@ -67,9 +130,6 @@ export default class Block {
     return txsNoContents;
   }
 
-  /**
-   * Because block signature need to be without the hash &amp; signature &amp; nonce
-   */
   _toStringToSign() {
     return Blockchain.getInstance()
       .config.BLOCK_HASH_METHOD(
@@ -103,13 +163,19 @@ export default class Block {
     return hash;
   }
 
+  /**
+   * @property {function} getTransactions return the Transactions array in the block
+   * @returns {array&lt;Transaction>}
+   */
   getTransactions() {
     if (!this.transactionsNoContent) return [];
     return JSON.parse(this.transactionsNoContent);
   }
 
   /**
-   * Only test the block! Transaction need to be tester by the lib implementor
+   * @property {function} isValid Test if block is valid Only test the block! Not the Transactions,
+   * which need to check UTXO if user have enought money for operations
+   * @returns {boolean}
    */
   isValid() {
     // test config hash
@@ -180,6 +246,10 @@ export default class Block {
     return true;
   }
 
+  /**
+   * @property {function} purgeTX purge all expired transactions in the block
+   * @returns {void}
+   */
   purgeTX() {
     if (!this.hasExpired) {
       return false;
@@ -199,6 +269,10 @@ export default class Block {
     }
   }
 
+  /**
+   * @property {boolean} hasExpired regarding the timestamp of the block, does the transactions content
+   * in it has expired?
+   */
   get hasExpired() {
     /*console.log(
       `Height ${this.height} expired in ${expireIn / (60 * 60 * 1000)} h`
@@ -206,6 +280,9 @@ export default class Block {
     return this.expireIn &lt; 0;
   }
 
+  /**
+   * @property {number} expireIn In how much time expire transaction content?
+   */
   get expireIn() {
     const expirationHours = Blockchain.getInstance().config
       .TX_CONTENT_EXPIRATION_HOURS;
@@ -213,6 +290,10 @@ export default class Block {
     return expirationHours * 60 * 60 * 1000 - (tsNow - this.ts);
   }
 
+  /**
+   *  @property {function} isTooBig  is the block tooo big in regard to the BLOCK_MAX_SIZE_KO in the Config?
+   * @returns {boolean}
+   */
   isTooBig() {
     if (
       JSON.stringify(this).length / 1000 >
@@ -229,6 +310,10 @@ export default class Block {
     return false;
   }
 
+  /**
+   * @property {function} mine launch the mining of the block
+   * @returns {Block}
+   */
   mine() {
     while (!this._testHashDifficulty()) {
       this.nonce++;
@@ -244,6 +329,8 @@ export default class Block {
     );
   }
 }
+
+export default Block;
 </code></pre>
         </article>
     </section>
@@ -251,19 +338,21 @@ export default class Block {
 
 
 
+    
+    
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Blockchain.html">Blockchain</a></li><li><a href="Config.html">Config</a></li><li><a href="Transaction.html">Transaction</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_toStringToSign">_toStringToSign</a></li><li><a href="global.html#isValid">isValid</a></li></ul>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Thu May 06 2021 08:55:23 GMT+0200 (Central European Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Thu May 06 2021 11:36:22 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
 </body>
 </html>

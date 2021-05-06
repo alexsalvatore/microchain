@@ -11,6 +11,14 @@
     },
     "opts":{
         "recurse": true,
-        "destination": "./docs/"
+        "destination": "./docs/",
+        "template": "node_modules/docdash"
+    },
+    "docdash": {
+        "meta": {                       
+            "title": "Microchain 💴",                
+            "description": "Microchain is a blockchain Lib specially designed to run in browser & Node JS environnement, used to propel forum",          
+            "keyword": "blockchain, node, html5, crypto"
+        }
     }
 }

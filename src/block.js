@@ -2,7 +2,41 @@ import Wallet from "./wallet.js";
 import Blockchain from "./blockchain.js";
 import Transaction from "./transaction.js";
 
-export default class Block {
+/**
+ * Class Block, create a block object
+ * @example
+ * const walletSato = new Wallet();
+ *
+ * const block1 = new Block({
+ *  height: chain.lastBlock.height + 1,
+ *  publisher: walletSato.publicKey,
+ *  prevHash: chain.lastBlock.hash,
+ *  transactions: JSON.stringify([transaction1]),
+ * });
+ *
+ * // Sign the block with the miner wallet
+ * block1.sign(walletSato);
+ *
+ * // Launch the mining process
+ * block1.mine();
+ *
+ * // After mining we add the block to the chain
+ * chain.addBlock(block1);
+ */
+class Block {
+  /**
+   * @property {number | undefined} height height of the block, default is 0
+   * @property {string | undefined} configHash hash of the blockchain config, the default is get from the current blockchain insatnce
+   * @property {string | undefined} prevHash previousblock hash
+   * @property {string | undefined} publisher public key of the publisher
+   * @property {number | undefined} ts timestamp, default is Date.now()
+   * @property {string | undefined} transactions transaction array in the block, !it's a stringified array!
+   * @property {number | undefined} nonce nonce to get the difficulty right
+   * @property {string | undefined} signature signature of the block with the private key
+   * @property {string} hash hash of the block
+   * @property {number} difficulty difficulty in regard of the chain & block height, get it from Blockchain.getInstance().getDifficultyForBlock(this)
+   * @param {*} opt
+   */
   constructor(opt) {
     this.height = opt.height ? opt.height : 0;
     this.configHash = opt.configHash
@@ -18,12 +52,19 @@ export default class Block {
     this.difficulty = Blockchain.getInstance().getDifficultyForBlock(this);
   }
 
+  /**
+   * @property {array<Transaction>} transactionsNoContent transactions in the block without the expirable content
+   */
   get transactionsNoContent() {
     return this.transactions
       ? JSON.stringify(this._transactionsNoContent(this.transactions))
       : "";
   }
 
+  /**
+   * @property {function} sign sign the block with a Wallet object
+   * @param {Wallet} wallet
+   */
   sign(wallet) {
     const tosign = this._toStringToSign();
     this.signature = wallet.sign(tosign);
@@ -39,9 +80,6 @@ export default class Block {
     return txsNoContents;
   }
 
-  /**
-   * Because block signature need to be without the hash & signature & nonce
-   */
   _toStringToSign() {
     return Blockchain.getInstance()
       .config.BLOCK_HASH_METHOD(
@@ -75,13 +113,19 @@ export default class Block {
     return hash;
   }
 
+  /**
+   * @property {function} getTransactions return the Transactions array in the block
+   * @returns {array<Transaction>}
+   */
   getTransactions() {
     if (!this.transactionsNoContent) return [];
     return JSON.parse(this.transactionsNoContent);
   }
 
   /**
-   * Only test the block! Transaction need to be tester by the lib implementor
+   * @property {function} isValid Test if block is valid Only test the block! Not the Transactions,
+   * which need to check UTXO if user have enought money for operations
+   * @returns {boolean}
    */
   isValid() {
     // test config hash
@@ -152,6 +196,10 @@ export default class Block {
     return true;
   }
 
+  /**
+   * @property {function} purgeTX purge all expired transactions in the block
+   * @returns {void}
+   */
   purgeTX() {
     if (!this.hasExpired) {
       return false;
@@ -171,6 +219,10 @@ export default class Block {
     }
   }
 
+  /**
+   * @property {boolean} hasExpired regarding the timestamp of the block, does the transactions content
+   * in it has expired?
+   */
   get hasExpired() {
     /*console.log(
       `Height ${this.height} expired in ${expireIn / (60 * 60 * 1000)} h`
@@ -178,6 +230,9 @@ export default class Block {
     return this.expireIn < 0;
   }
 
+  /**
+   * @property {number} expireIn In how much time expire transaction content?
+   */
   get expireIn() {
     const expirationHours = Blockchain.getInstance().config
       .TX_CONTENT_EXPIRATION_HOURS;
@@ -185,6 +240,10 @@ export default class Block {
     return expirationHours * 60 * 60 * 1000 - (tsNow - this.ts);
   }
 
+  /**
+   *  @property {function} isTooBig  is the block tooo big in regard to the BLOCK_MAX_SIZE_KO in the Config?
+   * @returns {boolean}
+   */
   isTooBig() {
     if (
       JSON.stringify(this).length / 1000 >
@@ -201,6 +260,10 @@ export default class Block {
     return false;
   }
 
+  /**
+   * @property {function} mine launch the mining of the block
+   * @returns {Block}
+   */
   mine() {
     while (!this._testHashDifficulty()) {
       this.nonce++;
@@ -216,3 +279,5 @@ export default class Block {
     );
   }
 }
+
+export default Block;

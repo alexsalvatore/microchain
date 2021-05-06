@@ -2,10 +2,33 @@ import elliptic from "elliptic";
 import Transaction from "./transaction.js";
 const ec = new elliptic.ec("secp256k1");
 
-export default class Wallet {
+/**
+ * Class Wallet
+ * Manage public and private kesy of users
+ * @example
+ *
+ * const walletSato = new Wallet();
+ *
+ * console.log("****************************");
+ * console.log("Public key: " + walletSato.publicKey);
+ * console.log("Private key: " + walletSato.privateKey);
+ * console.log("****************************");
+ *
+ */
+class Wallet {
+  /**
+   * @property {string} publicKey the public key
+   * @property {string} privateKey the private key, plz keep it private!
+   */
   publicKey;
   privateKey;
 
+  /**
+   * Instantiate the wallet
+   * if no properties are provided, the wallet generate a key pairs himself
+   * @param {string | undefined} publicKey
+   * @param {string | undefined} privateKey
+   */
   constructor(publicKey, privateKey) {
     //If no value we generate the values
     if (!publicKey) {
@@ -16,18 +39,31 @@ export default class Wallet {
     }
   }
 
+  /**
+   * @property {function} generatePair method generating a key pair
+   */
   generatePair() {
     const keypair = ec.genKeyPair();
     this.publicKey = keypair.getPublic("hex");
     this.privateKey = keypair.getPrivate("hex");
   }
 
+  /**
+   * @property {function} createTransaction method returning a signed transaction
+   * @param {*} transactionOpt
+   * @returns {Transaction}
+   */
   createTransaction(transactionOpt) {
     const transaction = new Transaction(transactionOpt);
     transaction.sign(this);
     return transaction;
   }
 
+  /**
+   * @property {function} sign method returning a signed message
+   * @param {string} message
+   * @returns {string}
+   */
   sign(message) {
     try {
       const keypair = ec.keyFromPrivate(this.privateKey, "hex");
@@ -40,6 +76,13 @@ export default class Wallet {
     }
   }
 
+  /**
+   * @property {function} verifySignature method returning if signed message is auhtentic or not
+   * @param {string} message
+   * @param {string} signature
+   * @param {string} publicKey
+   * @returns {boolean}
+   */
   static verifySignature(message, signature, publicKey) {
     try {
       const keypair = ec.keyFromPublic(publicKey, "hex");
@@ -49,3 +92,5 @@ export default class Wallet {
     }
   }
 }
+
+export default Wallet;

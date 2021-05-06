@@ -303,11 +303,22 @@ class Blockchain extends EventEmitter {
     }
   }
 
+  /**
+   * @property {function} getTransactionCost return the cost in $ of a transaction
+   * @param {Transaction} tx
+   * @returns {number}
+   */
   getTransactionCost(tx) {
     if (tx.contentSizeKo) return this.config.MONEY_BY_KO * tx.contentSizeKo;
     return 0;
   }
 
+  /**
+   * @property {function} enoughtMoneyFrom return if a public key has enought money for a transaction
+   * @param {Transaction} tx
+   * @param {string} publicKey
+   * @returns {boolean}
+   */
   enoughtMoneyFrom(tx, publicKey) {
     const cost = this.getTransactionCost(tx);
     const money = this.utxoPool.getMoneyForSender(publicKey);
