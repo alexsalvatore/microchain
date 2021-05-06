@@ -3,7 +3,9 @@ import { Blockchain, Wallet, Block } from "../src/index.js";
 const walletSato = new Wallet();
 
 // Get the instance of the chain. Also pass the config of it, with fees and if TX content are fungible or not.
-const chain = Blockchain.init();
+const chain = Blockchain.init({
+  GENESIS_BLOCK: { publisher: walletSato.publicKey },
+});
 
 // Create and sign a transaction
 const transaction1 = walletSato.createTransaction({

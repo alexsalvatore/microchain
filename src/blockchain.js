@@ -46,7 +46,7 @@ class Blockchain extends EventEmitter {
       //Create geneis block
       if (!blocks) {
         const genesisBlock = new Block({
-          ...conf.GENESIS_BLOCK,
+          ...(conf?.GENESIS_BLOCK ? conf.GENESIS_BLOCK : {}),
           height: 0,
         });
 
