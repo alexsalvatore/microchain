@@ -7,6 +7,22 @@ import { Transaction } from "./index.js";
 
 /**
  * Class Blockchain, singleton managing the whole Blockchain
+ * Please Do no use it, use Blockchain.init(config, blocks) or Blockchain.getInstance()
+ * @example
+ * const chain = Blockchain.init(
+  {
+    BLOCK_HASH_METHOD: "MD5",
+    BLOCK_MAX_DIFFICULTY: 3,
+    MONEY_BY_BLOCK: 15,
+    MONEY_BY_KO: 1.2,
+    TX_CONTENT_MAX_SIZE_KO: 200,
+    GENESIS_BLOCK: {
+      publisher: '04820be6a65e928d52e92b8bfe7827de7a09d3afa1356ef81f6f8528b44ba84393d32b44e4590fa9ca6b9576a6d7f2f0467af33d8f68f83e1359a8e4981f4ed5f6',
+    },
+    FOUNDERS: ['04820be6a65e928d52e92b8bfe7827de7a09d3afa1356ef81f6f8528b44ba84393d32b44e4590fa9ca6b9576a6d7f2f0467af33d8f68f83e1359a8e4981f4ed5f6'],
+  },
+  blocks
+);
  */
 class Blockchain extends EventEmitter {
   static _instance;
@@ -66,6 +82,11 @@ class Blockchain extends EventEmitter {
     return Blockchain._instance;
   }
 
+  /**
+   * Please Do no use it, use Blockchain.init(config, blocks) or Blockchain.getInstance()
+   * @param {Config} conf
+   * @returns {Blockchain}
+   */
   constructor(conf) {
     super();
     this.chain = [];

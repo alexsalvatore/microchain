@@ -3,6 +3,34 @@ import Wallet from "./wallet.js";
 
 /**
  * Transaction, help to make transfert of $, ownership and content  hosting in the chain
+ * @example
+ *
+ * const walletSato = new Wallet();
+ *
+ * // Transaction for content, will expire with the TX_CONTENT_EXPIRATION_HOURS parameter in the config
+ * const transaction1 = walletSato.createTransaction({
+ *  sender: walletSato.publicKey,
+ *  content: "https://pbs.twimg.com/media/EwxqyQdXMAAlqIb?format=jpg&name=medium",
+ *});
+ *
+ * const walletDolores = new Wallet();
+ * const walletKub = new Wallet();
+ *
+ * // Transaction for 1.2$
+ *  const transaction2 = walletDolores.createTransaction({
+ *  sender: block1.publisher,
+ *  receiver: walletKub.publicKey,
+ *  amount: 1.2,
+ * });
+ *
+ * // Transaction for 50% of an ownership
+ * const transaction3 = walletDolores.createTransaction({
+ *  sender: block1.publisher,
+ *  ownership: block1.hash,
+ *  receiver: walletKub.publicKey,
+ *  amount: 0.5,
+ * });
+ *
  */
 
 class Transaction {
