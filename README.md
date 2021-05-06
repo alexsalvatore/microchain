@@ -4,10 +4,12 @@ _Microchain_ is a blockchain Lib specially designed to run in browser & Node JS 
 
 There is no dependence to any other blockchain infrastructure. You create your very own blockchain with few lines of javascript.
 
-Of course, the project is work in progress, and there are still things to improve: :warning: **to be clear**
-you should not use Microchain as crypto-currency and if you sold some of your blockchain’s tokens, your users need to consider this bought as a donation and probably not as a long term stock market investment. _Microchain_ is not about money but content and communication.
+:warning: **It's still work in progress, please don't use it for production**
 
-**It's still work in progress, please don't use it for production**
+## Links
+
+- Github: [https://github.com/salvatoreparis/microchain](https://microchain.salvatore.paris)
+- Documentation: [http://microchain.salvatore.paris](http://microchain.salvatore.paris)
 
 ## Installation
 
@@ -190,5 +192,7 @@ npm run testDifficulty
 
 ## Author
 
-You can contact me on Twitter:
-[@salvator_io](https://twitter.com/salvator_io)
+I am Alexandre Salvatore & you can contact me on Twitter
+[https://twitter.com/salvator_io](https://twitter.com/salvator_io)
+
+Or by mail at [alexander.salvatore@gmail.com](alexander.salvatore@gmail.com)
