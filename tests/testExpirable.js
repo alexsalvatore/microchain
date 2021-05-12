@@ -1,4 +1,4 @@
-import { Blockchain, Wallet, Block } from "../src/index.js";
+import { Blockchain, Wallet, Block } from "../index.js";
 import fs from "fs";
 import { img1 } from "./assets/img1.js";
 import { img2 } from "./assets/img2.js";

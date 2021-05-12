@@ -1,4 +1,4 @@
-import { Blockchain, Wallet, Block } from "../src/index.js";
+import { Blockchain, Wallet, Block } from "../index.js";
 import fs from "fs";
 
 const blockEveryMinutes = 2;

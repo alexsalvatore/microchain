@@ -22,7 +22,7 @@ npm i @asalvatore/microchain
 Create and add a block to the chain instance
 
 ```javascript
-import { Blockchain, Wallet, Block } from "../src/index.js";
+import { Blockchain, Wallet, Block } from "../index.js";
 
 // initialize a wallet
 // with no option, it generate it self a public and private key
@@ -84,7 +84,7 @@ Expirable content is a content hosted in a transaction. Blocks need to host it t
 - **BLOCK_MAX_SIZE_KO** the max size of a block in Ko, default is 300 Ko.
 
 ```javascript
-import { Blockchain, Wallet, Block } from "../src/index.js";
+import { Blockchain, Wallet, Block } from "../index.js";
 import fs from "fs";
 import { img2 } from "./assets/img2.js";
 
@@ -154,7 +154,11 @@ chain.addBlock(block);
 
 ## Change log
 
-###### V 1.1.2 (fix)
+###### V 1.2.2 (fix)
+- Added the index.js at the root of the module (really sorry because previous were not working -_-)
+- Added lotta thing to the .gitignore
+
+###### V 1.1.1 (fix)
 
 - Take off the non-fungible content in config. Not bahaving properly.
 - use the _addBlock_ method for the genesis block

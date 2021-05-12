@@ -3,7 +3,7 @@ import UTXOPool from "./utxopool.js";
 import { EventEmitter } from "events";
 import { unfold, reverse, values, forEach } from "ramda";
 import Config from "./config.js";
-import { Transaction } from "./index.js";
+import Transaction from "./transaction.js";
 
 /**
  * Class Blockchain, singleton managing the whole Blockchain
@@ -46,7 +46,7 @@ class Blockchain extends EventEmitter {
       //Create geneis block
       if (!blocks) {
         const genesisBlock = new Block({
-          ...(conf?.GENESIS_BLOCK ? conf.GENESIS_BLOCK : {}),
+          ...(conf.GENESIS_BLOCK ? conf.GENESIS_BLOCK : {}),
           height: 0,
         });
 
