@@ -8,7 +8,7 @@ There is no dependence to any other blockchain infrastructure. You create your v
 
 ## Links
 
-- Github: [https://github.com/salvatoreparis/microchain](https://microchain.salvatore.paris)
+- Github: [https://github.com/salvatoreparis/microchain](https://github.com/salvatoreparis/microchain)
 - Documentation: [http://microchain.salvatore.paris](http://microchain.salvatore.paris)
 
 ## Installation
@@ -62,7 +62,11 @@ chain.addBlock(block1);
 
 // We log to see if all was added to the chain
 chain.logChain();
-chain.logUTXO();
+
+// Get all the UTXO information
+// ownershipPool: for each publickey what id is owned as what ratio
+// moneyPool: for each publickey what amount of money is owned
+console.log(JSON.stringify(chain.getBank()));
 ```
 
 To listen events on the chain you can use _blockAdded_.
@@ -154,8 +158,14 @@ chain.addBlock(block);
 
 ## Change log
 
+###### V 1.3.0
+
+- Added the _getBank()_ method in Blockchain to ownership and money pools
+- Added _iterationMax_ optional param, to _Block.mine( numMaxIteration)_ method, adding a maximum iteration to the mining loop, to avoid freeze web UI. See _tests/testMining.js_
+
 ###### V 1.2.2 (fix)
-- Added the index.js at the root of the module (really sorry because previous were not working -_-)
+
+- Added the index.js at the root of the module (really sorry because previous were not working -\_-)
 - Added lotta thing to the .gitignore
 
 ###### V 1.1.1 (fix)

@@ -66,6 +66,7 @@ class Block {
    * @param {Wallet} wallet
    */
   sign(wallet) {
+    this.publisher = wallet.publicKey;
     const tosign = this._toStringToSign();
     this.signature = wallet.sign(tosign);
   }
@@ -261,15 +262,25 @@ class Block {
   }
 
   /**
-   * @property {function} mine launch the mining of the block
-   * @returns {Block}
+   * @property {function} mine launch the mining of the block, return null if iterationMax reached without solving the Block, return the Block if the crypto puzzle was resolved
+   * @param {number} iterationMax optional param, adding a maximum iteration to the mining loop, to avoid freeze web UI.
+   *
+   * @returns {Block | null}
    */
-  mine() {
-    while (!this._testHashDifficulty()) {
+  mine(iterationMax = 0) {
+    console.log(iterationMax);
+    let iteration = 0;
+    while (
+      !this._testHashDifficulty() &&
+      (!iterationMax || iteration <= iterationMax)
+    ) {
       this.nonce++;
+      iteration++;
+      /*console.log(iteration, iterationMax);
+      console.log(iteration <= iterationMax);*/
       this.hash = this._calculateHash();
     }
-    return this;
+    return this._testHashDifficulty() ? this : null;
   }
 
   _testHashDifficulty() {
