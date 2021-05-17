@@ -60,4 +60,4 @@ block3.sign(walletSato);
 block3.mine();
 chain.addBlock(block3);
 chain.logBlockchain();
-chain.logUTXO();
+console.log(JSON.stringify(chain.getBank()));

@@ -6,7 +6,6 @@ export default class UTXOPool {
   constructor(conf) {
     this.config = new Config(conf);
     this.txPool = [];
-    this.contentPool = {};
     this.moneyPool = {};
     this.ownershipPool = {};
   }
@@ -175,5 +174,13 @@ export default class UTXOPool {
     console.log(this.ownershipPool);
     console.log("========= $ ==========");
     console.log(this.moneyPool);
+  }
+
+  getBank() {
+    return {
+      txPool: [...this.txPool],
+      moneyPool: { ...this.moneyPool },
+      ownershipPool: { ...this.ownershipPool },
+    };
   }
 }
