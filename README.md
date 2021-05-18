@@ -8,7 +8,7 @@ There is no dependence to any other blockchain infrastructure. You create your v
 
 ## Links
 
-- Github: [https://github.com/salvatoreparis/microchain](https://microchain.salvatore.paris)
+- Github: [https://github.com/salvatoreparis/microchain](https://github.com/salvatoreparis/microchain)
 - Documentation: [http://microchain.salvatore.paris](http://microchain.salvatore.paris)
 
 ## Installation
@@ -61,8 +61,12 @@ block1.mine();
 chain.addBlock(block1);
 
 // We log to see if all was added to the chain
-chain.logBlockchain();
-chain.logUTXO();
+chain.logChain();
+
+// Get all the UTXO information
+// ownershipPool: for each publickey what id is owned as what ratio
+// moneyPool: for each publickey what amount of money is owned
+chain.getBank().log();
 ```
 
 To listen events on the chain you can use _blockAdded_.
@@ -132,7 +136,7 @@ transaction1.sign(walletSato);
 
 //Return if there is enought money for this transaction for this transaction
 chain.enoughtMoneyFrom(transaction1, walletSato.publicKey);
-chain.logUTXO();
+chain.getBank().log();
 
 const block = new Block({
   height:
@@ -154,8 +158,14 @@ chain.addBlock(block);
 
 ## Change log
 
-###### V 1.2.2 + V 1.2.3 (fix)
-- Added the index.js at the root of the module (really sorry because previous were not working -_-)
+###### V 1.3.0
+
+- Added the _getBank()_ method in Blockchain to ownership and money pools, as the Class _Bank_
+- Added _iterationMax_ optional param, to _Block.mine( numMaxIteration)_ method, adding a maximum iteration to the mining loop, to avoid freeze web UI. See _tests/testMining.js_
+
+###### V 1.2.2 (fix)
+
+- Added the index.js at the root of the module (really sorry because previous were not working -\_-)
 - Added lotta thing to the .gitignore
 - changed the read-me because _.logChain()_ is now _.logBlockchain()_
 

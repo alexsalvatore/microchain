@@ -33,7 +33,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Block.html">Block</a><ul class='methods'><li data-type='method'><a href="Block.html#getTransactions">getTransactions</a></li><li data-type='method'><a href="Block.html#isTooBig">isTooBig</a></li><li data-type='method'><a href="Block.html#isValid">isValid</a></li><li data-type='method'><a href="Block.html#mine">mine</a></li><li data-type='method'><a href="Block.html#purgeTX">purgeTX</a></li><li data-type='method'><a href="Block.html#sign">sign</a></li></ul></li><li><a href="Blockchain.html">Blockchain</a><ul class='methods'><li data-type='method'><a href="Blockchain.html#.getInstance">getInstance</a></li><li data-type='method'><a href="Blockchain.html#.init">init</a></li><li data-type='method'><a href="Blockchain.html#addBlock">addBlock</a></li><li data-type='method'><a href="Blockchain.html#enoughtMoneyFrom">enoughtMoneyFrom</a></li><li data-type='method'><a href="Blockchain.html#getBlockForHeight">getBlockForHeight</a></li><li data-type='method'><a href="Blockchain.html#getDifficultyForBlock">getDifficultyForBlock</a></li><li data-type='method'><a href="Blockchain.html#getParent">getParent</a></li><li data-type='method'><a href="Blockchain.html#getTransactionCost">getTransactionCost</a></li><li data-type='method'><a href="Blockchain.html#purgeChain">purgeChain</a></li></ul></li><li><a href="Config.html">Config</a></li><li><a href="Transaction.html">Transaction</a><ul class='methods'><li data-type='method'><a href="Transaction.html#calculateContentSize">calculateContentSize</a></li><li data-type='method'><a href="Transaction.html#calculateTXSize">calculateTXSize</a></li><li data-type='method'><a href="Transaction.html#isTooBig">isTooBig</a></li><li data-type='method'><a href="Transaction.html#isValid">isValid</a></li><li data-type='method'><a href="Transaction.html#log">log</a></li><li data-type='method'><a href="Transaction.html#sign">sign</a></li><li data-type='method'><a href="Transaction.html#stringifyNoContent">stringifyNoContent</a></li></ul></li><li><a href="Wallet.html">Wallet</a><ul class='methods'><li data-type='method'><a href="Wallet.html#.verifySignature">verifySignature</a></li><li data-type='method'><a href="Wallet.html#createTransaction">createTransaction</a></li><li data-type='method'><a href="Wallet.html#generatePair">generatePair</a></li><li data-type='method'><a href="Wallet.html#sign">sign</a></li></ul></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Bank.html">Bank</a><ul class='methods'><li data-type='method'><a href="Bank.html#clone">clone</a></li><li data-type='method'><a href="Bank.html#getMoneyForSender">getMoneyForSender</a></li><li data-type='method'><a href="Bank.html#getOwnershipForSenderAnId">getOwnershipForSenderAnId</a></li><li data-type='method'><a href="Bank.html#log">log</a></li><li data-type='method'><a href="Bank.html#stringify">stringify</a></li></ul></li><li><a href="Block.html">Block</a><ul class='methods'><li data-type='method'><a href="Block.html#getTransactions">getTransactions</a></li><li data-type='method'><a href="Block.html#isTooBig">isTooBig</a></li><li data-type='method'><a href="Block.html#isValid">isValid</a></li><li data-type='method'><a href="Block.html#mine">mine</a></li><li data-type='method'><a href="Block.html#purgeTX">purgeTX</a></li><li data-type='method'><a href="Block.html#sign">sign</a></li></ul></li><li><a href="Blockchain.html">Blockchain</a><ul class='methods'><li data-type='method'><a href="Blockchain.html#.getInstance">getInstance</a></li><li data-type='method'><a href="Blockchain.html#.init">init</a></li><li data-type='method'><a href="Blockchain.html#addBlock">addBlock</a></li><li data-type='method'><a href="Blockchain.html#enoughtMoneyFrom">enoughtMoneyFrom</a></li><li data-type='method'><a href="Blockchain.html#getBank">getBank</a></li><li data-type='method'><a href="Blockchain.html#getBlockForHeight">getBlockForHeight</a></li><li data-type='method'><a href="Blockchain.html#getDifficultyForBlock">getDifficultyForBlock</a></li><li data-type='method'><a href="Blockchain.html#getParent">getParent</a></li><li data-type='method'><a href="Blockchain.html#getTransactionCost">getTransactionCost</a></li><li data-type='method'><a href="Blockchain.html#purgeChain">purgeChain</a></li></ul></li><li><a href="Config.html">Config</a></li><li><a href="Transaction.html">Transaction</a><ul class='methods'><li data-type='method'><a href="Transaction.html#calculateContentSize">calculateContentSize</a></li><li data-type='method'><a href="Transaction.html#calculateTXSize">calculateTXSize</a></li><li data-type='method'><a href="Transaction.html#isTooBig">isTooBig</a></li><li data-type='method'><a href="Transaction.html#isValid">isValid</a></li><li data-type='method'><a href="Transaction.html#log">log</a></li><li data-type='method'><a href="Transaction.html#sign">sign</a></li><li data-type='method'><a href="Transaction.html#stringifyNoContent">stringifyNoContent</a></li></ul></li><li><a href="Wallet.html">Wallet</a><ul class='methods'><li data-type='method'><a href="Wallet.html#.verifySignature">verifySignature</a></li><li data-type='method'><a href="Wallet.html#createTransaction">createTransaction</a></li><li data-type='method'><a href="Wallet.html#generatePair">generatePair</a></li><li data-type='method'><a href="Wallet.html#sign">sign</a></li></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -69,7 +69,7 @@
 <p>:warning: <strong>It's still work in progress, please don't use it for production</strong></p>
 <h2>Links</h2>
 <ul>
-<li>Github: <a href="https://microchain.salvatore.paris">https://github.com/salvatoreparis/microchain</a></li>
+<li>Github: <a href="https://github.com/salvatoreparis/microchain">https://github.com/salvatoreparis/microchain</a></li>
 <li>Documentation: <a href="http://microchain.salvatore.paris">http://microchain.salvatore.paris</a></li>
 </ul>
 <h2>Installation</h2>
@@ -77,7 +77,7 @@
 </code></pre>
 <h2>Basics</h2>
 <p>Create and add a block to the chain instance</p>
-<pre class="prettyprint source lang-javascript"><code>import { Blockchain, Wallet, Block } from &quot;../src/index.js&quot;;
+<pre class="prettyprint source lang-javascript"><code>import { Blockchain, Wallet, Block } from &quot;@asalvatore/microchain&quot;;
 
 // initialize a wallet
 // with no option, it generate it self a public and private key
@@ -117,7 +117,11 @@ chain.addBlock(block1);
 
 // We log to see if all was added to the chain
 chain.logChain();
-chain.logUTXO();
+
+// Get all the UTXO information
+// ownershipPool: for each publickey what id is owned as what ratio
+// moneyPool: for each publickey what amount of money is owned
+chain.getBank().log();
 </code></pre>
 <p>To listen events on the chain you can use <em>blockAdded</em>.</p>
 <pre class="prettyprint source lang-javascript"><code>chain.on(&quot;blockAdded&quot;, () => {
@@ -133,7 +137,7 @@ chain.logUTXO();
 <li><strong>TX_CONTENT_MAX_SIZE_KO</strong> the max size of a transaction content in Ko, default is 250 Ko.</li>
 <li><strong>BLOCK_MAX_SIZE_KO</strong> the max size of a block in Ko, default is 300 Ko.</li>
 </ul>
-<pre class="prettyprint source lang-javascript"><code>import { Blockchain, Wallet, Block } from &quot;../src/index.js&quot;;
+<pre class="prettyprint source lang-javascript"><code>import { Blockchain, Wallet, Block } from &quot;@asalvatore/microchain&quot;;
 import fs from &quot;fs&quot;;
 import { img2 } from &quot;./assets/img2.js&quot;;
 
@@ -181,7 +185,7 @@ transaction1.sign(walletSato);
 
 //Return if there is enought money for this transaction for this transaction
 chain.enoughtMoneyFrom(transaction1, walletSato.publicKey);
-chain.logUTXO();
+chain.getBank().log();
 
 const block = new Block({
   height:
@@ -201,7 +205,18 @@ block.mine();
 chain.addBlock(block);
 </code></pre>
 <h2>Change log</h2>
-<h6>V 1.1.2 (fix)</h6>
+<h6>V 1.3.0</h6>
+<ul>
+<li>Added the <em>getBank()</em> method in Blockchain to ownership and money pools, as the Class <em>Bank</em></li>
+<li>Added <em>iterationMax</em> optional param, to <em>Block.mine( numMaxIteration)</em> method, adding a maximum iteration to the mining loop, to avoid freeze web UI. See <em>tests/testMining.js</em></li>
+</ul>
+<h6>V 1.2.2 (fix)</h6>
+<ul>
+<li>Added the index.js at the root of the module (really sorry because previous were not working -_-)</li>
+<li>Added lotta thing to the .gitignore</li>
+<li>changed the read-me because <em>.logChain()</em> is now <em>.logBlockchain()</em></li>
+</ul>
+<h6>V 1.1.1 (fix)</h6>
 <ul>
 <li>Take off the non-fungible content in config. Not bahaving properly.</li>
 <li>use the <em>addBlock</em> method for the genesis block</li>
@@ -253,7 +268,7 @@ chain.addBlock(block);
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Thu May 06 2021 14:37:23 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Tue May 18 2021 14:24:22 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

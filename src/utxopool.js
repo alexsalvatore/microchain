@@ -1,14 +1,12 @@
 import { of } from "ramda";
+import Bank from "./bank.js";
 import Config from "./config.js";
 import Transaction from "./transaction.js";
 
 export default class UTXOPool {
-  constructor(conf) {
+  constructor(conf, bank = null) {
     this.config = new Config(conf);
-    this.txPool = [];
-    this.contentPool = {};
-    this.moneyPool = {};
-    this.ownershipPool = {};
+    this.bank = bank ? bank : new Bank();
   }
 
   addTX(tx, miner) {
@@ -20,7 +18,7 @@ export default class UTXOPool {
     }
 
     //We add the hash to the TX pool to be sure it won't be use again
-    this.txPool.push(tx.hash);
+    this.bank.txPool.push(tx.hash);
 
     if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_OWNERSHIP) {
       this.addOwnershipTo(tx.sender, tx.ownership, -tx.amount);
@@ -76,8 +74,9 @@ export default class UTXOPool {
   }
 
   addOwnershipTo(walletId, ownershipId, amount) {
-    if (!this.ownershipPool[walletId]) this.ownershipPool[walletId] = [];
-    const ownerships = this.ownershipPool[walletId];
+    if (!this.bank.ownershipPool[walletId])
+      this.bank.ownershipPool[walletId] = [];
+    const ownerships = this.bank.ownershipPool[walletId];
     const index = ownerships.findIndex((o) => o.id === ownershipId);
     if (index > -1) {
       ownerships[index].amount += amount;
@@ -87,34 +86,34 @@ export default class UTXOPool {
         amount,
       });
     }
-    this.ownershipPool[walletId] = ownerships;
+    this.bank.ownershipPool[walletId] = ownerships;
   }
 
   getOwnershipForSenderAnId(sender, id) {
-    if (!this.ownershipPool[sender]) return null;
-    const ownership = this.ownershipPool[sender].find((l) => l.id === id);
+    if (!this.bank.ownershipPool[sender]) return null;
+    const ownership = this.bank.ownershipPool[sender].find((l) => l.id === id);
     return ownership;
   }
 
   getMoneyForSender(sender) {
-    if (!this.moneyPool[sender]) return null;
-    return this.moneyPool[sender];
+    if (!this.bank.moneyPool[sender]) return null;
+    return this.bank.moneyPool[sender];
   }
 
   addMoneyToSender(sender, money) {
-    if (!this.moneyPool[sender]) {
-      this.moneyPool[sender] = 0;
+    if (!this.bank.moneyPool[sender]) {
+      this.bank.moneyPool[sender] = 0;
     }
-    this.moneyPool[sender] += money;
+    this.bank.moneyPool[sender] += money;
   }
 
   addBlock(block) {
     // Add ownership for block
-    if (!this.ownershipPool[block.publisher]) {
-      this.ownershipPool[block.publisher] = [];
+    if (!this.bank.ownershipPool[block.publisher]) {
+      this.bank.ownershipPool[block.publisher] = [];
     }
 
-    this.ownershipPool[block.publisher].push({
+    this.bank.ownershipPool[block.publisher].push({
       id: block.hash,
       amount: 1,
     });
@@ -129,7 +128,7 @@ export default class UTXOPool {
   }
 
   isTXValid(tx) {
-    // if (this.txPool.length > 0) console.log(this.txPool);
+    // if (this.bank.txPool.length > 0) console.log(this.bank.txPool);
     if (this.isHashExisting(tx.hash)) {
       console.error(`Hash ${tx.hash} already exist, transaction isn't valid`);
       return false;
@@ -150,7 +149,7 @@ export default class UTXOPool {
   }
 
   isHashExisting(hash) {
-    return this.txPool.find((h) => h === hash) !== undefined;
+    return this.bank.txPool.find((h) => h === hash) !== undefined;
   }
 
   static TX_TYPE_NONE = 0;
@@ -170,10 +169,7 @@ export default class UTXOPool {
     return UTXOPool.TX_TYPE_NONE;
   }
 
-  log() {
-    console.log("========= OWNERSHIPs ==========");
-    console.log(this.ownershipPool);
-    console.log("========= $ ==========");
-    console.log(this.moneyPool);
+  getBank() {
+    return this.bank;
   }
 }

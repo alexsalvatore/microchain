@@ -337,7 +337,15 @@ class Blockchain extends EventEmitter {
   }
 
   logUTXO() {
-    this.utxoPool.log();
+    this.getBank().log();
+  }
+
+  /**
+   * @property {function} getBank return all the information of UTXO as an object
+   * @returns { Bank }
+   */
+  getBank() {
+    return this.utxoPool.getBank();
   }
 
   static _sortBlocksByHeight(b1, b2) {

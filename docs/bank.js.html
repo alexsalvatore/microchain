@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>wallet.js - Microchain 💴</title>
+    <title>bank.js - Microchain 💴</title>
     
     <meta name="description" content="Microchain is a blockchain Lib specially designed to run in browser & Node JS environnement, used to propel forum" />
     
@@ -38,7 +38,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">wallet.js</h1>
+    <h1 class="page-title">bank.js</h1>
     
 
     
@@ -48,102 +48,72 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import elliptic from "elliptic";
-import Transaction from "./transaction.js";
-const ec = new elliptic.ec("secp256k1");
-
-/**
- * Class Wallet
- * Manage public and private kesy of users
- * @example
- *
- * const walletSato = new Wallet();
- *
- * console.log("****************************");
- * console.log("Public key: " + walletSato.publicKey);
- * console.log("Private key: " + walletSato.privateKey);
- * console.log("****************************");
- *
+            <pre class="prettyprint source linenums"><code>/**
+ * Class Bank
+ * Helper for all the UTXO Data
  */
-class Wallet {
+class Bank {
   /**
-   * @property {string} publicKey the public key
-   * @property {string} privateKey the private key, plz keep it private!
+   * @property {array&lt;string>} txPool the list of transaction hash, mostly to avoid double spending.
+   * @property {{key: string, value:number}} moneyPool dictionnary of publickeys, with the amount of money of each.
+   * @property {{key: string, value: Array&lt;{key: string, value:number}>}} ownershipPool dictionnary of publickeys, with the array of owned ratio of token.
    */
-  publicKey;
-  privateKey;
-
-  /**
-   * Instantiate the wallet
-   * if no properties are provided, the wallet generate a key pairs himself
-   * @param {string | undefined} publicKey
-   * @param {string | undefined} privateKey
-   */
-  constructor(publicKey, privateKey) {
-    //If no value we generate the values
-    if (!publicKey) {
-      this.generatePair();
-    } else {
-      this.publicKey = publicKey;
-      this.privateKey = privateKey;
-    }
+  constructor(bank) {
+    this.txPool = bank?.txPool ? bank.txPool : [];
+    this.moneyPool = bank?.moneyPool ? bank.moneyPool : {};
+    this.ownershipPool = bank?.ownershipPool ? bank.ownershipPool : {};
   }
 
   /**
-   * @property {function} generatePair method generating a key pair
+   * @property {function} getMoneyForSender get the amount of money for a public key.
+   * @param {string} sender the user public key.
+   * @returns {number} the amoutn of money own by user public key.
    */
-  generatePair() {
-    const keypair = ec.genKeyPair();
-    this.publicKey = keypair.getPublic("hex");
-    this.privateKey = keypair.getPrivate("hex");
+  getMoneyForSender(sender) {
+    if (!this.moneyPool[sender]) return 0;
+    return this.moneyPool[sender];
   }
 
   /**
-   * @property {function} createTransaction method returning a signed transaction
-   * @param {*} transactionOpt
-   * @returns {Transaction}
+   * @property {function} getOwnershipForSenderAnId get the ratio of ownership, for a block token for a public key.
+   * @param {string} sender the user public key.
+   * @param {string} token to test for ownership.
+   * @returns {number}  the ratio of ownership, for a block token for this public key.
    */
-  createTransaction(transactionOpt) {
-    const transaction = new Transaction(transactionOpt);
-    transaction.sign(this);
-    return transaction;
+  getOwnershipForSenderAnId(sender, id) {
+    if (!this.ownershipPool[sender]) return 0;
+    const ownership = this.ownershipPool[sender].find((l) => l.id === id);
+    return ownership;
   }
 
   /**
-   * @property {function} sign method returning a signed message
-   * @param {string} message
-   * @returns {string}
+   * @property {function} stringify Stringify the bank for data transfert.
+   * @returns {string} Stringified object.
    */
-  sign(message) {
-    try {
-      const keypair = ec.keyFromPrivate(this.privateKey, "hex");
-      const signature = keypair.sign(message).toDER("hex");
-      const result = Wallet.verifySignature(message, signature, this.publicKey);
-      if (!result) console.error("Bad signature, your key pairs is not valid");
-      return signature;
-    } catch (error) {
-      return console.error(error);
-    }
+  stringify() {
+    return JSON.stringify(this);
   }
 
   /**
-   * @property {function} verifySignature method returning if signed message is auhtentic or not
-   * @param {string} message
-   * @param {string} signature
-   * @param {string} publicKey
-   * @returns {boolean}
+   * @property {function} clone Clone the bank.
+   * @returns {Bank} return a new bank object.
    */
-  static verifySignature(message, signature, publicKey) {
-    try {
-      const keypair = ec.keyFromPublic(publicKey, "hex");
-      return ec.verify(message, signature, keypair);
-    } catch (error) {
-      return false;
-    }
+  clone() {
+    return { ...this };
+  }
+
+  /**
+   * @property {} log Console log the bank instance.
+   */
+  log() {
+    console.log("========= OWNERSHIPs ==========");
+    console.log(this.ownershipPool);
+    console.log("========= $ ==========");
+    console.log(this.moneyPool);
   }
 }
 
-export default Wallet;
+export default Bank;
 </code></pre>
         </article>
     </section>
