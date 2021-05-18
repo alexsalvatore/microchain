@@ -6,3 +6,4 @@ import Block from "./src/block.js";
 
 // without default
 export { Transaction, Blockchain, Wallet, Block };
+

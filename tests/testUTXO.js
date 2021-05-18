@@ -1,4 +1,4 @@
-import { Transaction, Blockchain, Wallet, Block } from "../src/index.js";
+import { Blockchain, Wallet, Block } from "../index.js";
 
 const walletSato = new Wallet();
 const walletDolores = new Wallet();
