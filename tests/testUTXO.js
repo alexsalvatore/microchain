@@ -59,5 +59,4 @@ const block3 = new Block({
 block3.sign(walletSato);
 block3.mine();
 chain.addBlock(block3);
-chain.logBlockchain();
-console.log(JSON.stringify(chain.getBank()));
+chain.getBank().log();

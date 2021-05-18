@@ -33,7 +33,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Block.html">Block</a><ul class='methods'><li data-type='method'><a href="Block.html#getTransactions">getTransactions</a></li><li data-type='method'><a href="Block.html#isTooBig">isTooBig</a></li><li data-type='method'><a href="Block.html#isValid">isValid</a></li><li data-type='method'><a href="Block.html#mine">mine</a></li><li data-type='method'><a href="Block.html#purgeTX">purgeTX</a></li><li data-type='method'><a href="Block.html#sign">sign</a></li></ul></li><li><a href="Blockchain.html">Blockchain</a><ul class='methods'><li data-type='method'><a href="Blockchain.html#.getInstance">getInstance</a></li><li data-type='method'><a href="Blockchain.html#.init">init</a></li><li data-type='method'><a href="Blockchain.html#addBlock">addBlock</a></li><li data-type='method'><a href="Blockchain.html#enoughtMoneyFrom">enoughtMoneyFrom</a></li><li data-type='method'><a href="Blockchain.html#getBlockForHeight">getBlockForHeight</a></li><li data-type='method'><a href="Blockchain.html#getDifficultyForBlock">getDifficultyForBlock</a></li><li data-type='method'><a href="Blockchain.html#getParent">getParent</a></li><li data-type='method'><a href="Blockchain.html#getTransactionCost">getTransactionCost</a></li><li data-type='method'><a href="Blockchain.html#purgeChain">purgeChain</a></li></ul></li><li><a href="Config.html">Config</a></li><li><a href="Transaction.html">Transaction</a><ul class='methods'><li data-type='method'><a href="Transaction.html#calculateContentSize">calculateContentSize</a></li><li data-type='method'><a href="Transaction.html#calculateTXSize">calculateTXSize</a></li><li data-type='method'><a href="Transaction.html#isTooBig">isTooBig</a></li><li data-type='method'><a href="Transaction.html#isValid">isValid</a></li><li data-type='method'><a href="Transaction.html#log">log</a></li><li data-type='method'><a href="Transaction.html#sign">sign</a></li><li data-type='method'><a href="Transaction.html#stringifyNoContent">stringifyNoContent</a></li></ul></li><li><a href="Wallet.html">Wallet</a><ul class='methods'><li data-type='method'><a href="Wallet.html#.verifySignature">verifySignature</a></li><li data-type='method'><a href="Wallet.html#createTransaction">createTransaction</a></li><li data-type='method'><a href="Wallet.html#generatePair">generatePair</a></li><li data-type='method'><a href="Wallet.html#sign">sign</a></li></ul></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Bank.html">Bank</a><ul class='methods'><li data-type='method'><a href="Bank.html#clone">clone</a></li><li data-type='method'><a href="Bank.html#getMoneyForSender">getMoneyForSender</a></li><li data-type='method'><a href="Bank.html#getOwnershipForSenderAnId">getOwnershipForSenderAnId</a></li><li data-type='method'><a href="Bank.html#log">log</a></li><li data-type='method'><a href="Bank.html#stringify">stringify</a></li></ul></li><li><a href="Block.html">Block</a><ul class='methods'><li data-type='method'><a href="Block.html#getTransactions">getTransactions</a></li><li data-type='method'><a href="Block.html#isTooBig">isTooBig</a></li><li data-type='method'><a href="Block.html#isValid">isValid</a></li><li data-type='method'><a href="Block.html#mine">mine</a></li><li data-type='method'><a href="Block.html#purgeTX">purgeTX</a></li><li data-type='method'><a href="Block.html#sign">sign</a></li></ul></li><li><a href="Blockchain.html">Blockchain</a><ul class='methods'><li data-type='method'><a href="Blockchain.html#.getInstance">getInstance</a></li><li data-type='method'><a href="Blockchain.html#.init">init</a></li><li data-type='method'><a href="Blockchain.html#addBlock">addBlock</a></li><li data-type='method'><a href="Blockchain.html#enoughtMoneyFrom">enoughtMoneyFrom</a></li><li data-type='method'><a href="Blockchain.html#getBank">getBank</a></li><li data-type='method'><a href="Blockchain.html#getBlockForHeight">getBlockForHeight</a></li><li data-type='method'><a href="Blockchain.html#getDifficultyForBlock">getDifficultyForBlock</a></li><li data-type='method'><a href="Blockchain.html#getParent">getParent</a></li><li data-type='method'><a href="Blockchain.html#getTransactionCost">getTransactionCost</a></li><li data-type='method'><a href="Blockchain.html#purgeChain">purgeChain</a></li></ul></li><li><a href="Config.html">Config</a></li><li><a href="Transaction.html">Transaction</a><ul class='methods'><li data-type='method'><a href="Transaction.html#calculateContentSize">calculateContentSize</a></li><li data-type='method'><a href="Transaction.html#calculateTXSize">calculateTXSize</a></li><li data-type='method'><a href="Transaction.html#isTooBig">isTooBig</a></li><li data-type='method'><a href="Transaction.html#isValid">isValid</a></li><li data-type='method'><a href="Transaction.html#log">log</a></li><li data-type='method'><a href="Transaction.html#sign">sign</a></li><li data-type='method'><a href="Transaction.html#stringifyNoContent">stringifyNoContent</a></li></ul></li><li><a href="Wallet.html">Wallet</a><ul class='methods'><li data-type='method'><a href="Wallet.html#.verifySignature">verifySignature</a></li><li data-type='method'><a href="Wallet.html#createTransaction">createTransaction</a></li><li data-type='method'><a href="Wallet.html#generatePair">generatePair</a></li><li data-type='method'><a href="Wallet.html#sign">sign</a></li></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -51,6 +51,7 @@
             <pre class="prettyprint source linenums"><code>import Wallet from "./wallet.js";
 import Blockchain from "./blockchain.js";
 import Transaction from "./transaction.js";
+import Bank from "./bank.js";
 
 /**
  * Class Block, create a block object
@@ -111,11 +112,16 @@ class Block {
       : "";
   }
 
+  addBank(bank) {
+    this.bank = bank;
+  }
+
   /**
    * @property {function} sign sign the block with a Wallet object
    * @param {Wallet} wallet
    */
   sign(wallet) {
+    this.publisher = wallet.publicKey;
     const tosign = this._toStringToSign();
     this.signature = wallet.sign(tosign);
   }
@@ -311,15 +317,25 @@ class Block {
   }
 
   /**
-   * @property {function} mine launch the mining of the block
-   * @returns {Block}
+   * @property {function} mine launch the mining of the block, return null if iterationMax reached without solving the Block, return the Block if the crypto puzzle was resolved
+   * @param {number} iterationMax optional param, adding a maximum iteration to the mining loop, to avoid freeze web UI.
+   *
+   * @returns {Block | null}
    */
-  mine() {
-    while (!this._testHashDifficulty()) {
+  mine(iterationMax = 0) {
+    console.log(iterationMax);
+    let iteration = 0;
+    while (
+      !this._testHashDifficulty() &amp;&amp;
+      (!iterationMax || iteration &lt;= iterationMax)
+    ) {
       this.nonce++;
+      iteration++;
+      /*console.log(iteration, iterationMax);
+      console.log(iteration &lt;= iterationMax);*/
       this.hash = this._calculateHash();
     }
-    return this;
+    return this._testHashDifficulty() ? this : null;
   }
 
   _testHashDifficulty() {
@@ -345,7 +361,7 @@ export default Block;
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Thu May 06 2021 14:37:23 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Tue May 18 2021 14:15:45 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

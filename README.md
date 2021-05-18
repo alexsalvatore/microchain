@@ -160,7 +160,7 @@ chain.addBlock(block);
 
 ###### V 1.3.0
 
-- Added the _getBank()_ method in Blockchain to ownership and money pools
+- Added the _getBank()_ method in Blockchain to ownership and money pools, as the Class _Bank_
 - Added _iterationMax_ optional param, to _Block.mine( numMaxIteration)_ method, adding a maximum iteration to the mining loop, to avoid freeze web UI. See _tests/testMining.js_
 
 ###### V 1.2.2 (fix)

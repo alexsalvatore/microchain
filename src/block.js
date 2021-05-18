@@ -1,6 +1,7 @@
 import Wallet from "./wallet.js";
 import Blockchain from "./blockchain.js";
 import Transaction from "./transaction.js";
+import Bank from "./bank.js";
 
 /**
  * Class Block, create a block object
@@ -59,6 +60,10 @@ class Block {
     return this.transactions
       ? JSON.stringify(this._transactionsNoContent(this.transactions))
       : "";
+  }
+
+  addBank(bank) {
+    this.bank = bank;
   }
 
   /**

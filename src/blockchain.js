@@ -342,7 +342,7 @@ class Blockchain extends EventEmitter {
 
   /**
    * @property {function} getBank return all the information of UTXO as an object
-   * @returns { txPool: [], moneyPool: {}, ownershipPool: {}}
+   * @returns { Bank }
    */
   getBank() {
     return this.utxoPool.getBank();
