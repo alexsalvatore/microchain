@@ -136,7 +136,7 @@ transaction1.sign(walletSato);
 
 //Return if there is enought money for this transaction for this transaction
 chain.enoughtMoneyFrom(transaction1, walletSato.publicKey);
-chain.logUTXO();
+chain.getBank().log();
 
 const block = new Block({
   height:

@@ -337,7 +337,7 @@ class Blockchain extends EventEmitter {
   }
 
   logUTXO() {
-    this.utxoPool.log();
+    this.getBank().log();
   }
 
   /**

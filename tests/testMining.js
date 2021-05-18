@@ -40,4 +40,4 @@ if (block1.mine(1000)) {
 chain.addBlock(block1);
 
 // We log to see if all was added to the chain
-chain.logUTXO();
+chain.getBank().log();

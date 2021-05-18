@@ -71,7 +71,7 @@ block.mine();
 chain.addBlock(block);
 
 // console.log(chain.lastBlock);
-chain.logUTXO();
+chain.getBank().log();
 chain.logBlockchainSize();
 
 // Mining loop

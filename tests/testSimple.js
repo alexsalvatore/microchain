@@ -30,4 +30,4 @@ chain.addBlock(block1);
 
 // We log to see if all was added to the chain
 chain.logBlockchain();
-chain.logUTXO();
+chain.getBank().log();
