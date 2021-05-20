@@ -240,8 +240,8 @@ class Block {
    * @property {number} expireIn In how much time expire transaction content?
    */
   get expireIn() {
-    const expirationHours = Blockchain.getInstance().config
-      .TX_CONTENT_EXPIRATION_HOURS;
+    const expirationHours =
+      Blockchain.getInstance().config.TX_CONTENT_EXPIRATION_HOURS;
     const tsNow = Date.now();
     return expirationHours * 60 * 60 * 1000 - (tsNow - this.ts);
   }
@@ -273,7 +273,6 @@ class Block {
    * @returns {Block | null}
    */
   mine(iterationMax = 0) {
-    console.log(iterationMax);
     let iteration = 0;
     while (
       !this._testHashDifficulty() &&
