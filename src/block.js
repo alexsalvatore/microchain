@@ -120,12 +120,21 @@ class Block {
   }
 
   /**
-   * @property {function} getTransactions return the Transactions array in the block
+   * @property {function} getTransactions return the Transactions WITH NO CONTENT! array in the block
    * @returns {array<Transaction>}
    */
   getTransactions() {
     if (!this.transactionsNoContent) return [];
     return JSON.parse(this.transactionsNoContent);
+  }
+
+  /**
+   * @property {function} getTransactionsContent return the Transactions WITH the CONTENT array in the block
+   * @returns {array<Transaction>}
+   */
+  getTransactionsContent() {
+    if (!this.transactions) return [];
+    return JSON.parse(this.transactions);
   }
 
   /**

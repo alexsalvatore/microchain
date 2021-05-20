@@ -30,7 +30,7 @@ const chain = Blockchain.init(
     BLOCK_MAX_DIFFICULTY: 3,
     TX_CONTENT_EXPIRATION_HOURS: 12,
     MONEY_BY_BLOCK: 15,
-    MONEY_BY_KO: 1.2,
+    MONEY_BY_KO: 1.1,
     TX_CONTENT_MAX_SIZE_KO: 200,
     GENESIS_BLOCK: {
       publisher: walletSato.publicKey,
@@ -73,6 +73,10 @@ chain.addBlock(block);
 // console.log(chain.lastBlock);
 chain.getBank().log();
 chain.logBlockchainSize();
+console.log(
+  `Num of TX ${chain.getContentTX().length}`,
+  JSON.stringify(chain.getContentTX()).slice(0, 500)
+);
 
 // Mining loop
 // Uncomment that to create few block to post an images

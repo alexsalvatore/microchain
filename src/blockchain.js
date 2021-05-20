@@ -27,10 +27,6 @@ import Transaction from "./transaction.js";
 class Blockchain extends EventEmitter {
   static _instance;
 
-  onBlockAdded = (callback) => {};
-
-  onBlockchainLoaded = (callback) => {};
-
   /**
    *
    * @param {Config} conf the config of the chain. be careful, all the mined blocks will be invalid if you change the config of the chain.
@@ -41,6 +37,7 @@ class Blockchain extends EventEmitter {
     if (!Blockchain._instance) {
       Blockchain._instance = new Blockchain(conf);
       Blockchain.getInstance().chain = [];
+      Blockchain.getInstance().contentTX = [];
       Blockchain._instance.ready = false;
 
       //Create geneis block
@@ -260,6 +257,17 @@ class Blockchain extends EventEmitter {
       }
     }
 
+    const txsContent = block.getTransactionsContent();
+    //Add the new contents to contentTX array
+    for (let tx of txsContent) {
+      if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_CONTENT) {
+        this.contentTX.push(tx);
+      }
+    }
+
+    //Sort the array by more recent content
+    this.contentTX = this.contentTX.sort(Blockchain._sor);
+
     // The block is valid we add it to the chain!
     this.utxoPool.addBlock(block);
     this.chain.push(block);
@@ -348,12 +356,26 @@ class Blockchain extends EventEmitter {
     return this.utxoPool.getBank();
   }
 
+  getContentTX() {
+    return this.contentTX;
+  }
+
   static _sortBlocksByHeight(b1, b2) {
     if (b1.height < b2.height) {
       return -1;
     }
     if (b1.height < b2.height) {
       return 1;
+    }
+    return 0;
+  }
+
+  static _sortContentByTs(tx1, tx2) {
+    if (tx1.ts < tx2.ts) {
+      return 1;
+    }
+    if (tx1.ts < tx2.ts) {
+      return -1;
     }
     return 0;
   }
