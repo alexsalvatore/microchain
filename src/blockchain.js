@@ -27,10 +27,6 @@ import Transaction from "./transaction.js";
 class Blockchain extends EventEmitter {
   static _instance;
 
-  onBlockAdded = (callback) => {};
-
-  onBlockchainLoaded = (callback) => {};
-
   /**
    *
    * @param {Config} conf the config of the chain. be careful, all the mined blocks will be invalid if you change the config of the chain.
@@ -41,6 +37,7 @@ class Blockchain extends EventEmitter {
     if (!Blockchain._instance) {
       Blockchain._instance = new Blockchain(conf);
       Blockchain.getInstance().chain = [];
+      Blockchain.getInstance().contentTX = [];
       Blockchain._instance.ready = false;
 
       //Create geneis block
@@ -92,7 +89,16 @@ class Blockchain extends EventEmitter {
     this.chain = [];
     this._conf = new Config(conf);
     this.utxoPool = new UTXOPool();
+    this.logging = false;
     return this;
+  }
+
+  /**
+   * Set the logger on
+   * @param {*} value true or false
+   */
+  setLogger(value) {
+    this.logging = value;
   }
 
   /**
@@ -119,9 +125,12 @@ class Blockchain extends EventEmitter {
    * @property {Block} lastBlock return the last mined block, with the highest height
    */
   get lastBlock() {
-    //console.log(this);
+    console.log("call lastblock");
     if (this.chain.length === 0) return null;
-    return this.chain[this.chain.length - 1];
+    // return this.chain[this.chain.length - 1];
+    return this.chain.reduce((a, b) => {
+      return Math.max(a.height, b.height);
+    });
   }
 
   /**
@@ -185,7 +194,6 @@ class Blockchain extends EventEmitter {
       (24 * 60 * 60 * 1000) / this.config.BLOCK_HASH_RATE_BY_DAY;
 
     const rateDetla = delta / expectedDelta;
-    // console.log(delta, expectedDelta, rateDetla);
 
     const previousBlock = this.getBlockForHeight(blockNew.height - 1);
 
@@ -255,15 +263,27 @@ class Blockchain extends EventEmitter {
     const txs = block.getTransactions();
     for (let tx of txs) {
       if (!this.utxoPool.isTXValid(new Transaction(tx))) {
-        console.error(`💳 Block ${block.height} has an invalid transaction`);
+        if (this.logging)
+          console.error(`💳 Block ${block.height} has an invalid transaction`);
         return false;
       }
     }
 
+    const txsContent = block.getTransactionsContent();
+    //Add the new contents to contentTX array
+    for (let tx of txsContent) {
+      if (UTXOPool.typeofTX(tx) === UTXOPool.TX_TYPE_CONTENT) {
+        this.contentTX.push(tx);
+      }
+    }
+
+    //Sort the array by more recent content
+    this.contentTX = this.contentTX.sort(Blockchain._sor);
+
     // The block is valid we add it to the chain!
     this.utxoPool.addBlock(block);
     this.chain.push(block);
-    console.log(`🥞 Block ${block.height} has been added`);
+    if (this.logging) console.log(`🥞 Block ${block.height} has been added`);
     // We purge the block when and the chain
     this.purgeChain();
     if (Blockchain.getInstance().ready) this.emit("blockAdded", block);
@@ -322,7 +342,7 @@ class Blockchain extends EventEmitter {
   enoughtMoneyFrom(tx, publicKey) {
     const cost = this.getTransactionCost(tx);
     const money = this.utxoPool.getMoneyForSender(publicKey);
-    console.log(`cost: ${cost} V. money you have: ${money}`);
+    if (this.logging) console.log(`cost: ${cost} V. money you have: ${money}`);
     return cost <= money;
   }
 
@@ -348,12 +368,26 @@ class Blockchain extends EventEmitter {
     return this.utxoPool.getBank();
   }
 
+  getContentTX() {
+    return this.contentTX;
+  }
+
   static _sortBlocksByHeight(b1, b2) {
     if (b1.height < b2.height) {
       return -1;
     }
     if (b1.height < b2.height) {
       return 1;
+    }
+    return 0;
+  }
+
+  static _sortContentByTs(tx1, tx2) {
+    if (tx1.ts < tx2.ts) {
+      return 1;
+    }
+    if (tx1.ts < tx2.ts) {
+      return -1;
     }
     return 0;
   }

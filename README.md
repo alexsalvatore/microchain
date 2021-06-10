@@ -158,6 +158,11 @@ chain.addBlock(block);
 
 ## Change log
 
+###### V 1.4.0
+
+- Added a _setLogger_ method on blockchain to activate the logging, to avoid slowing down the chain calculations
+- Changed the _lastBlock_ method to be sure to have the top block and not the last block.
+
 ###### V 1.3.0
 
 - Added the _getBank()_ method in Blockchain to ownership and money pools, as the Class _Bank_
