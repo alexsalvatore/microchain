@@ -125,12 +125,12 @@ class Blockchain extends EventEmitter {
    * @property {Block} lastBlock return the last mined block, with the highest height
    */
   get lastBlock() {
-    console.log("call lastblock");
     if (this.chain.length === 0) return null;
     // return this.chain[this.chain.length - 1];
-    return this.chain.reduce((a, b) => {
-      return Math.max(a.height, b.height);
+    const highest = this.chain.reduce((a, b) => {
+      return a.height > b.height ? a : b;
     });
+    return highest ? highest : null;
   }
 
   /**

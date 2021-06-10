@@ -158,8 +158,9 @@ chain.addBlock(block);
 
 ## Change log
 
-###### V 1.4.0
+###### V 1.4.2
 
+- Corrected bug on _lastBlock_ & _longuestBlockchain_ and also took off the logs ^^
 - Added a _setLogger_ method on blockchain to activate the logging, to avoid slowing down the chain calculations
 - Changed the _lastBlock_ method to be sure to have the top block and not the last block.
 
