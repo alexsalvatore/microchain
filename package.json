@@ -1,6 +1,6 @@
 {
   "name": "@asalvatore/microchain",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "Microchain is a #Javascript lib for creating small #blockchain for content and ownership hosting on Node JS & Web client. Project in progress.",
   "homepage": "https://github.com/salvatoreparis/microchain",
   "keywords": [

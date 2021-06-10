@@ -146,6 +146,7 @@ class Block {
     // test config hash
     if (this.configHash !== Blockchain.getInstance().configHash) {
       console.error("Config hash is not valid for", this.height);
+      return false;
     }
 
     // test signature
