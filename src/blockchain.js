@@ -238,7 +238,7 @@ class Blockchain extends EventEmitter {
     console.log(block);*/
 
     if (!block.isValid()) {
-      console.error(`Block ${block.height} is not valid`);
+      if (this.logging) console.error(`Block ${block.height} is not valid`);
       return false;
     }
 
@@ -246,7 +246,7 @@ class Blockchain extends EventEmitter {
     const parentBlock = this.getParent(block.prevHash);
 
     if (!parentBlock && block.height !== 0) {
-      console.error(`Block ${block.height} has no parent!`);
+      if (this.logging) console.error(`Block ${block.height} has no parent!`);
       return false;
     }
 
@@ -254,9 +254,10 @@ class Blockchain extends EventEmitter {
       parentBlock &&
       (parentBlock.height - 1 == block.height || parentBlock.ts >= block.ts)
     ) {
-      console.error(
-        `addBlock(block) Block ${block.height} is not coherent with the chain`
-      );
+      if (this.logging)
+        console.error(
+          `addBlock(block) Block ${block.height} is not coherent with the chain`
+        );
       return false;
     }
 

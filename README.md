@@ -158,7 +158,12 @@ chain.addBlock(block);
 
 ## Change log
 
-###### V 1.4.2
+###### V 1.4.4
+
+- More methods on the _Bank_ : _getAllOwnershipsForToken(block1.hash)_ and _getOwnershipsForSender(walletSato.publicKey)_
+- Took off some loggin error in the Blockchain object
+
+###### V 1.4.2 + 1.4.3
 
 - Corrected bug on _lastBlock_ & _longuestBlockchain_ and also took off the logs ^^
 - Added a _setLogger_ method on blockchain to activate the logging, to avoid slowing down the chain calculations
