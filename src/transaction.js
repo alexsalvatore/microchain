@@ -163,11 +163,11 @@ class Transaction {
   }
 
   /**
-   * @property {function} isValid Return if a TX is valid, testing the size and the validity of the signature
+   * @property {function} isValid Return if a TX is valid, testing the size, if amount > to zero and the validity of the signature
    * @returns {boolean}
    */
   isValid() {
-    if (this.isTooBig()) return false;
+    if (this.isTooBig() || (this.amount && this.amount < 0)) return false;
 
     const tosign = this._toStringToSign();
     return Wallet.verifySignature(tosign, this.signature, this.sender);

@@ -158,10 +158,11 @@ chain.addBlock(block);
 
 ## Change log
 
-###### V 1.4.4
+###### V 1.4.4 + 1.4.10
 
-- More methods on the _Bank_ : _getAllOwnershipsForToken(block1.hash)_ and _getOwnershipsForSender(walletSato.publicKey)_
+- More methods on the _Bank_ : _getAllOwnershipsForToken(block1.hash)_ and _getOwnershipsForSender(walletSato.publicKey)_ + bug fix
 - Took off some loggin error in the Blockchain object
+- Avoid Double ownership in the bank ???
 
 ###### V 1.4.2 + 1.4.3
 

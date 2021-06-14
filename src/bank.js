@@ -42,7 +42,7 @@ class Bank {
    * @returns {Array}  the list of ownership, for this public key.
    */
   getOwnershipsForSender(sender) {
-    if (!this.ownershipPool[sender]) return 0;
+    if (!this.ownershipPool[sender]) return [];
     const ownerships = this.ownershipPool[sender];
     return ownerships;
   }
@@ -53,12 +53,11 @@ class Bank {
    * @returns {Array}  the list of ownerships, with public key on amount.
    */
   getAllOwnershipsForToken(id) {
-    const ownerships = {};
+    const ownerships = [];
 
-    for (let [publicKey, value] of Object.entries(ownerships)) {
+    for (let [publicKey, value] of Object.entries(this.ownershipPool)) {
       value.forEach((own) => {
-        const ownership = own.find((l) => l.id === id);
-        if (ownership) ownerships[{ publicKey, amount: ownership.amount }];
+        if (own.id === id) ownerships.push({ publicKey, amount: own.amount });
       });
     }
 

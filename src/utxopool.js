@@ -109,14 +109,18 @@ export default class UTXOPool {
 
   addBlock(block) {
     // Add ownership for block
-    if (!this.bank.ownershipPool[block.publisher]) {
+    /*if (!this.bank.ownershipPool[block.publisher]) {
       this.bank.ownershipPool[block.publisher] = [];
     }
 
     this.bank.ownershipPool[block.publisher].push({
       id: block.hash,
       amount: 1,
-    });
+    });*/
+    if (this.getOwnershipForSenderAnId(block.publisher, block.hash))
+      return console.warn("Block already exist in the pool");
+
+    this.addOwnershipTo(block.publisher, block.hash, 1);
 
     // Add money for block
     this.addMoneyToSender(block.publisher, this.config.MONEY_BY_BLOCK);
