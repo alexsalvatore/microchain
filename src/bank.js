@@ -27,13 +27,42 @@ class Bank {
   /**
    * @property {function} getOwnershipForSenderAnId get the ratio of ownership, for a block token for a public key.
    * @param {string} sender the user public key.
-   * @param {string} token to test for ownership.
+   * @param {string} id to test for ownership.
    * @returns {number}  the ratio of ownership, for a block token for this public key.
    */
   getOwnershipForSenderAnId(sender, id) {
     if (!this.ownershipPool[sender]) return 0;
     const ownership = this.ownershipPool[sender].find((l) => l.id === id);
     return ownership;
+  }
+
+  /**
+   * @property {function} getOwnershipsForSender get all the ratio of ownerships, for a public key.
+   * @param {string} sender the user public key.
+   * @returns {Array}  the list of ownership, for this public key.
+   */
+  getOwnershipsForSender(sender) {
+    if (!this.ownershipPool[sender]) return 0;
+    const ownerships = this.ownershipPool[sender];
+    return ownerships;
+  }
+
+  /**
+   * @property {function} getAllOwnshipsForToken get all the ratio of ownerships, for a public key.
+   * @param {string} id the hash value of the block.
+   * @returns {Array}  the list of ownerships, with public key on amount.
+   */
+  getAllOwnershipsForToken(id) {
+    const ownerships = {};
+
+    for (let [publicKey, value] of Object.entries(ownerships)) {
+      value.forEach((own) => {
+        const ownership = own.find((l) => l.id === id);
+        if (ownership) ownerships[{ publicKey, amount: ownership.amount }];
+      });
+    }
+
+    return ownerships;
   }
 
   /**

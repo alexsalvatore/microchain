@@ -1,4 +1,4 @@
-import { Blockchain, Wallet, Block } from "../index.js";
+import { Blockchain, Wallet, Block, Bank } from "../index.js";
 
 const walletSato = new Wallet();
 const walletDolores = new Wallet();
@@ -50,6 +50,8 @@ const transaction3 = walletDolores.createTransaction({
   amount: 0.5,
 });
 
+transaction3.sign(walletSato);
+
 const block3 = new Block({
   height: chain.lastBlock.height + 1,
   publisher: walletSato.publicKey,
@@ -60,3 +62,17 @@ block3.sign(walletSato);
 block3.mine();
 chain.addBlock(block3);
 chain.getBank().log();
+
+console.log(
+  "Ownerships for block 1",
+  chain.getBank().getAllOwnershipsForToken(block1.hash)
+);
+console.log(
+  "Ownerships for Public key SATO",
+  chain.getBank().getOwnershipsForSender(walletSato.publicKey)
+);
+
+console.log(
+  "Ownerships for Public key KUBRICK",
+  chain.getBank().getOwnershipsForSender(walletKub.publicKey)
+);
